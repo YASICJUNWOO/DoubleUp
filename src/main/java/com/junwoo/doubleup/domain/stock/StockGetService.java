@@ -17,6 +17,7 @@ public class StockGetService {
 		return stockRepository.findAll();
 	}
 
+	@Transactional(readOnly = true)
 	public Stock findById(Long id) {
 		return stockRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 주식이 존재하지 않습니다."));
 	}
