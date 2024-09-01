@@ -6,6 +6,8 @@ import SignUp from "./components/SignUp";
 import {BrowserRouter, Link, Route, Router, Routes} from "react-router-dom";
 import MemberList from "./components/admin/MemberList";
 import Profile from "./components/member/Profile";
+import StockList from "./components/stock/StockList";
+import StockDetail from "./components/stock/StockDetail";
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
               <Link to="/" style={{marginRight: '1rem'}}>Home</Link>
               <Link to="/signup" style={{marginRight: '1rem'}}>Sign Up</Link>
               <Link to="/members" style={{marginRight: '1rem'}}>MemberList</Link>
+              <Link to="/stocks" style={{marginRight: '1rem'}}>StockList</Link>
           </nav>
 
           <Routes>
@@ -21,6 +24,8 @@ function App() {
               <Route path="/signup" element={<SignUp/>}/>
               <Route path="/members" element={<MemberList/>}/>
               <Route path="/members/:id" element={<Profile/>}/>
+              <Route path="/stocks" element={<StockList/>}/>
+                <Route path="/stocks/:id" element={<StockDetail/>}/>
           </Routes>
 
       </BrowserRouter>
