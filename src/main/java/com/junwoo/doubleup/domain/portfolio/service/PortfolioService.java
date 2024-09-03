@@ -34,6 +34,7 @@ public class PortfolioService {
 				portfolioStockService.createPortfolioStocks(portfolio, portfolioAddRequest.getPortfolioStocks());
 
 		portfolio.setPortfolioStocks(portfolioStocks);
+		portfolio.calculateTotalAmount();
 		return portfolioRepository.save(portfolio);
 	}
 

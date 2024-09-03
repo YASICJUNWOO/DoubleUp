@@ -2,6 +2,7 @@ package com.junwoo.doubleup.domain.portfolio.controller;
 
 import com.junwoo.doubleup.domain.member.service.MemberGetService;
 import com.junwoo.doubleup.domain.portfolio.dto.PortfolioAddRequest;
+import com.junwoo.doubleup.domain.portfolio.dto.PortfolioResponse;
 import com.junwoo.doubleup.domain.portfolio.entity.Portfolio;
 import com.junwoo.doubleup.domain.portfolio.mapper.PortfolioMapper;
 import com.junwoo.doubleup.domain.portfolio.mapper.PortfolioStockMapper;
@@ -27,24 +28,34 @@ public class PortfolioController {
 	private final MemberGetService memberGetService;
 	private final StockGetService stockGetService;
 
-	@GetMapping("/all")
-	private List<Portfolio> findAll() {
-		return portfolioGetService.findAll();
+	@GetMapping
+	private List<PortfolioResponse> findAll() {
+		List<Portfolio> portfolios = portfolioGetService.findAll();
+		return portfolios.stream()
+				.map(portfolioMapper::toResponse)
+				.toList();
 	}
 
 	@GetMapping("/{id}")
-	private Portfolio findById(@PathVariable(name = "id") Long id) {
-		return portfolioGetService.findById(id);
+	private PortfolioResponse findById(@PathVariable(name = "id") Long id) {
+		Portfolio portfolio = portfolioGetService.findById(id);
+		return portfolioMapper.toResponse(portfolio);
 	}
 
 	@PostMapping
-	private Portfolio save(@RequestBody PortfolioAddRequest portfolioAddRequest) {
-		return portfolioService.addPortfolio(portfolioAddRequest);
+	private PortfolioResponse save(@RequestBody PortfolioAddRequest portfolioAddRequest) {
+		Portfolio portfolio = portfolioService.addPortfolio(portfolioAddRequest);
+		return portfolioMapper.toResponse(portfolio);
 	}
 
 	@DeleteMapping("/{id}")
 	private void delete(@PathVariable(name = "id") Long id) {
 		portfolioGetService.delete(id);
+	}
+
+	@DeleteMapping("/all")
+	private void deleteAll() {
+		portfolioGetService.deleteAll();
 	}
 
 }

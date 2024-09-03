@@ -32,4 +32,9 @@ public class PortfolioGetService {
 				.orElseThrow(() -> new EntityNotFoundException("Portfolio with id " + id + " not found"));
 		portfolioRepository.delete(portfolio);
 	}
+
+	@Transactional
+	public void deleteAll() {
+		portfolioRepository.deleteAll();
+	}
 }

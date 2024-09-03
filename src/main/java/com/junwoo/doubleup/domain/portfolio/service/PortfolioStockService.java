@@ -8,6 +8,7 @@ import com.junwoo.doubleup.domain.stock.Stock;
 import com.junwoo.doubleup.domain.stock.StockGetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class PortfolioStockService {
 
 	private final StockGetService stockGetService;
 
+	@Transactional
 	public List<PortfolioStock> createPortfolioStocks(Portfolio portfolio, List<PortfolioAddRequest.PortfolioStockAddRequest> stockAddRequests) {
 		return stockAddRequests.stream()
 				.map(stockAddRequest -> createPortfolioStock(portfolio, stockAddRequest))

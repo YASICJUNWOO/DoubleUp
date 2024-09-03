@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +29,18 @@ public class Portfolio {
 	@Column(nullable = false)
 	private String name;  // 포트폴리오 이름
 
+	@Comment("포트폴리오 총 금액")
+	@Column(nullable = false)
+	private BigDecimal totalAmount;  // 포트폴리오 총 금액
+
 	@Setter
 	@Comment("포트폴리오에 포함된 주식 리스트")
 	@OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
 	private List<PortfolioStock> portfolioStocks = new ArrayList<>();  // 포트폴리오에 포함된 주식 리스트
 
+	public void calculateTotalAmount() {
+		this.totalAmount = portfolioStocks.stream()
+				.map(PortfolioStock::getTotalAmount)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
 }

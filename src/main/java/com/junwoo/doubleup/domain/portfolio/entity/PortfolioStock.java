@@ -45,15 +45,4 @@ public class PortfolioStock {
 	@Column(nullable = false)
 	private BigDecimal averagePrice;
 
-	@PrePersist
-	@PreUpdate
-	private void calculateTotalAmount() {
-
-		if (quantity > 0 && averagePrice != null) {
-			this.totalAmount = averagePrice.multiply(BigDecimal.valueOf(quantity));
-		} else {
-			this.totalAmount = BigDecimal.ZERO;
-		}
-	}
-
 }
