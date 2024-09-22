@@ -32,7 +32,7 @@ const PortfolioList: React.FC = () => {
             axios.get('/api/portfolio')
                 .then(response => {
                     setPortfolioList(response.data);
-                    console.log("Portfolio list fetched successfully!", response.data);
+                    console.log("PortfolioDetail list fetched successfully!", response.data);
                 })
                 .catch(error => {
                     console.error("There was an error fetching the portfolio list!", error);
@@ -55,6 +55,9 @@ const PortfolioList: React.FC = () => {
                         </Link>
                     </List.Item>
                 )}
+                locale={{
+                    emptyText: '포트폴리오가 없습니다', // 빈 리스트일 때 보여줄 메시지
+                }}
             />
         </div>
     );

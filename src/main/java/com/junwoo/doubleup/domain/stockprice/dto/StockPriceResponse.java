@@ -1,5 +1,6 @@
 package com.junwoo.doubleup.domain.stockprice.dto;
 
+import com.junwoo.doubleup.domain.stock.dto.response.StockResponse;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,6 +10,8 @@ import java.time.LocalDate;
 public class StockPriceResponse {
 
 	private Long id;
+
+	private StockResponse stock;
 
 	private LocalDate date;
 

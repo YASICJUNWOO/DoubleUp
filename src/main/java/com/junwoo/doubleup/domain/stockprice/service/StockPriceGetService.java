@@ -1,5 +1,8 @@
-package com.junwoo.doubleup.domain.stockprice;
+package com.junwoo.doubleup.domain.stockprice.service;
 
+import com.junwoo.doubleup.domain.stockprice.dto.PeriodType;
+import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
+import com.junwoo.doubleup.domain.stockprice.repository.StockPriceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,6 @@ public class StockPriceGetService {
 
 	public List<StockPrice> getStockPrices(Long stockId, PeriodType periodType) {
 		//일단 데일리
-		return stockPriceRepository.findByStockId(stockId);
+		return stockPriceRepository.findByStockIdOrderByDateAsc(stockId);
 	}
 }

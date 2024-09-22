@@ -1,4 +1,4 @@
-package com.junwoo.doubleup.domain.stock;
+package com.junwoo.doubleup.domain.stock.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,6 +29,11 @@ public class Stock {
 	@Comment("거래소")
 	@Column(nullable = false)
 	private String market;  // 거래소 (예: NASDAQ)
+
+	@Comment("타입")
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private StockType stockType;  // 타입 (예: Common Stock, ETF)
 
 //	@OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
 //	private List<StockPrice> prices = new ArrayList<>();  // 주식 가격 리스트

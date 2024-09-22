@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Card, Spin, Alert, Space } from "antd";
+import React, {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {Alert, Card, Col, Row, Spin, Statistic, Typography} from "antd";
 import StockPrice from "./StockPrice";
 
 /**
@@ -19,7 +19,7 @@ interface StockDetailInfo {
 }
 
 const StockDetail: React.FC = () => {
-    const { id } = useParams<RouteParams>();
+    const {id} = useParams<RouteParams>();
     const [stock, setStock] = useState<StockDetailInfo | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -46,22 +46,25 @@ const StockDetail: React.FC = () => {
     }, [id]);
 
     if (loading) {
-        return <Spin tip="Loading..." />;
+        return <Spin tip="Loading..."/>;
     }
 
     if (error) {
-        return <Alert message="Error" description={error} type="error" showIcon />;
+        return <Alert message="Error" description={error} type="error" showIcon/>;
     }
 
     return stock ? (
-        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-            <Card title={stock.name} bordered={true}>
-                <p><strong>ID:</strong> {stock.id}</p>
-                <p><strong>Symbol:</strong> {stock.symbol}</p>
-                <p><strong>Market:</strong> {stock.market}</p>
-            </Card>
-            <StockPrice />
-        </Space>
+        <div>
+            <div id={'header'}>
+                {/* head */}
+                <Row id={'title'}>
+                    <Col offset={2} span={12}>
+                        <Typography.Title level={2}>{stock.symbol} - {stock.name}</Typography.Title>
+                    </Col>
+                </Row>
+                <StockPrice/>
+            </div>
+        </div>
     ) : (
         <div>No stock details available.</div>
     );

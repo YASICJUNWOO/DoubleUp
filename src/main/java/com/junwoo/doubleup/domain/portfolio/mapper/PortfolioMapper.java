@@ -5,7 +5,6 @@ import com.junwoo.doubleup.domain.portfolio.dto.PortfolioAddRequest;
 import com.junwoo.doubleup.domain.portfolio.dto.PortfolioResponse;
 import com.junwoo.doubleup.domain.portfolio.entity.Portfolio;
 import com.junwoo.doubleup.domain.portfolio.entity.PortfolioStock;
-import com.junwoo.doubleup.domain.stock.Stock;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

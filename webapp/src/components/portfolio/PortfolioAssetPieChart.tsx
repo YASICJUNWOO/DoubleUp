@@ -21,6 +21,9 @@ interface PortfolioAssetPieChartProps {
 }
 
 const PortfolioAssetPieChart: React.FC<PortfolioAssetPieChartProps> = ({ portfolioStocks }) => {
+    const totalSum = portfolioStocks.reduce((acc, stock) => acc + Number(stock.totalAmount), 0);
+    console.log('totalSum:', totalSum);
+
     // 파이 차트를 위한 데이터 준비
     const chartData = portfolioStocks.map(stock => ({
         id: stock.stock.name, // 각 파이 조각의 ID로 사용할 주식 이름
@@ -39,6 +42,23 @@ const PortfolioAssetPieChart: React.FC<PortfolioAssetPieChartProps> = ({ portfol
                 activeOuterRadiusOffset={8} // 파이 조각이 활성화(클릭/터치)될 때 바깥쪽으로 이동하는 정도
                 borderWidth={1} // 파이 조각의 테두리 두께
                 borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }} // 테두리 색상 설정
+
+                // 커스텀 툴팁: 비율 계산 및 출력
+                tooltip={({ datum: { id, value, color } }) => {
+                    const percentage = ((value / totalSum) * 100).toFixed(2);
+
+                    return (
+                        <div
+                            style={{
+                                padding: 12,
+                                color,
+                                background: '#222',
+                            }}
+                        >
+                            <strong>{percentage}%</strong>
+                        </div>
+                    );
+                }}
 
                 arcLinkLabelsSkipAngle={0} // 라벨 연결선이 그려지지 않을 최소 각도
                 arcLinkLabelsTextColor="#333333" // 라벨 연결선의 텍스트 색상

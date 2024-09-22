@@ -1,6 +1,6 @@
-package com.junwoo.doubleup.domain.stockprice;
+package com.junwoo.doubleup.domain.stockprice.entity;
 
-import com.junwoo.doubleup.domain.stock.Stock;
+import com.junwoo.doubleup.domain.stock.entity.Stock;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +36,7 @@ public class StockPrice {
 	private BigDecimal openPrice;  // 시가
 
 	@Comment("종가")
-	@Column(nullable = false)
+	@Column(nullable = true) // 종가는 null일 수 있음
 	private BigDecimal closePrice;  // 종가
 
 	@Comment("최고가")

@@ -1,5 +1,5 @@
 import React from 'react';
-import type {MenuProps} from 'antd';
+import {Col, MenuProps, Row} from 'antd';
 import {Avatar, Layout, Menu, Typography} from 'antd';
 import {Link} from 'react-router-dom';
 import {UserOutlined} from '@ant-design/icons';
@@ -29,15 +29,29 @@ const items: MenuItem[] = [
             key: '주식 메뉴',
             children: [
                 {
-                    label: <Link to="/stocks">전체 주식</Link>,
-                    key: '4',
+                    label: <Link to="/stocks">주식 목록</Link>,
+                    key: '주식 목록',
+                },
+                {
+                    label: <Link to="/stocks/today">오늘 시황</Link>,
+                    key: '오늘 시황',
                 }]
             ,
         },
         {
-            label: <Link to="/portfolio">Portfolio</Link>,
+            label: '포트폴리오',
             key:
-                '5',
+                '포트폴라오',
+            children: [
+                {
+                    label: <Link to="/portfolio/create">포트폴리오 생성</Link>,
+                    key: '포트폴리오 생성',
+                },
+                {
+                    label: <Link to="/portfolio">포트폴리오 목록</Link>,
+                    key: '포트폴리오 목록',
+                },
+            ],
         }
         ,
     ]
@@ -45,16 +59,34 @@ const items: MenuItem[] = [
 
 const AppHeader: React.FC = () => {
     return (
-        <Header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 20px'}}>
-            <div style={{display: 'flex', alignItems: 'center'}}>
-                <Avatar src="/path/to/logo.svg" size="large" alt="Logo"/>
-                <Title level={4} style={{color: 'white', margin: '0 4px'}} onClick={() => window.location.href = '/'}>
-                    Double Up Investment
-                </Title>
-            </div>
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} items={items}
-                  style={{flex: 1, justifyContent: 'center'}}/>
-            <Avatar icon={<UserOutlined/>} style={{backgroundColor: '#87d068'}}/>
+        <Header style={{ padding: '0 20px', background: '#001529' }}>
+            <Row align="middle" justify="space-between" style={{ width: '100%' }}>
+                {/* Left: Logo and Title */}
+                <Col span={4}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Avatar src="/path/to/logo.svg" size="large" alt="Logo" />
+                        <Title level={4} style={{ color: 'white', margin: '0 4px', cursor: 'pointer' }} onClick={() => window.location.href = '/'}>
+                            Double Up Investment
+                        </Title>
+                    </div>
+                </Col>
+
+                {/* Center: Menu */}
+                <Col span={10}>
+                    <Menu
+                        theme="dark"
+                        mode="horizontal"
+                        defaultSelectedKeys={['1']}
+                        items={items}
+                        style={{ display: 'flex', justifyContent: 'flex-start' }}
+                    />
+                </Col>
+
+                {/* Right: Avatar */}
+                <Col>
+                    <Avatar icon={<UserOutlined />} style={{ backgroundColor: '#87d068' }} />
+                </Col>
+            </Row>
         </Header>
     );
 };

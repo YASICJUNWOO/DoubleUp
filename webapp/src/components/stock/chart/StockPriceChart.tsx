@@ -22,6 +22,8 @@ interface ChartRenderData {
 
 const StockLineChart: React.FC<Props> = ({ stockPriceDataList }) => {
     const [data, setData] = useState<ChartRenderData[]>([]);
+    const [minValue, setMinValue] = useState<number>(Number.MAX_VALUE);
+    const [maxValue, setMaxValue] = useState<number>(Number.MIN_VALUE);
 
     useEffect(() => {
         const chartData = [
@@ -33,7 +35,17 @@ const StockLineChart: React.FC<Props> = ({ stockPriceDataList }) => {
                 }))
             }
         ];
+
         setData(chartData);
+
+        // 최소값과 최대값 계산
+        let minY = Math.min(...stockPriceDataList.map(item => item.closePrice));
+        let maxY = Math.max(...stockPriceDataList.map(item => item.closePrice));
+
+        // 여유 공간을 주기 위해 +- 10 추가
+        setMinValue(minY - 10);
+        setMaxValue(maxY + 10);
+
     }, [stockPriceDataList]);
 
     return (
@@ -45,11 +57,15 @@ const StockLineChart: React.FC<Props> = ({ stockPriceDataList }) => {
                 // 차트의 margin 설정
                 margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
 
+                // 라인 안 색 채움
+                enableArea={true}
+                areaBaselineValue={minValue}
+
                 // X축 스케일 설정, 'point'는 범주형 데이터에 사용됩니다.
                 xScale={{ type: 'point' }}
 
                 // Y축 스케일 설정, 'linear'는 연속형 데이터에 사용되며, min/max를 자동으로 설정합니다.
-                yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: false, reverse: false }}
+                yScale={{ type: 'linear', min: minValue, max: maxValue, stacked: false, reverse: false }}
 
                 // 차트 상단에 X축을 비활성화
                 axisTop={null}
@@ -81,7 +97,7 @@ const StockLineChart: React.FC<Props> = ({ stockPriceDataList }) => {
                 colors={{ scheme: 'nivo' }}
 
                 // 데이터 포인트(점)의 크기 설정
-                pointSize={10}
+                pointSize={1}
 
                 // 데이터 포인트의 색상 설정
                 pointColor={{ theme: 'background' }}

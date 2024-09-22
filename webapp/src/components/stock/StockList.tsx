@@ -1,50 +1,48 @@
 import React, {useEffect, useState} from "react";
-import {Card, List} from "antd";
-import {Link} from "react-router-dom";
+import {Table, TableProps} from "antd";
+import {IStock} from "../../interface/interface";
+import axios from "axios";
 
-/**
- * 주식 정보 목록을 나타내는 컴포넌트
- */
+export const StockList: React.FC = () => {
 
-interface Stock {
-    id: number;
-    symbol: string;
-    name: string;
-    market: string;
-}
-
-const StockList: React.FC = () => {
-    const [stockList, setStockList] = useState<Stock[]>([]);
+    const [stocks, setStocks] = useState<IStock[]>([]);
 
     useEffect(() => {
-        fetch('/api/stock/all')
-            .then(res => res.json())
-            .then(data => {
-                setStockList(data);
-            })
-            .catch(err => {
-                console.error(err);
-            });
+        axios.get('/api/stock/all')
+        	.then(response => {
+				setStocks(response.data);
+			})
+			.catch(error => {
+				console.error(error);
+			});
     }, []);
 
-    return (
-        <div style={{padding: "20px"}}>
-            <List
-                grid={{gutter: 16, column: 4}} // 그리드 레이아웃 설정 (한 줄에 4개의 카드)
-                dataSource={stockList}
-                renderItem={item => (
-                    <List.Item>
-                        <Link to={`/stocks/${item.id}`}>
-                            <Card title={item.symbol} bordered={true}>
-                                <p><strong>Name:</strong> {item.name}</p>
-                                <p><strong>Market:</strong> {item.market}</p>
-                            </Card>
-                        </Link>
-                    </List.Item>
-                )}
-            />
-        </div>
-    );
-}
+    const columns: TableProps<IStock>['columns'] = [
+        {
+            title: '티커',
+			dataIndex: 'symbol',
+			key: 'symbol',
+		},
+		{
+			title: '이름',
+			dataIndex: 'name',
+			key: 'name',
+		},
+		{
+			title: '거래소',
+			dataIndex: 'market',
+			key: 'market',
+		},
+		{
+			title: '유형',
+			dataIndex: 'stockType',
+			key: 'stockType',
+        }
+    ];
 
-export default StockList;
+    return (
+        <div>
+			<Table dataSource={stocks} columns={columns} rowKey="id"/>
+		</div>
+	)
+}

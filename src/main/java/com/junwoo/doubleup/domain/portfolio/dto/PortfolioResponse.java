@@ -1,7 +1,6 @@
 package com.junwoo.doubleup.domain.portfolio.dto;
 
-import com.junwoo.doubleup.domain.portfolio.entity.PortfolioStock;
-import com.junwoo.doubleup.domain.stock.Stock;
+import com.junwoo.doubleup.domain.stock.entity.Stock;
 import lombok.Data;
 import lombok.Getter;
 
