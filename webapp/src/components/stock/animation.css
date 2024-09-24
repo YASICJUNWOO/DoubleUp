@@ -1,0 +1,12 @@
+.flash {
+    animation: flash 1s ease-in-out;
+}
+
+@keyframes flash {
+    0% {
+        background-color: whitesmoke;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
