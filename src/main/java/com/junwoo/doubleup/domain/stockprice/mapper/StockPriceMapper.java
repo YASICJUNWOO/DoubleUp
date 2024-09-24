@@ -2,10 +2,13 @@ package com.junwoo.doubleup.domain.stockprice.mapper;
 
 import com.junwoo.doubleup.domain.stock.dto.response.StockResponse;
 import com.junwoo.doubleup.domain.stock.entity.Stock;
+import com.junwoo.doubleup.domain.stockprice.dto.NowPrice;
 import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
 import com.junwoo.doubleup.domain.stockprice.dto.StockPriceResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import java.math.BigDecimal;
 
 @Mapper
 public interface StockPriceMapper {
@@ -41,5 +44,7 @@ public interface StockPriceMapper {
 
 		return response;
 	}
+
+	NowPrice toNowPrice(Stock stock, BigDecimal currentPrice, BigDecimal priceChange, BigDecimal priceChangeRate);
 
 }
