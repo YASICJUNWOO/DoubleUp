@@ -39,7 +39,7 @@ const StockTodayList: React.FC = () => {
             dataIndex: ["stock", "symbol"], // stock 객체 내 symbol 속성 참조
             key: "symbol",
             render: (text: string, record: StockPrice) => (
-                <Link to={`/stocks/${record.stock.id}`}>{text || "N/A"}</Link>
+                <Link to={`/stocks/${record.stock.stockId}`}>{text || "N/A"}</Link>
             ),
         },
         {

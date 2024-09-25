@@ -16,7 +16,7 @@ public class Stock {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long stockId;
 
 	@Comment("주식 심볼")
 	@Column(nullable = false, unique = true)

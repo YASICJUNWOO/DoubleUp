@@ -11,7 +11,7 @@ const {Text, Title} = Typography;
  * 특정 일자 주식 가격 정보를 나타내는 컴포넌트
  */
 interface StockPriceData {
-    id: number;
+    stockPriceId: number;
     date: string;
     openPrice: number;
     closePrice: number;
@@ -72,7 +72,7 @@ const StockPrice: React.FC = () => {
                                     <div id="stock-detail-today-price" style={{marginInline: '10px'}}>
                                         <Text strong style={{fontSize: "50px"}}>${stockPrices.closePrice}</Text>
                                     </div>
-                                    <div id="stock-detail-change-rate" style={{display: 'flex', alignItems: 'flex-end', marginBottom: '20px'}}>
+                                    <div id="stock-detail-change-rate" style={{display: 'flex', alignItems: 'flex-end', marginBottom: '15px'}}>
                                         <Statistic
                                             value={11.28}
                                             precision={2}

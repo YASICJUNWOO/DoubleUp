@@ -9,20 +9,18 @@ import java.time.LocalDate;
 @Data
 public class StockPriceResponse {
 
-	private Long id;
-
+	private Long stockPriceId;
 	private StockResponse stock;
-
 	private LocalDate date;
 
 	private BigDecimal openPrice;
-
 	private BigDecimal closePrice;
-
 	private BigDecimal highPrice;
-
 	private BigDecimal lowPrice;
-
 	private Long volume;
+
+	// 전날 대비 가격 변동
+	private BigDecimal priceChange;
+	private BigDecimal priceChangeRate;
 
 }

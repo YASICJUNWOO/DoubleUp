@@ -18,12 +18,12 @@ public class StockPriceGetService {
 
 	@Transactional(readOnly = true)
 	public StockPrice getStockPriceByDate(Long id, LocalDate date) {
-		return stockPriceRepository.findByStockIdAndDate(id, date)
+		return stockPriceRepository.findByStock_StockIdAndDate(id, date)
 			.orElseThrow(() -> new IllegalArgumentException("해당 주식 가격 데이터가 존재하지 않습니다."));
 	}
 
 	public List<StockPrice> getStockPrices(Long stockId, PeriodType periodType) {
 		//일단 데일리
-		return stockPriceRepository.findByStockIdOrderByDateAsc(stockId);
+		return stockPriceRepository.findByStock_StockIdOrderByDateAsc(stockId);
 	}
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StockPriceRepository extends JpaRepository<StockPrice, Long> {
-	Optional<StockPrice> findByStockIdAndDate(Long id, LocalDate date);
+	Optional<StockPrice> findByStock_StockIdAndDate(Long id, LocalDate date);
 
-	List<StockPrice> findByStockIdOrderByDateAsc(Long stockId);
+	List<StockPrice> findByStock_StockIdOrderByDateAsc(Long stockId);
 }

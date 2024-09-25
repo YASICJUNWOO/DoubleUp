@@ -7,7 +7,7 @@ import com.junwoo.doubleup.domain.stockprice.dto.PeriodType;
 import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
 import com.junwoo.doubleup.domain.stockprice.service.StockPriceGetService;
 import com.junwoo.doubleup.domain.stockprice.dto.StockPriceResponse;
-import com.junwoo.doubleup.domain.stockprice.mapper.StockPriceMapper;
+import com.junwoo.doubleup.domain.stockprice.dto.mapper.StockPriceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 
 @RequiredArgsConstructor
 @RestController
@@ -40,7 +39,7 @@ public class StockPriceController {
 					//하루 전 종가
 					StockPrice lastPricePrevDay = null;
 					try{
-						lastPricePrevDay = stockPriceGetService.getStockPriceByDate(stock.getId(), LocalDate.now().minusDays(1));
+						lastPricePrevDay = stockPriceGetService.getStockPriceByDate(stock.getStockId(), LocalDate.now().minusDays(1));
 					}
 					catch (Exception e){
 						//todo : 전일 종가 / 가격 정보가 없을 경우
@@ -61,7 +60,7 @@ public class StockPriceController {
 		return stockGetService.findAll().stream()
 				.map(stock -> {
 					try {
-						StockPrice stockPriceByDate = stockPriceGetService.getStockPriceByDate(stock.getId(), date);
+						StockPrice stockPriceByDate = stockPriceGetService.getStockPriceByDate(stock.getStockId(), date);
 						return stockPriceMapper.toResponse(stockPriceByDate);
 					} catch (Exception e) {
 						return stockPriceMapper.toResponseWithNull(stock, null);

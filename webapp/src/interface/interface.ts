@@ -1,5 +1,5 @@
 export interface IStock {
-    id: number;
+    stockId: number;
     symbol: string;
     name: string;
     market: string;

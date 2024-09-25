@@ -13,7 +13,7 @@ interface RouteParams extends Record<string, string | undefined> {
 }
 
 interface StockDetailInfo {
-    id: number;
+    stockId: number;
     symbol: string;
     name: string;
     market: string;

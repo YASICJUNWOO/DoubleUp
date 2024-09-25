@@ -1,4 +1,4 @@
-package com.junwoo.doubleup.domain.stockprice.mapper;
+package com.junwoo.doubleup.domain.stockprice.dto.mapper;
 
 import com.junwoo.doubleup.domain.stock.dto.response.StockResponse;
 import com.junwoo.doubleup.domain.stock.entity.Stock;
@@ -24,7 +24,7 @@ public interface StockPriceMapper {
 
 		// Stock 정보만 설정
 		response.setStock(StockResponse.builder()
-				.id(stock.getId())
+				.stockId(stock.getStockId())
 				.symbol(stock.getSymbol())
 				.name(stock.getName())
 				.market(stock.getMarket())
@@ -33,7 +33,7 @@ public interface StockPriceMapper {
 
 		// stockPrice가 null이 아닌 경우 나머지 필드도 설정
 		if (stockPrice != null) {
-			response.setId(stockPrice.getId());
+			response.setStockPriceId(stockPrice.getStockPriceId());
 			response.setDate(stockPrice.getDate());
 			response.setOpenPrice(stockPrice.getOpenPrice());
 			response.setClosePrice(stockPrice.getClosePrice());

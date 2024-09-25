@@ -11,7 +11,7 @@ interface Props {
 }
 
 interface StockPriceData {
-    id: number;
+    stockPriceId: number;
     date: string;
     openPrice: number;
     closePrice: number;
