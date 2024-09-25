@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Col, Flex, Row, Spin, Statistic, Typography} from "antd";
-import StockPriceChart from "./chart/StockPriceChart";
+import StockPriceChart from "../chart/StockPriceChart";
 import {useParams} from "react-router-dom";
 import {ArrowUpOutlined} from "@ant-design/icons";
 
@@ -10,9 +10,8 @@ const {Text, Title} = Typography;
 /**
  * 특정 일자 주식 가격 정보를 나타내는 컴포넌트
  */
-
 interface StockPriceData {
-    id: number;
+    stockPriceId: number;
     date: string;
     openPrice: number;
     closePrice: number;
@@ -23,12 +22,10 @@ interface StockPriceData {
 
 const StockPrice: React.FC = () => {
 
-    const id = useParams<{ id: string }>().id;
+    const id = useParams<{ id: string }>().id!;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [stockPrices, setStockPrices] = useState<StockPriceData>();
-
-    const [stockPriceList, setStockPriceList] = useState<StockPriceData[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,22 +46,8 @@ const StockPrice: React.FC = () => {
             }
         };
 
-        const fetchStockPriceList = async () => {
-            axios.get('/api/stock-prices', {
-                params: {
-                    'stockId': id,
-                    'periodType': 'DAILY'
-                }
-            }).then((response) => {
-                console.log("<<<<<<<Stock prices list>>>>>>", response.data);
-                setStockPriceList(response.data);
-            }).catch((error) => {
-                console.error("Error fetching stock prices list:", error);
-            });
-        }
 
         fetchData();
-        fetchStockPriceList();
     }, []);
 
     return (
@@ -85,12 +68,11 @@ const StockPrice: React.FC = () => {
                         // </Card>
 
                         <Row id={'summary'}>
-                            <Col offset={2} span={6}>
-                                <Flex>
-                                    <div style={{marginInline: '10px'}}>
-                                        <Text strong style={{fontSize: "50px"}}>{stockPrices.closePrice}</Text>
+                            <Col offset={2} span={6} style={{display:"flex"}}>
+                                    <div id="stock-detail-today-price" style={{marginInline: '10px'}}>
+                                        <Text strong style={{fontSize: "50px"}}>${stockPrices.closePrice}</Text>
                                     </div>
-                                    <div style={{display: 'flex', alignItems: 'flex-end', marginBottom: '20px'}}>
+                                    <div id="stock-detail-change-rate" style={{display: 'flex', alignItems: 'flex-end', marginBottom: '15px'}}>
                                         <Statistic
                                             value={11.28}
                                             precision={2}
@@ -99,7 +81,6 @@ const StockPrice: React.FC = () => {
                                             suffix="%"
                                         />
                                     </div>
-                                </Flex>
                             </Col>
                         </Row>
                     ) : (
@@ -107,7 +88,7 @@ const StockPrice: React.FC = () => {
                     )}
                     <Row>
                         <Col offset={2} span={20}>
-                            <StockPriceChart stockPriceDataList={stockPriceList}/>
+                            <StockPriceChart stockId={id} />
                         </Col>
                     </Row>
                 </div>

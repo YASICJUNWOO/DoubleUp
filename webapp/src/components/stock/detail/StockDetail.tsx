@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Alert, Card, Col, Row, Spin, Statistic, Typography} from "antd";
+import {Alert, Col, message, Row, Spin, Typography} from "antd";
+import {StarOutlined} from "@ant-design/icons";
 import StockPrice from "./StockPrice";
 
 /**
@@ -12,7 +13,7 @@ interface RouteParams extends Record<string, string | undefined> {
 }
 
 interface StockDetailInfo {
-    id: number;
+    stockId: number;
     symbol: string;
     name: string;
     market: string;
@@ -23,6 +24,14 @@ const StockDetail: React.FC = () => {
     const [stock, setStock] = useState<StockDetailInfo | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const [messageApi, contextHolder] = message.useMessage();
+    const info = () => {
+        messageApi.open({
+            type: 'success',
+            content: '즐겨찾기에 추가되었습니다',
+        });
+    };
 
     useEffect(() => {
         if (id) {
@@ -53,20 +62,33 @@ const StockDetail: React.FC = () => {
         return <Alert message="Error" description={error} type="error" showIcon/>;
     }
 
-    return stock ? (
-        <div>
-            <div id={'header'}>
-                {/* head */}
-                <Row id={'title'}>
-                    <Col offset={2} span={12}>
-                        <Typography.Title level={2}>{stock.symbol} - {stock.name}</Typography.Title>
-                    </Col>
-                </Row>
-                <StockPrice/>
-            </div>
-        </div>
-    ) : (
-        <div>No stock details available.</div>
+
+    return (
+        <>
+            {contextHolder}
+            {stock ? (
+                <div>
+
+                    <div id={'header'}>
+                        {/* head */}
+                        <Row id={'title'}>
+                            <Col id='star' offset={2} span={1}
+                                 style={{display: 'flex', alignContent: "center", justifyContent: 'center'}}>
+                                <StarOutlined style={{fontSize: '25px', color: '#f1c40f'}} onClick={info}/>
+                            </Col>
+                            <Col span={12} style={{display: "flex"}}>
+                                <Typography.Title level={2} style={{marginBlock: '15px',}}>
+                                    {stock.symbol} - <span style={{color: 'gray'}}>{stock.name}</span>
+                                </Typography.Title>
+                            </Col>
+                        </Row>
+                        <StockPrice/>
+                    </div>
+                </div>
+            ) : (
+                <div>No stock details available.</div>
+            )}
+        </>
     );
 };
 

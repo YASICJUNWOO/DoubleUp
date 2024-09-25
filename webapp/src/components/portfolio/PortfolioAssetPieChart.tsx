@@ -5,7 +5,7 @@ import { ResponsivePie } from '@nivo/pie';
 interface PortfolioStock {
     id: number;
     stock: {
-        id: number;
+        stockId: number;
         symbol: string;
         name: string;
         market: string;

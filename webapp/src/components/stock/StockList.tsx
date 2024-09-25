@@ -7,7 +7,8 @@ import {SearchOutlined} from "@ant-design/icons";
 import {FilterDropdownProps} from "antd/es/table/interface";
 import './animation.css';
 
-type DataIndex = keyof IStockWithPresentPrice;
+// 수정
+type DataIndex = string;
 
 export const StockList: React.FC = () => {
 
@@ -24,8 +25,8 @@ export const StockList: React.FC = () => {
                 setStocks(response.data);
                 // 초기 가격을 저장합니다.
                 const initialPrices: Record<string, number> = {};
-                response.data.forEach((stock: IStockWithPresentPrice) => {
-                    initialPrices[stock.symbol] = stock.currentPrice;
+                response.data.forEach((stockPrice: IStockWithPresentPrice) => {
+                    initialPrices[stockPrice.stock.symbol] = stockPrice.currentPrice;
                 });
 
                 setCurrentPrices(initialPrices);
@@ -38,16 +39,16 @@ export const StockList: React.FC = () => {
         const interval = setInterval(() => {
             axios.get('/api/stock-prices/now')
                 .then(response => {
-                    const updatedPrices = response.data.reduce((acc: Record<string, number>, stock: IStockWithPresentPrice) => {
-                        acc[stock.symbol] = stock.currentPrice;
+                    const updatedPrices = response.data.reduce((acc: Record<string, number>, stockPrice: IStockWithPresentPrice) => {
+                        acc[stockPrice.stock.symbol] = stockPrice.currentPrice;
                         return acc;
                     }, {});
 
                     // 변경된 항목에 대해 상태 설정
                     setUpdatedPrices(prevUpdatedPrices => {
                         const updatedState: Record<string, boolean> = {};
-                        response.data.forEach((stock: IStockWithPresentPrice) => {
-                            updatedState[stock.symbol] = currentPrices[stock.symbol] !== stock.currentPrice; // currentPrices는 외부에서 참조
+                        response.data.forEach((stockPrice: IStockWithPresentPrice) => {
+                            updatedState[stockPrice.stock.symbol] = currentPrices[stockPrice.stock.symbol] !== stockPrice.currentPrice; // currentPrices는 외부에서 참조
                         });
                         return updatedState;
                     });
@@ -66,6 +67,11 @@ export const StockList: React.FC = () => {
 
         return () => clearInterval(interval);
     }, []);
+
+    // 유틸리티 함수: 중첩된 경로를 통해 값을 가져옴
+    const getNestedValue = (obj: any, path: string): any => {
+        return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+    };
 
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
@@ -142,8 +148,8 @@ export const StockList: React.FC = () => {
             <SearchOutlined style={{color: filtered ? '#1677ff' : undefined}}/>
         ),
         onFilter: (value, record) =>
-            record[dataIndex]
-                .toString()
+            getNestedValue(record, dataIndex)
+                ?.toString()
                 .toLowerCase()
                 .includes((value as string).toLowerCase()),
         onFilterDropdownOpenChange: (visible) => {
@@ -167,18 +173,18 @@ export const StockList: React.FC = () => {
     const columns: TableProps<IStockWithPresentPrice>['columns'] = [
         {
             title: '티커',
-            dataIndex: 'symbol',
+            dataIndex: ['stock', 'symbol'],
             key: 'symbol',
         },
         {
             title: '이름',
-            dataIndex: 'name',
+            dataIndex: ['stock', 'name'],
             key: 'name',
             ...getColumnSearchProps('name')
         },
         {
             title: '거래소',
-            dataIndex: 'market',
+            dataIndex: ['stock', 'market'],
             key: 'market',
             filters: [
                 {
@@ -198,17 +204,17 @@ export const StockList: React.FC = () => {
                     ]
                 }
             ],
-            onFilter: (value, record) => record.market.indexOf(value as string) === 0
+            onFilter: (value, record) => record.stock.market.indexOf(value as string) === 0
         },
         {
             title: '유형',
-            dataIndex: 'stockType',
+            dataIndex: ['stock', 'stockType'],
             key: 'stockType',
             filters: [
                 {text: '주식', value: 'COMMON'},
                 {text: 'ETF', value: 'ETF'}
             ],
-            onFilter: (value, record) => record.stockType.indexOf(value as string) === 0
+            onFilter: (value, record) => record.stock.stockType.indexOf(value as string) === 0
         },
         {
             title: '현재가',
@@ -217,7 +223,7 @@ export const StockList: React.FC = () => {
             width: '20%',
             render: (currentPrice: number, record) => {
                 const changeColor = record.priceChange > 0 ? 'green' : record.priceChange === 0 ? 'grey' : 'red';
-                const priceChanged = updatedPrices[record.symbol]; // 변경된 주식인지 확인
+                const priceChanged = updatedPrices[record.stock.symbol]; // 변경된 주식인지 확인
                 const animationClass = priceChanged ? 'flash' : ''; // 가격이 변경되었을 때만 애니메이션 추가
 
                 return (

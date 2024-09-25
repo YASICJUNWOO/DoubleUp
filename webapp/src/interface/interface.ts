@@ -1,12 +1,12 @@
 export interface IStock {
-    id: number;
+    stockId: number;
     symbol: string;
     name: string;
     market: string;
     stockType: string;
 }
 
-export interface IStockWithPresentPrice extends IStock {
+export interface IStockWithPresentPrice extends StockPrice {
     currentPrice: number;  // 현재가
     priceChange: number;   // 변동가
     priceChangeRate: number;    // 변동률

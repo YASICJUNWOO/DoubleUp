@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class StockResponse {
 
-	private Long id;
+	private Long stockId;
 
 	private String symbol;
 

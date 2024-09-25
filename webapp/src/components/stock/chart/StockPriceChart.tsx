@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { ResponsiveLine } from '@nivo/line';
+import React, {useEffect, useState} from 'react';
+import {ResponsiveLine} from '@nivo/line';
+import axios from "axios";
+
+// interface Props {
+//     stockPriceDataList: StockPriceData[];
+// }
 
 interface Props {
-    stockPriceDataList: StockPriceData[];
+    stockId: string;
 }
 
 interface StockPriceData {
-    id: number;
+    stockPriceId: number;
     date: string;
     openPrice: number;
     closePrice: number;
@@ -20,16 +25,40 @@ interface ChartRenderData {
     data: { x: string; y: number }[];
 }
 
-const StockLineChart: React.FC<Props> = ({ stockPriceDataList }) => {
+const StockLineChart: React.FC<Props> = ({stockId}) => {
+    const [stockPriceList, setStockPriceList] = useState<StockPriceData[]>([]);
     const [data, setData] = useState<ChartRenderData[]>([]);
     const [minValue, setMinValue] = useState<number>(Number.MAX_VALUE);
     const [maxValue, setMaxValue] = useState<number>(Number.MIN_VALUE);
 
+    // 주식 가격 정보 가져오기 ( 일봉 )
     useEffect(() => {
+        const fetchStockPriceList = async () => {
+            axios.get('/api/stock-prices', {
+                params: {
+                    'stockId': stockId,
+                    'periodType': 'DAILY'
+                }
+            }).then((response) => {
+                console.log("<<<<<<<Stock prices list>>>>>>", response.data);
+                setStockPriceList(response.data);
+                console.log("<<<<<<<Stock prices list>>>>>>", stockPriceList);
+            }).catch((error) => {
+                console.error("Error fetching stock prices list:", error);
+            });
+        }
+
+        fetchStockPriceList();
+    }, []);
+
+    // 차트 그리기
+    useEffect(() => {
+
+        // 차트 데이터로 변환
         const chartData = [
             {
                 id: 'closePrice',
-                data: stockPriceDataList.map(item => ({
+                data: stockPriceList.map(item => ({
                     x: item.date,
                     y: item.closePrice
                 }))
@@ -39,33 +68,32 @@ const StockLineChart: React.FC<Props> = ({ stockPriceDataList }) => {
         setData(chartData);
 
         // 최소값과 최대값 계산
-        let minY = Math.min(...stockPriceDataList.map(item => item.closePrice));
-        let maxY = Math.max(...stockPriceDataList.map(item => item.closePrice));
+        let minY = Math.min(...stockPriceList.map(item => item.closePrice));
+        let maxY = Math.max(...stockPriceList.map(item => item.closePrice));
 
         // 여유 공간을 주기 위해 +- 10 추가
         setMinValue(minY - 10);
         setMaxValue(maxY + 10);
-
-    }, [stockPriceDataList]);
+    }, [stockPriceList]);
 
     return (
-        <div style={{ height: '400px' }}>
+        <div style={{height: '400px'}}>
             <ResponsiveLine
                 // chart에 표시될 데이터 배열, 각 데이터 시리즈는 id와 data 배열로 구성됩니다.
                 data={data}
 
                 // 차트의 margin 설정
-                margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+                margin={{top: 50, right: 50, bottom: 50, left: 50}}
 
                 // 라인 안 색 채움
                 enableArea={true}
                 areaBaselineValue={minValue}
 
                 // X축 스케일 설정, 'point'는 범주형 데이터에 사용됩니다.
-                xScale={{ type: 'point' }}
+                xScale={{type: 'point'}}
 
                 // Y축 스케일 설정, 'linear'는 연속형 데이터에 사용되며, min/max를 자동으로 설정합니다.
-                yScale={{ type: 'linear', min: minValue, max: maxValue, stacked: false, reverse: false }}
+                yScale={{type: 'linear', min: minValue, max: maxValue, stacked: false, reverse: false}}
 
                 // 차트 상단에 X축을 비활성화
                 axisTop={null}
@@ -94,19 +122,19 @@ const StockLineChart: React.FC<Props> = ({ stockPriceDataList }) => {
                 }}
 
                 // 차트에 사용할 색상 스키마 설정
-                colors={{ scheme: 'nivo' }}
+                colors={{scheme: 'nivo'}}
 
                 // 데이터 포인트(점)의 크기 설정
                 pointSize={1}
 
                 // 데이터 포인트의 색상 설정
-                pointColor={{ theme: 'background' }}
+                pointColor={{theme: 'background'}}
 
                 // 데이터 포인트 테두리의 두께 설정
                 pointBorderWidth={2}
 
                 // 데이터 포인트 테두리의 색상 설정
-                pointBorderColor={{ from: 'serieColor' }}
+                pointBorderColor={{from: 'serieColor'}}
 
                 // 데이터 포인트 레이블의 Y축 오프셋 설정
                 pointLabelYOffset={-12}

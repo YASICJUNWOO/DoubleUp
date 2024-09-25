@@ -20,7 +20,7 @@ public class StockPrice {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long stockPriceId;
 
 	@Comment("주식")
 	@ManyToOne
