@@ -30,6 +30,7 @@ public class StockPriceController {
 	private final StockPriceMapper stockPriceMapper = StockPriceMapper.INSTANCE;
 
 	//현재 주가 조회
+	//실시간에서 주로 사용
 	@GetMapping("/now")
 	public List<NowPrice> findAll() {
 		return stockGetService.findAll().stream()

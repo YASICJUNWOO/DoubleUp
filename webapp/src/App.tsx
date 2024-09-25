@@ -7,7 +7,7 @@ import {BrowserRouter, Link, Route, Router, Routes} from "react-router-dom";
 import MemberList from "./components/admin/MemberList";
 import Profile from "./components/member/Profile";
 import StockTodayList from "./components/stock/StockTodayList";
-import StockDetail from "./components/stock/StockDetail";
+import StockDetail from "./components/stock/detail/StockDetail";
 import PortfolioDetail from "./components/portfolio/PortfolioDetail";
 import PortfolioList from "./components/portfolio/PortfolioList";
 import AppHeader from "./components/AppHeader";
