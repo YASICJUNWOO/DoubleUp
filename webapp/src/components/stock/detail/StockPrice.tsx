@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Col, Flex, Row, Spin, Statistic, Typography} from "antd";
+import {Col, Row, Spin, Statistic, Typography} from "antd";
 import StockPriceChart from "../chart/StockPriceChart";
 import {useParams} from "react-router-dom";
 import {ArrowUpOutlined} from "@ant-design/icons";
+import {StockInfoTabs} from "./StockInfoTabs";
 
 const {Text, Title} = Typography;
 
@@ -68,27 +69,28 @@ const StockPrice: React.FC = () => {
                         // </Card>
 
                         <Row id={'summary'}>
-                            <Col offset={2} span={6} style={{display:"flex"}}>
-                                    <div id="stock-detail-today-price" style={{marginInline: '10px'}}>
-                                        <Text strong style={{fontSize: "50px"}}>${stockPrices.closePrice}</Text>
-                                    </div>
-                                    <div id="stock-detail-change-rate" style={{display: 'flex', alignItems: 'flex-end', marginBottom: '15px'}}>
-                                        <Statistic
-                                            value={11.28}
-                                            precision={2}
-                                            valueStyle={{color: '#3f8600'}}
-                                            prefix={<ArrowUpOutlined/>}
-                                            suffix="%"
-                                        />
-                                    </div>
+                            <Col offset={2} span={6} style={{display: "flex"}}>
+                                <div id="stock-detail-today-price" style={{marginInline: '10px'}}>
+                                    <Text strong style={{fontSize: "50px"}}>${stockPrices.closePrice}</Text>
+                                </div>
+                                <div id="stock-detail-change-rate"
+                                     style={{display: 'flex', alignItems: 'flex-end', marginBottom: '15px'}}>
+                                    <Statistic
+                                        value={11.28}
+                                        precision={2}
+                                        valueStyle={{color: '#3f8600'}}
+                                        prefix={<ArrowUpOutlined/>}
+                                        suffix="%"
+                                    />
+                                </div>
                             </Col>
                         </Row>
                     ) : (
                         <p>No stock prices available for the selected period.</p>
                     )}
                     <Row>
-                        <Col offset={2} span={20}>
-                            <StockPriceChart stockId={id} />
+                        <Col offset={3} span={18}>
+                            <StockInfoTabs/>
                         </Col>
                     </Row>
                 </div>

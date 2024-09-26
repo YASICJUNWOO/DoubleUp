@@ -6,6 +6,7 @@ import Highlighter from "react-highlight-words";
 import {SearchOutlined} from "@ant-design/icons";
 import {FilterDropdownProps} from "antd/es/table/interface";
 import './animation.css';
+import {Link} from "react-router-dom";
 
 // 수정
 type DataIndex = string;
@@ -180,7 +181,12 @@ export const StockList: React.FC = () => {
             title: '이름',
             dataIndex: ['stock', 'name'],
             key: 'name',
-            ...getColumnSearchProps('name')
+            ...getColumnSearchProps('name'),
+            render: (name: string,record) => {
+                return (
+                    <Link to={`/stocks/${record.stock.stockId}`}>{name}</Link>
+                )
+            }
         },
         {
             title: '거래소',

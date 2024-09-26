@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import {Alert, Col, message, Row, Spin, Typography} from "antd";
 import {StarOutlined} from "@ant-design/icons";
 import StockPrice from "./StockPrice";
+import {StockInfoTabs} from "./StockInfoTabs";
 
 /**
  * 특정 주식 정보를 나타내는 컴포넌트
@@ -68,7 +69,6 @@ const StockDetail: React.FC = () => {
             {contextHolder}
             {stock ? (
                 <div>
-
                     <div id={'header'}>
                         {/* head */}
                         <Row id={'title'}>
