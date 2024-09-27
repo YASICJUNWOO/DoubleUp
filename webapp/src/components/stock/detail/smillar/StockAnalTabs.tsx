@@ -3,6 +3,7 @@ import StockPriceChart from "../info/chart/StockPriceChart";
 import {CompassOutlined, InfoCircleOutlined, LineChartOutlined} from "@ant-design/icons";
 import StockInfo from "../info/StockInfo";
 import {ConfigProvider, Tabs} from "antd";
+import {StockSimpleCard} from "./StockSimpleCard";
 
 const onChange = (key: string) => {
     console.log(key);
@@ -20,7 +21,7 @@ const contentTemplate = (Component: React.ReactNode) => {
 
 export const StockAnalTabs:React.FC = () => {
     const items = [
-        {label: '국가', key: '1', children: contentTemplate(<StockPriceChart/>), icon: <LineChartOutlined/>}, // remember to pass the key prop
+        {label: '국가', key: '1', children: contentTemplate(<StockSimpleCard/>), icon: <LineChartOutlined/>}, // remember to pass the key prop
         {label: '섹터', key: '2', children: contentTemplate(<StockInfo/>), icon: <InfoCircleOutlined/>},
         {label: '비교', key: '3', children: '예정', icon: <CompassOutlined />},
     ];

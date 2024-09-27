@@ -12,14 +12,14 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 // 메뉴 항목 정의
 const items: MenuItem[] = [
-        {
-            label: <Link to="/">Home</Link>,
-            key: '1',
-        },
-        {
-            label: <Link to="/signup">Sign Up</Link>,
-            key: '2',
-        },
+        // {
+        //     label: <Link to="/">Home</Link>,
+        //     key: '1',
+        // },
+        // {
+        //     label: <Link to="/signup">Sign Up</Link>,
+        //     key: '2',
+        // },
         {
             label: <Link to="/members">MemberList</Link>,
             key: '3',
