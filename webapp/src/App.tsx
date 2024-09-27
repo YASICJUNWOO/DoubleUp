@@ -28,7 +28,7 @@ function App() {
           {/*</nav>*/}
           <Layout>
               <AppHeader />
-              <Content style={{ padding: '20px', marginTop: '10px' }}>
+              <Content style={{ padding: '20px', marginTop: '10px', background:'#ffffff' }}>
                   <Routes>
                       <Route path="/" element={<Hello />} />
 

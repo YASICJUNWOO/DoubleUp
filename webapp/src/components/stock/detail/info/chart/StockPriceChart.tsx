@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {ResponsiveLine} from '@nivo/line';
 import axios from "axios";
+import {useStock} from "../../StockDetail";
 
 // interface Props {
 //     stockPriceDataList: StockPriceData[];
 // }
-
-interface Props {
-    stockId: string;
-}
 
 interface StockPriceData {
     stockPriceId: number;
@@ -25,7 +22,8 @@ interface ChartRenderData {
     data: { x: string; y: number }[];
 }
 
-const StockLineChart: React.FC<Props> = ({stockId}) => {
+const StockLineChart: React.FC = () => {
+    const {stockId} = useStock();
     const [stockPriceList, setStockPriceList] = useState<StockPriceData[]>([]);
     const [data, setData] = useState<ChartRenderData[]>([]);
     const [minValue, setMinValue] = useState<number>(Number.MAX_VALUE);
@@ -83,7 +81,7 @@ const StockLineChart: React.FC<Props> = ({stockId}) => {
                 data={data}
 
                 // 차트의 margin 설정
-                margin={{top: 50, right: 50, bottom: 50, left: 50}}
+                margin={{right: 20, bottom: 50, left: 20}}
 
                 // 라인 안 색 채움
                 enableArea={true}
