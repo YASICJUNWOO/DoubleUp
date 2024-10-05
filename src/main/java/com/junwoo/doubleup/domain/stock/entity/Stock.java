@@ -26,6 +26,10 @@ public class Stock {
 	@Column(nullable = false)
 	private String name;  // 주식 이름 (예: Apple Inc.)
 
+	@Comment("주식 영어 이름")
+	@Column(nullable = false)
+	private String nameEng;  // 주식 영어 이름 (예: Apple Inc.)
+
 	@Comment("거래소")
 	@Column(nullable = false)
 	private String market;  // 거래소 (예: NASDAQ)
