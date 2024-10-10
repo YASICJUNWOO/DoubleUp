@@ -34,6 +34,10 @@ public class Stock {
 	@Column(nullable = false)
 	private String market;  // 거래소 (예: NASDAQ)
 
+	@Comment("시가총액")
+	@Column(nullable = true)
+	private Long marketCap;  // 시가총액 (예: 2,000,000,000,000)
+
 	@Comment("타입")
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)

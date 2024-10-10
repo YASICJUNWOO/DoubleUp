@@ -29,6 +29,10 @@ const items: MenuItem[] = [
             key: '주식 메뉴',
             children: [
                 {
+                    label: <Link to="/stocks/rank">주식 스크리너</Link>,
+                    key: '주식 스크리너',
+                },
+                {
                     label: <Link to="/stocks">주식 목록</Link>,
                     key: '주식 목록',
                 },
@@ -59,13 +63,14 @@ const items: MenuItem[] = [
 
 const AppHeader: React.FC = () => {
     return (
-        <Header style={{ padding: '0 20px', background: '#001529' }}>
-            <Row align="middle" justify="space-between" style={{ width: '100%' }}>
+        <Header style={{padding: '0 20px', background: '#001529'}}>
+            <Row align="middle" justify="space-between" style={{width: '100%'}}>
                 {/* Left: Logo and Title */}
                 <Col span={4}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar src="/path/to/logo.svg" size="large" alt="Logo" />
-                        <Title level={4} style={{ color: 'white', margin: '0 4px', cursor: 'pointer' }} onClick={() => window.location.href = '/'}>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <Avatar src="/path/to/logo.svg" size="large" alt="Logo"/>
+                        <Title level={4} style={{color: 'white', margin: '0 4px', cursor: 'pointer'}}
+                               onClick={() => window.location.href = '/'}>
                             Double Up Investment
                         </Title>
                     </div>
@@ -78,13 +83,13 @@ const AppHeader: React.FC = () => {
                         mode="horizontal"
                         defaultSelectedKeys={['1']}
                         items={items}
-                        style={{ display: 'flex', justifyContent: 'flex-start' }}
+                        style={{display: 'flex', justifyContent: 'flex-start'}}
                     />
                 </Col>
 
                 {/* Right: Avatar */}
                 <Col>
-                    <Avatar icon={<UserOutlined />} style={{ backgroundColor: '#87d068' }} />
+                    <Avatar icon={<UserOutlined/>} style={{backgroundColor: '#87d068'}}/>
                 </Col>
             </Row>
         </Header>

@@ -1,12 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Hello from "./components/Hello";
 import SignUp from "./components/SignUp";
 import {BrowserRouter, Link, Route, Router, Routes} from "react-router-dom";
 import MemberList from "./components/admin/MemberList";
 import Profile from "./components/member/Profile";
-import StockTodayList from "./components/stock/StockTodayList";
 import StockDetail from "./components/stock/detail/StockDetail";
 import PortfolioDetail from "./components/portfolio/PortfolioDetail";
 import PortfolioList from "./components/portfolio/PortfolioList";
@@ -15,6 +13,7 @@ import {Content} from "antd/es/layout/layout";
 import {Layout} from "antd";
 import PortfolioCreate from "./components/portfolio/create/PortfolioCreate";
 import {StockList} from "./components/stock/StockList";
+import {NewStockList} from "./components/stock/NewStockList";
 
 function App() {
   return (
@@ -30,7 +29,6 @@ function App() {
               <AppHeader />
               <Content style={{ padding: '20px', marginTop: '10px', background:'#ffffff' }}>
                   <Routes>
-                      <Route path="/" element={<Hello />} />
 
                       //============= Member ==============
                       <Route path="/signup" element={<SignUp />} />
@@ -39,8 +37,8 @@ function App() {
 
                       //============= Stock ==============
                       <Route path="/stocks" element={<StockList />} />
-                      <Route path="/stocks/today" element={<StockTodayList />} />
                       <Route path="/stocks/:id" element={<StockDetail />} />
+                      <Route path="/stocks/rank" element={<NewStockList />} />
 
                       //============= Portfolio ==============
                       <Route path="/portfolio" element={<PortfolioList />} />

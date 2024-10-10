@@ -1,5 +1,6 @@
 package com.junwoo.doubleup.config;
 
+import com.junwoo.doubleup.outapi.lsapi.LsApiService;
 import com.junwoo.doubleup.outapi.naverapi.CsvUtils;
 import com.junwoo.doubleup.domain.stock.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class StockDataInitializer implements DataInitializer {
 
-	private final StockRepository stockRepository;
+    private final StockRepository stockRepository;
+    private final LsApiService lsApiService;
 
 //	@Override
 //	@Transactional
@@ -73,9 +75,12 @@ public class StockDataInitializer implements DataInitializer {
 //		));
 //	}
 
-	@Override
-	@Transactional
-	public void init() {
-        stockRepository.saveAll(CsvUtils.getStocksFromCsv());
-	}
+    @Override
+    @Transactional
+    public void init() {
+        if (stockRepository.findAll().isEmpty()) {
+            stockRepository.saveAll(CsvUtils.getStocksFromCsv());
+        }
+        CsvUtils.initStockPrice();
+    }
 }

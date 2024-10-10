@@ -50,4 +50,8 @@ public class StockPrice {
 	@Comment("거래량")
 	@Column(nullable = false)
 	private Long volume;  // 거래량
+
+	public void addStock(Stock stock) {
+		this.stock = stock;
+	}
 }

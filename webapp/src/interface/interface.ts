@@ -4,6 +4,7 @@ export interface IStock {
     name: string;
     market: string;
     stockType: string;
+    marketCap: number;
 }
 
 export interface IStockWithPresentPrice extends StockPrice {

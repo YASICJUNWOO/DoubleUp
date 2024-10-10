@@ -37,26 +37,11 @@ public class StockPriceController {
 				.toList();
 	}
 
-	//날짜 별 주가 목록 조회
 	//날짜 별 개별 주가 조회
 	@GetMapping("/date")
 	public StockPriceResponse getStockPricesByStock(@RequestParam Long stockId, @RequestParam LocalDate date) {
 		Stock stock = stockGetService.findById(stockId);
 		return stockPriceGetService.getStockPricesByStock(stock, date);
-	}
-
-	@GetMapping("/all")
-	public List<StockPriceResponse> findAll(@RequestParam LocalDate date) {
-		return stockGetService.findAll().stream()
-				.map(stock -> {
-					try {
-						StockPrice stockPriceByDate = stockPriceGetService.getStockPriceByDate(stock.getStockId(), date);
-						return stockPriceMapper.toResponse(stockPriceByDate);
-					} catch (Exception e) {
-						return stockPriceMapper.toResponseWithNull(stock, null);
-					}
-				})
-				.toList();
 	}
 
 	//주식 별 주가 조회
@@ -69,6 +54,5 @@ public class StockPriceController {
 				.map(stockPriceMapper::toResponse)
 				.toList();
 	}
-
 
 }

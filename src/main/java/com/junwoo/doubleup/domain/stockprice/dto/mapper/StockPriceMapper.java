@@ -5,6 +5,7 @@ import com.junwoo.doubleup.domain.stock.entity.Stock;
 import com.junwoo.doubleup.domain.stockprice.dto.StockPriceResponse;
 import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
@@ -45,6 +46,7 @@ public interface StockPriceMapper {
 		return response;
 	}
 
+	@Mapping(target = "stock", source = "stock")
 	StockPriceResponse toStockPriceResponse(Stock stock, StockPrice todayPrice, BigDecimal currentPrice, BigDecimal priceChange, BigDecimal priceChangeRate);
 
 }

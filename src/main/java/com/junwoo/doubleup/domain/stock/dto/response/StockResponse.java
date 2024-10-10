@@ -18,4 +18,6 @@ public class StockResponse {
 
 	private StockType stockType;
 
+	private Long marketCap;
+
 }

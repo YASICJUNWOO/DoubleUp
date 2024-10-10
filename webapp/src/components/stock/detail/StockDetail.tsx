@@ -46,7 +46,7 @@ const StockDetail: React.FC = () => {
 
     useEffect(() => {
         if (id) {
-            fetch(`/api/stock/${id}`)
+            fetch(`/api/stocks/${id}`)
                 .then((res) => {
                     if (!res.ok) {
                         throw new Error("Failed to fetch stock data");

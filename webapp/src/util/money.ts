@@ -10,3 +10,8 @@ export const formatMoney = (money: number | string): string => {
         minimumFractionDigits: 0  // 소수점 이하 자릿수를 0으로
     });
 }
+
+//억 단위로 변환, 세 자리마다 쉼표
+export const formatMarketCap = (marketCap: number): string => {
+    return (marketCap / 100000000).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}

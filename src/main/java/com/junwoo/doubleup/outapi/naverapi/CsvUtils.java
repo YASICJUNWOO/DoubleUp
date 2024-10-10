@@ -1,6 +1,7 @@
 package com.junwoo.doubleup.outapi.naverapi;
 
 import com.junwoo.doubleup.domain.stock.entity.Stock;
+import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
@@ -9,13 +10,20 @@ import lombok.RequiredArgsConstructor;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class CsvUtils {
 
     private static final String STOCK_KR = "stock_kr.csv";
+    private static final String MARKET_CAP_KR = "market_cap_kr.csv";
+    private static final String DIRECTORY_PATH = "/Users/mason/Desktop/mason/DoubleUp/data/stock/price";
 
     private static final CsvMapper csvMapper = CsvMapper.INSTANCE;
 
@@ -202,6 +210,8 @@ public class CsvUtils {
 
         List<Stock> stockList = new ArrayList<>();
 
+        Map<String, String> stockMap = getStocksFromCsvMap();
+
         try (CSVReader reader = new CSVReader(new FileReader(STOCK_KR))) {
             String[] nextLine;
 
@@ -221,9 +231,11 @@ public class CsvUtils {
                 stockDto.setAffiliation(nextLine[8]);                // 소속부
                 stockDto.setStockType(nextLine[9]);                  // 주식종류
                 stockDto.setFaceValue(nextLine[10]);                 // 액면가
-                stockDto.setNumberOfListedStocks(nextLine[11]);      // 상장주식수
+                stockDto.setNumberOfListedStocks(nextLine[11]);// 상장주식수
 
-                Stock stockEntity = csvMapper.toStock(stockDto);
+                String marketCapString = stockMap.get(stockDto.getShortCode());
+                Long marketCap = marketCapString != null ? Long.parseLong(marketCapString) : null;
+                Stock stockEntity = csvMapper.toStock(stockDto, marketCap);
                 stockList.add(stockEntity);
             }
         } catch (IOException e) {
@@ -234,4 +246,81 @@ public class CsvUtils {
 
         return stockList;
     }
+
+    public static Map<String, String> getStocksFromCsvMap() {
+
+        try (CSVReader reader = new CSVReader(new FileReader(MARKET_CAP_KR))) {
+            String[] nextLine;
+            Map<String, String> stockMap = new HashMap<>();
+
+            // 첫 번째 행은 헤더이므로 건너뛰기
+            reader.readNext();
+
+            while ((nextLine = reader.readNext()) != null) {
+                stockMap.put(nextLine[0], nextLine[12]);
+            }
+
+            return stockMap;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CsvValidationException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    public static Map<String, List<StockPrice>> initStockPrice() {
+
+        //Stock id, Stock
+        Map<String, List<StockPrice>> stockPriceMap = new HashMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        try{
+            DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(DIRECTORY_PATH), "*.csv");
+            for (Path path : stream) {
+
+                String dateString = path.getFileName().toString().replace(".csv", "");
+                CSVReader reader = new CSVReader(new FileReader(path.toString()));
+
+                String[] nextLine;
+
+                // 첫 번째 행은 헤더이므로 건너뛰기
+                reader.readNext();
+
+                while ((nextLine = reader.readNext()) != null) {
+                    KrStockPriceCsv stockDto = KrStockPriceCsv.builder()
+                            .date(LocalDate.parse(dateString, formatter))
+                            .shortCode(nextLine[0])
+                            .closePrice(nextLine[4])
+                            .diff(nextLine[5])
+                            .fluctuationRate(nextLine[6])
+                            .openPrice(nextLine[7])
+                            .highPrice(nextLine[8])
+                            .lowPrice(nextLine[9])
+                            .volume(nextLine[10])
+                            .tradingValue(nextLine[11])
+                            .marketCap(nextLine[12])
+                            .build();
+
+                    StockPrice stockPrice = csvMapper.toStockPrice(stockDto);
+                    String stockIdStringValue = stockDto.getShortCode();
+
+                    if (stockPriceMap.containsKey(stockIdStringValue)) {
+                        stockPriceMap.get(stockIdStringValue).add(stockPrice);
+                    } else {
+                        List<StockPrice> stockList = new ArrayList<>();
+                        stockList.add(stockPrice);
+                        stockPriceMap.put(stockIdStringValue, stockList);
+                    }
+                }
+            }
+        }
+        catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        return stockPriceMap;
+    }
+
 }
