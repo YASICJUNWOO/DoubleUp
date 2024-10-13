@@ -29,12 +29,11 @@ public class PortfolioService {
 		Member member = memberGetService.findById(portfolioAddRequest.getMemberId());
 		Portfolio portfolio = portfolioMapper.toEntity(member, portfolioAddRequest);
 
-		// Create PortfolioStocks
+		// PortfolioStocks 생성
 		List<PortfolioStock> portfolioStocks =
-				portfolioStockService.createPortfolioStocks(portfolio, portfolioAddRequest.getPortfolioStocks());
+				portfolioStockService.createPortfolioStocks(portfolioAddRequest.getPortfolioStocks());
 
 		portfolio.addPortfolioStock(portfolioStocks);
-		portfolio.calculateTotalAmount();
 		return portfolioRepository.save(portfolio);
 	}
 

@@ -9,14 +9,13 @@ import java.util.List;
 
 @Getter
 @Data
-public class PortfolioResponse {
+public class PortfolioDetailResponse {
 
 	private Long id;
 	private String memberName;
 	private String name;
 	private String totalAmount;
 	private List<PortfolioStockResponse> portfolioStocks;
-
 
 	@Getter
 	@Data

@@ -1,7 +1,6 @@
 package com.junwoo.doubleup.domain.portfolio.service;
 
 import com.junwoo.doubleup.domain.portfolio.dto.PortfolioAddRequest;
-import com.junwoo.doubleup.domain.portfolio.entity.Portfolio;
 import com.junwoo.doubleup.domain.portfolio.entity.PortfolioStock;
 import com.junwoo.doubleup.domain.portfolio.mapper.PortfolioStockMapper;
 import com.junwoo.doubleup.domain.stock.entity.Stock;
@@ -21,14 +20,14 @@ public class PortfolioStockService {
 	private final StockGetService stockGetService;
 
 	@Transactional
-	public List<PortfolioStock> createPortfolioStocks(Portfolio portfolio, List<PortfolioAddRequest.PortfolioStockAddRequest> stockAddRequests) {
+	public List<PortfolioStock> createPortfolioStocks(List<PortfolioAddRequest.PortfolioStockAddRequest> stockAddRequests) {
 		return stockAddRequests.stream()
-				.map(stockAddRequest -> createPortfolioStock(portfolio, stockAddRequest))
+				.map(this::createPortfolioStock)
 				.toList();
 	}
 
-	public PortfolioStock createPortfolioStock(Portfolio portfolio, PortfolioAddRequest.PortfolioStockAddRequest stockAddRequest) {
+	public PortfolioStock createPortfolioStock(PortfolioAddRequest.PortfolioStockAddRequest stockAddRequest) {
 		Stock stock = stockGetService.findById(stockAddRequest.getStockId());
-		return portfolioStockMapper.toEntity(stock, portfolio, stockAddRequest);
+		return portfolioStockMapper.toEntity(stock, stockAddRequest);
 	}
 }
