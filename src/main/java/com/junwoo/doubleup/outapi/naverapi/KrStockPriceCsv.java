@@ -16,9 +16,9 @@ public class KrStockPriceCsv {
     //종가
     private String closePrice;
     //대비
-    private String diff;
+    private String priceChange;
     //등락률
-    private String fluctuationRate;
+    private String priceChangeRate;
     //시가
     private String openPrice;
     //고가

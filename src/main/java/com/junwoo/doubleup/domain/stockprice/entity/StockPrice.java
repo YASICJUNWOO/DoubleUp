@@ -39,6 +39,18 @@ public class StockPrice {
 	@Column(nullable = true) // 종가는 null일 수 있음
 	private BigDecimal closePrice;  // 종가
 
+	@Comment("현재가")
+	@Column(nullable = true)
+	private BigDecimal currentPrice;  // 현재가
+
+	@Comment("등락률")
+	@Column(nullable = false)
+	private double priceChangeRate;  // 등락률
+
+	@Comment("등락금액")
+	@Column(nullable = false)
+	private BigDecimal priceChange;  // 등락금액s
+
 	@Comment("최고가")
 	@Column(nullable = false)
 	private BigDecimal highPrice;  // 최고가

@@ -1,6 +1,5 @@
 package com.junwoo.doubleup.domain.stockprice.controller;
 
-import com.junwoo.doubleup.config.StockPriceDataInitializer;
 import com.junwoo.doubleup.domain.stock.entity.Stock;
 import com.junwoo.doubleup.domain.stock.service.StockGetService;
 import com.junwoo.doubleup.domain.stockprice.dto.PeriodType;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,13 +26,18 @@ public class StockPriceController {
 	private final StockGetService stockGetService;
 	private final StockPriceMapper stockPriceMapper = StockPriceMapper.INSTANCE;
 
+	//현재 주가 목록 조회
+	//실시간에서 주로 사용
+	@GetMapping("/now/list")
+	public List<StockPriceResponse> findAll() {
+		return stockPriceGetService.getTodayStockPriceList();
+	}
+
 	//현재 주가 조회
 	//실시간에서 주로 사용
 	@GetMapping("/now")
-	public List<StockPriceResponse> findAll() {
-		return stockGetService.findAll().stream()
-				.map(stock -> stockPriceGetService.getStockPricesByStock(stock, LocalDate.now()))
-				.toList();
+	public StockPriceResponse finTodayPrice(@RequestParam Long stockId) {
+		return stockPriceGetService.getTodayStockPriceByStock(stockId);
 	}
 
 	//날짜 별 개별 주가 조회

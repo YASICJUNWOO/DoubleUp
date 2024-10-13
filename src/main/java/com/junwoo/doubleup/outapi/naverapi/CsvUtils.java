@@ -16,7 +16,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class CsvUtils {
@@ -293,11 +296,13 @@ public class CsvUtils {
                             .date(LocalDate.parse(dateString, formatter))
                             .shortCode(nextLine[0])
                             .closePrice(nextLine[4])
-                            .diff(nextLine[5])
-                            .fluctuationRate(nextLine[6])
+                            .priceChange(nextLine[5])
+                            .priceChangeRate(nextLine[6])
                             .openPrice(nextLine[7])
                             .highPrice(nextLine[8])
                             .lowPrice(nextLine[9])
+                            .priceChange(nextLine[5])
+                            .priceChangeRate(nextLine[6])
                             .volume(nextLine[10])
                             .tradingValue(nextLine[11])
                             .marketCap(nextLine[12])

@@ -1,15 +1,16 @@
-import {IPortfolioStock, IStock} from "../../interface/interface";
+import {IPortfolioStock} from "../../interface/interface";
 import {Avatar, Descriptions, List, Typography} from "antd";
 import React from "react";
 import {formatMoney} from "../../util/money";
+import {useImageErrorHandling} from "../../util/image-loader";
 
-const { Title, Text } = Typography;
+const {Title, Text} = Typography;
 
 interface PortFolioStockProps {
     stockItem: IPortfolioStock;
 }
 
-const PortFolioStock: React.FC<PortFolioStockProps> = ({ stockItem }) => {
+const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
 
     console.log(stockItem);
 
@@ -66,21 +67,28 @@ const PortFolioStock: React.FC<PortFolioStockProps> = ({ stockItem }) => {
         }
     ];
 
+    // 분리된 이미지 처리 함수 사용
+    const {getImageSrc, handleImgError} = useImageErrorHandling();
+
     return (
         <List.Item key={stockItem.id}>
             <List.Item.Meta
                 title={
-                <div style={{display:"flex", justifyContent:"space-between"}}>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Avatar src={`https://logo.clearbit.com/${stockItem.stock.name.toLowerCase().replace(/\s+/g, '')}.com`}/>
-                        <Text style={{alignItems: "center"}}>{stockItem.stock.name} ({stockItem.stock.symbol})</Text>
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Avatar
+                                src={getImageSrc(stockItem.stock.symbol, stockItem.stock.name)}
+                                onError={() => handleImgError(stockItem.stock.symbol)} // 이미지 로드 실패 시 호출
+                            />
+                            <Text
+                                style={{alignItems: "center"}}>{stockItem.stock.name} ({stockItem.stock.symbol})</Text>
+                        </div>
+                        <Title level={5}>비율이 들어옴</Title>
                     </div>
-                    <Title level={5}>비율이 들어옴</Title>
-                </div>
                 }
                 description={<Text type="secondary">{stockItem.stock.market}</Text>}
             />
-            <Descriptions items={items} />
+            <Descriptions items={items}/>
         </List.Item>
     );
 }

@@ -1,6 +1,7 @@
 package com.junwoo.doubleup.outapi.lsapi;
 
 import com.junwoo.doubleup.domain.stock.entity.Stock;
+import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -83,6 +86,54 @@ public class LsApiService {
         return block.getT8436OutBlock().stream()
                 .map(lsMapper::toStock)
                 .toList();
+    }
+
+    // 국내 주식 정보 받아오기
+    public Map<String, StockPrice> getTodayStockPrice(String stockCodeList, int size) {
+        WebClient webClient = WebClient.builder()
+                .baseUrl("https://openapi.ls-sec.co.kr:8080")
+                .codecs(configurer -> configurer
+                        .defaultCodecs()
+                        .maxInMemorySize(10 * 1024 * 1024))  // 최대 10MB로 증가
+                .build();
+
+        String body = """
+                {
+                  "t8407InBlock" : {
+                    "nrec" : %d,
+                    "shcode" : "%s"
+                  }
+                }
+                """.formatted(size, stockCodeList);
+
+        LsStockPriceResponse block = webClient.post()
+                .uri("/stock/market-data")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + ACCESS_TOKEN)
+                .header("tr_cd", "t8407")
+                .header("tr_cont", "N")
+                .header("tr_cont_key")
+                .header("mac_address")
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(LsStockPriceResponse.class)
+                .block();
+
+        Map<String, StockPrice> collect = block.getT8407OutBlock1().stream()
+                .map(r -> {
+                    String shcode = r.getShcode();
+                    StockPrice stockPrice = lsMapper.toStockPrice(r);
+                    return Map.entry(shcode, stockPrice);
+                })
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        //0.5초 지연
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return collect;
     }
 
 

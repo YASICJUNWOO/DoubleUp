@@ -43,8 +43,6 @@
 		@OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
 		private List<PortfolioStock> portfolioStocks = new ArrayList<>();  // 포트폴리오에 포함된 주식 리스트
 
-		@PrePersist
-		@PreUpdate
 		public void calculateTotalAmount() {
 			log.info(">>totalAmount 계산");
 			log.info(">>portfolioStocks.size() : " + portfolioStocks.size());
@@ -53,9 +51,9 @@
 					.reduce(BigDecimal.ZERO, BigDecimal::add);
 		}
 
-		public void addPortfolioStock(PortfolioStock portfolioStock) {
-			portfolioStocks.add(portfolioStock);
-			portfolioStock.setPortfolio(this); // CascadeType.ALL이어도 관계는 수동 설정 필요
+		public void addPortfolioStock(List<PortfolioStock> portfolioStockS) {
+			this.portfolioStocks.addAll(portfolioStockS);
+			portfolioStockS.forEach(portfolioStock -> portfolioStock.setPortfolio(this));
 		}
 
 	}

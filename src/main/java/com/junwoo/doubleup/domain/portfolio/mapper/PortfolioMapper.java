@@ -17,9 +17,9 @@ public interface PortfolioMapper {
 
 	PortfolioMapper INSTANCE = Mappers.getMapper(PortfolioMapper.class);
 
-	@Mapping(target = "member", source = "member")
 	@Mapping(target = "name", source = "portfolioAddRequest.name")
 	@Mapping(target = "portfolioStocks", ignore = true)
+	@Mapping(target = "id", ignore = true)
 	Portfolio toEntity(Member member, PortfolioAddRequest portfolioAddRequest);
 
 	@Mapping(target = "ratio", expression = "java(calculateRatio(portfolioStock))")

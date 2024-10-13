@@ -1,45 +1,63 @@
 import React, {useEffect, useState} from "react";
-import {Col, Row, Table} from "antd";
+import {Avatar, Col, Row, Table} from "antd";
 import {IStock} from "../../interface/interface";
 import axios from "axios";
 import {formatMarketCap} from "../../util/money";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {useImageErrorHandling} from "../../util/image-loader";
 
-const columns = [
-    {
-        title: '티커',
-        dataIndex: 'symbol',
-        key: 'symbol',
-        width: 100
-    },
-    {
-        title: '종목명',
-        dataIndex: 'name',
-        key: 'name',
-        width: 200
-    },
-    {
-        title: '시장',
-        dataIndex: 'market',
-        key: 'market',
-        width: 100
-    },
-    {
-        title: '종목유형',
-        dataIndex: 'stockType',
-        key: 'stockType',
-        width: 100
-    },
-    {
-        title: '시가총액(억)',
-        dataIndex: 'marketCap',
-        key: 'marketCap',
-        width: 100,
-        render: (marketCap: number) => formatMarketCap(marketCap)
-    }
-];
 
 export const NewStockList:React.FC = () => {
+
+    //=====================Columns=====================
+    const { getImageSrc, handleImgError } = useImageErrorHandling();
+
+    const columns = [
+        {
+            title: '티커',
+            dataIndex: 'symbol',
+            key: 'symbol',
+            width: 100
+        },
+        {
+            title: '종목명',
+            dataIndex: 'name',
+            key: 'name',
+            width: 200,
+            render: (text: string, record: IStock) => {
+                return (
+                    <>
+                        <Avatar
+                            style={{ marginRight: "10px" }}
+                            src={getImageSrc(record.symbol, text)}
+                            onError={() => handleImgError(record.symbol)}
+                        />
+                        {text} ({record.symbol})
+                    </>
+                );
+            }
+        },
+        {
+            title: '시장',
+            dataIndex: 'market',
+            key: 'market',
+            width: 100
+        },
+        {
+            title: '종목유형',
+            dataIndex: 'stockType',
+            key: 'stockType',
+            width: 100
+        },
+        {
+            title: '시가총액(억)',
+            dataIndex: 'marketCap',
+            key: 'marketCap',
+            width: 100,
+            render: (marketCap: number) => formatMarketCap(marketCap)
+        }
+    ];
+    //=================================================
 
     const [stocks, setStocks] = useState<IStock[]>([]);
 
@@ -74,6 +92,7 @@ export const NewStockList:React.FC = () => {
                         dataSource={stocks}
                         columns={columns}
                         rowKey="stockId"
+                        scroll={{ x: 768 }}
                         size="small"
                         onRow={(record) => {
                             return {

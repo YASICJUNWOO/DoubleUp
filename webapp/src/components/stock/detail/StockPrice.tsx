@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Spin, Statistic, Typography} from "antd";
-import {ArrowUpOutlined} from "@ant-design/icons";
+import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
 import {useStock} from "./StockDetail";
+import {formatNumber} from "../../../util/money";
 
-const {Text, Title} = Typography;
+const {Text} = Typography;
 
 /**
  * 특정 일자 주식 가격 정보를 나타내는 컴포넌트
@@ -12,6 +13,9 @@ const {Text, Title} = Typography;
 interface StockPriceData {
     stockPriceId: number;
     date: string;
+    currentPrice: number,
+    priceChangeRate: number,
+    priceChange: number,
     openPrice: number;
     closePrice: number;
     highPrice: number;
@@ -28,15 +32,17 @@ const StockPrice: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const date = new Date();
             try {
-                const response = await axios.get('/api/stock-prices/date', {
+                const response = await axios.get('/api/stock-prices/now', {
                     params: {
-                        stockId: stockId,
-                        date: date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0')
+                        stockId: stockId
                     }
                 });
-                setStockPrices(response.data);
+
+                if(response.data.currentPrice !== null){
+                    setStockPrices(response.data);
+                }
+
                 console.log("<<<<<<<Stock prices>>>>>>", response.data);
             } catch (error) {
                 console.error("Error fetching stock prices:", error);
@@ -58,21 +64,21 @@ const StockPrice: React.FC = () => {
                     {stockPrices ? (
                         <div style={{display: 'flex'}}>
                             <div id="stock-detail-today-price" style={{marginInline: '10px'}}>
-                                <Text strong style={{fontSize: "50px"}}>${stockPrices.closePrice}</Text>
+                                <Text strong style={{fontSize: "50px"}}>₩{formatNumber(stockPrices.currentPrice)}</Text>
                             </div>
                             <div id="stock-detail-change-rate"
                                  style={{display: 'flex', alignItems: 'flex-end', marginBottom: '15px'}}>
                                 <Statistic
-                                    value={11.28}
+                                    value={stockPrices.priceChange}
                                     precision={2}
-                                    valueStyle={{color: '#3f8600'}}
-                                    prefix={<ArrowUpOutlined/>}
-                                    suffix="%"
+                                    valueStyle={stockPrices.priceChangeRate > 0 ? {color: '#3f8600'} : {color: '#cf1322'}}
+                                    prefix={stockPrices.priceChangeRate > 0 ? <ArrowUpOutlined/> : <ArrowDownOutlined/>}
+                                    suffix={` (${stockPrices.priceChangeRate.toFixed(2)}%)`}
                                 />
                             </div>
                         </div>
                     ) : (
-                        <p>No stock prices available for the selected period.</p>
+                        <Spin tip="데이터를 불러오는 중입니다..." />
                     )}
                 </div>
             )}

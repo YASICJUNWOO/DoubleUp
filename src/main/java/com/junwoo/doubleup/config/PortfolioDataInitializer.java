@@ -7,11 +7,11 @@ import com.junwoo.doubleup.domain.portfolio.entity.PortfolioStock;
 import com.junwoo.doubleup.domain.portfolio.repository.PortfolioRepository;
 import com.junwoo.doubleup.domain.stock.entity.Stock;
 import com.junwoo.doubleup.domain.stock.repository.StockRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,6 +24,11 @@ public class PortfolioDataInitializer implements DataInitializer {
 
 	@Override
 	public void init() {
+
+		if(portfolioRepository.count() > 0) {
+			return;
+		}
+
 		Member member = memberRepository.findById(1L).orElseThrow();
 
 		Portfolio portfolio = Portfolio.builder()
@@ -62,9 +67,7 @@ public class PortfolioDataInitializer implements DataInitializer {
 				.totalAmount(BigDecimal.valueOf(30000).multiply(BigDecimal.valueOf(5)))
 				.build();
 
-		portfolio.addPortfolioStock(portfolioStock1);
-		portfolio.addPortfolioStock(portfolioStock2);
-		portfolio.addPortfolioStock(portfolioStock3);
+		portfolio.addPortfolioStock(List.of(portfolioStock1, portfolioStock2, portfolioStock3));
 
 		portfolioRepository.save(portfolio);
 	}

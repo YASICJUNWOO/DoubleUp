@@ -33,7 +33,7 @@ public class PortfolioService {
 		List<PortfolioStock> portfolioStocks =
 				portfolioStockService.createPortfolioStocks(portfolio, portfolioAddRequest.getPortfolioStocks());
 
-		portfolio.setPortfolioStocks(portfolioStocks);
+		portfolio.addPortfolioStock(portfolioStocks);
 		portfolio.calculateTotalAmount();
 		return portfolioRepository.save(portfolio);
 	}

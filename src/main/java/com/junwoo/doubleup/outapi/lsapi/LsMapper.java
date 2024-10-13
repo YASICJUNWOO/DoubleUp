@@ -2,6 +2,7 @@ package com.junwoo.doubleup.outapi.lsapi;
 
 import com.junwoo.doubleup.domain.stock.entity.Stock;
 import com.junwoo.doubleup.domain.stock.entity.StockType;
+import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -39,4 +40,13 @@ public interface LsMapper {
         }
         return StockType.COMMON;  // ETF 구분이 아니면 보통주로 처리
     }
+
+    @Mapping(source = "shcode", target = "stock.symbol")
+    @Mapping(source = "open", target = "openPrice")
+    @Mapping(source = "high", target = "highPrice")
+    @Mapping(source = "price", target = "currentPrice")
+    @Mapping(source = "low", target = "lowPrice")
+    @Mapping(target = "priceChangeRate", expression = "java(Double.parseDouble(result.getDiff()))")
+    @Mapping(target = "priceChange", source = "change")
+    StockPrice toStockPrice(LsStockPriceResponse.Result result);
 }
