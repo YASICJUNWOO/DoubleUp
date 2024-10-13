@@ -1,7 +1,8 @@
 import React from "react";
-import {Button, Descriptions, DescriptionsProps} from "antd";
+import {Button, Descriptions, DescriptionsProps, Typography} from "antd";
 import {IStock} from "../../../../interface/interface";
 import {useStock} from "../StockDetail";
+import {formatMarketCap} from "../../../../util/money";
 
 
 const StockInfo:React.FC = () => {
@@ -32,6 +33,11 @@ const StockInfo:React.FC = () => {
             key: '4',
             label: '주식 유형',
             children: stock.stockType
+        },
+        {
+            key: '5',
+            label: '시가총액(억)',
+            children: formatMarketCap(stock.marketCap)
         }
     ];
 
