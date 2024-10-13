@@ -32,6 +32,10 @@ export interface IPortfolioStock {
     averagePrice: number;
 }
 
+export interface PortfolioStockDetail extends IPortfolioStock {
+    ratio: number;
+}
+
 export interface Template {
     name:string,
     rates:{type:string, rate:number}[]

@@ -4,7 +4,7 @@ import {Card, Col, List, Row, Segmented, Spin, Typography} from 'antd';
 import PortfolioAssetPieChart from './PortfolioAssetPieChart';
 import {useParams} from "react-router-dom";
 import PortFolioStock from "./PortFolioStock"; // 차트 컴포넌트 가져오기
-import {IPortfolioStock} from "../../interface/interface";
+import {PortfolioStockDetail} from "../../interface/interface";
 
 const {Title, Text} = Typography;
 
@@ -12,7 +12,7 @@ interface PortfolioData {
     id: number;
     memberName: string;
     name: string;
-    portfolioStocks: IPortfolioStock[];
+    portfolioStocks: PortfolioStockDetail[];
 }
 
 const PortfolioDetail: React.FC = () => {

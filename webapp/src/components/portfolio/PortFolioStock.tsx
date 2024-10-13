@@ -1,13 +1,13 @@
-import {IPortfolioStock} from "../../interface/interface";
+import {PortfolioStockDetail} from "../../interface/interface";
 import {Avatar, Descriptions, List, Typography} from "antd";
 import React from "react";
-import {formatMoney} from "../../util/money";
+import {formatMoney, formatPercent} from "../../util/money";
 import {useImageErrorHandling} from "../../util/image-loader";
 
 const {Title, Text} = Typography;
 
 interface PortFolioStockProps {
-    stockItem: IPortfolioStock;
+    stockItem: PortfolioStockDetail;
 }
 
 const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
@@ -59,11 +59,6 @@ const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
             key: 'profitAndLossAmount',
             label: '수익/손실 금액',
             children: <span>미구현</span>
-        },
-        {
-            key: 'ratio',
-            label: '비율',
-            children: <span>미구현</span>
         }
     ];
 
@@ -83,7 +78,7 @@ const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
                             <Text
                                 style={{alignItems: "center"}}>{stockItem.stock.name} ({stockItem.stock.symbol})</Text>
                         </div>
-                        <Title level={5}>비율이 들어옴</Title>
+                        <Title level={5}>{formatPercent(stockItem.ratio)} %</Title>
                     </div>
                 }
                 description={<Text type="secondary">{stockItem.stock.market}</Text>}

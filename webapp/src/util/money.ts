@@ -20,3 +20,8 @@ export const formatMarketCap = (marketCap: number): string => {
 export const formatNumber = (num: number): string => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
+
+// 소수 백분율을 퍼센트로 변환
+export const formatPercent = (percent: number): string => {
+    return (percent * 100).toFixed(1);
+}
