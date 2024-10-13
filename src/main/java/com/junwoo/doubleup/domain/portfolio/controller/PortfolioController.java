@@ -4,14 +4,22 @@ import com.junwoo.doubleup.domain.portfolio.dto.PortfolioAddRequest;
 import com.junwoo.doubleup.domain.portfolio.dto.PortfolioBaseResponse;
 import com.junwoo.doubleup.domain.portfolio.dto.PortfolioDetailResponse;
 import com.junwoo.doubleup.domain.portfolio.entity.Portfolio;
+import com.junwoo.doubleup.domain.portfolio.entity.PortfolioStock;
 import com.junwoo.doubleup.domain.portfolio.mapper.PortfolioMapper;
-import com.junwoo.doubleup.domain.portfolio.mapper.PortfolioStockMapper;
 import com.junwoo.doubleup.domain.portfolio.service.PortfolioGetService;
 import com.junwoo.doubleup.domain.portfolio.service.PortfolioService;
+import com.junwoo.doubleup.domain.stock.entity.Stock;
+import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
+import com.junwoo.doubleup.domain.stockprice.repository.TodayStockPriceRepository;
+import com.junwoo.doubleup.domain.stockprice.service.StockPriceGetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,10 +27,13 @@ import java.util.List;
 public class PortfolioController {
 
 	private final PortfolioMapper portfolioMapper = PortfolioMapper.INSTANCE;
-	private final PortfolioStockMapper portfolioStockMapper = PortfolioStockMapper.INSTANCE;
 
 	private final PortfolioGetService portfolioGetService;
 	private final PortfolioService portfolioService;
+
+	private final StockPriceGetService stockPriceGetService;
+
+	private final TodayStockPriceRepository todayStockPriceRepository;
 
 	// 포트폴리오 목록 조회
 	@GetMapping
@@ -36,14 +47,36 @@ public class PortfolioController {
 	@GetMapping("/{id}")
 	private PortfolioDetailResponse findById(@PathVariable(name = "id") Long id) {
 		Portfolio portfolio = portfolioGetService.findById(id);
-		return portfolioMapper.toResponse(portfolio);
+
+		// 포트폴리오에 속한 주식들의 현재 가격을 조회하여 Map으로 변환
+		Map<String, BigDecimal> currentPriceMap = portfolio.getPortfolioStocks().stream()
+				.map(PortfolioStock::getStock)
+				.collect(Collectors.toMap(Stock::getSymbol, stock ->
+                        todayStockPriceRepository.getTodayStockPrice(stock.getSymbol())
+                                .map(StockPrice::getCurrentPrice) // 오늘의 현재가가 있는 경우
+                                .orElseGet(() -> {
+                                    // 오늘의 현재가가 없는 경우 어제의 종가를 조회
+                                    LocalDate yesterday = LocalDate.now().minusDays(1);
+                                    return stockPriceGetService.getStockPriceByDate(stock.getStockId(), yesterday).getClosePrice();
+                                })
+				));
+
+		return portfolioMapper.toResponse(portfolio, currentPriceMap);
 	}
 
 	// 포트폴리오 추가
 	@PostMapping
 	private PortfolioDetailResponse save(@RequestBody PortfolioAddRequest portfolioAddRequest) {
 		Portfolio portfolio = portfolioService.addPortfolio(portfolioAddRequest);
-		return portfolioMapper.toResponse(portfolio);
+
+		// 포트폴리오에 속한 주식들의 현재 가격을 조회하여 Map으로 변환
+		Map<String, BigDecimal> currentPriceMap = portfolio.getPortfolioStocks().stream()
+				.map(PortfolioStock::getStock)
+				.collect(Collectors.toMap(Stock::getSymbol, stock ->
+						todayStockPriceRepository.getTodayStockPrice(stock.getSymbol()).get().getCurrentPrice()
+				));
+
+		return portfolioMapper.toResponse(portfolio, currentPriceMap);
 	}
 
 	// 포트폴리오 삭제

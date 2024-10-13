@@ -23,9 +23,19 @@ public class PortfolioDetailResponse {
 		private Long id;
 		private Stock stock;
 		private int quantity;
-		private String totalAmount;
 		private String averagePrice;
-		private BigDecimal ratio;
+
+		//계산 값
+		// 총 매수 금액
+		private String totalAmount;
+		// 비중
+		private String ratio;
+		private BigDecimal currentPrice;
+		private BigDecimal currentValue;
+
+		// 손익
+		private BigDecimal profitAndLoss;
+		private BigDecimal profitAndLossRate;
 	}
 
 }

@@ -37,10 +37,6 @@ public class PortfolioStock {
 	@Column(nullable = false)
 	private int quantity;
 
-	@Comment("매수 총 금액")
-	@Column(nullable = false)
-	private BigDecimal totalAmount;
-
 	@Comment("평균 매수 가격")
 	@Column(nullable = false)
 	private BigDecimal averagePrice;

@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -54,8 +55,8 @@ public class TodayStockPriceRepository {
         todayStockPriceRepository.put(stockPrice.getStock().getSymbol(), stockPrice);
     }
 
-    public StockPrice getTodayStockPrice(String symbol) {
-        return todayStockPriceRepository.get(symbol);
+    public Optional<StockPrice> getTodayStockPrice(String symbol) {
+        return Optional.ofNullable(todayStockPriceRepository.get(symbol));
     }
 
     public void fetchStockPricesAsync() {

@@ -42,7 +42,7 @@ public class StockPriceGetService {
 
 	public StockPriceResponse getTodayStockPriceByStock(Long stockId) {
 		Stock stock = stockGetService.findById(stockId);
-		StockPrice todayStockPrice = todayStockPriceRepository.getTodayStockPrice(stock.getSymbol());
+		StockPrice todayStockPrice = todayStockPriceRepository.getTodayStockPrice(stock.getSymbol()).get();
 		return stockPriceMapper.toStockPriceResponse(stock, todayStockPrice);
 	}
 
