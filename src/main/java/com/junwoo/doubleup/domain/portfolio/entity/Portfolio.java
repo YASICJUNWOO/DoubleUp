@@ -40,7 +40,7 @@
 		@Builder.Default
 		@Comment("포트폴리오에 포함된 주식 리스트")
 		@JsonManagedReference
-		@OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
+		@OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
 		private List<PortfolioStock> portfolioStocks = new ArrayList<>();  // 포트폴리오에 포함된 주식 리스트
 
 		public void calculateTotalAmount() {

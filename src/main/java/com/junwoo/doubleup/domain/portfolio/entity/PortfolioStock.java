@@ -35,7 +35,7 @@ public class PortfolioStock {
 
 	@Comment("보유 수량")
 	@Column(nullable = false)
-	private int quantity;  // 보유 수량
+	private int quantity;
 
 	@Comment("매수 총 금액")
 	@Column(nullable = false)
