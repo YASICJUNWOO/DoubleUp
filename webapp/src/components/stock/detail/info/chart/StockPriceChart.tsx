@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ResponsiveLine} from '@nivo/line';
 import axios from "axios";
 import {useStock} from "../../StockDetail";
-import {Spin} from "antd";
+import {Alert, Spin} from "antd";
 
 // interface Props {
 //     stockPriceDataList: StockPriceData[];
@@ -54,33 +54,40 @@ const StockLineChart: React.FC = () => {
     // 차트 그리기
     useEffect(() => {
 
-        // 차트 데이터로 변환
-        const chartData = [
-            {
-                id: 'closePrice',
-                data: stockPriceList.map(item => ({
-                    x: item.date,
-                    y: item.closePrice
-                }))
-            }
-        ];
+        if (stockPriceList.length > 0) {
+            // 차트 데이터로 변환
+            const chartData = [
+                {
+                    id: 'closePrice',
+                    data: stockPriceList.map(item => ({
+                        x: item.date,
+                        y: item.closePrice
+                    }))
+                }
+            ];
 
-        setData(chartData);
+            setData(chartData);
 
-        // 최소값과 최대값 계산
-        let minY = Math.min(...stockPriceList.map(item => item.closePrice));
-        let maxY = Math.max(...stockPriceList.map(item => item.closePrice));
+            // 최소값과 최대값 계산
+            let minY = Math.min(...stockPriceList.map(item => item.closePrice));
+            let maxY = Math.max(...stockPriceList.map(item => item.closePrice));
 
-        // 여유 공간을 주기 위해 +- 10 추가
-        setMinValue(minY - 10);
-        setMaxValue(maxY + 10);
+            // 여유 공간을 주기 위해 +- 10 추가
+            setMinValue(minY - 10);
+            setMaxValue(maxY + 10);
+        }
+        else {
+            setData([]);
+        }
     }, [stockPriceList]);
 
     return (
         <div style={{height: '400px', display: 'flex', justifyContent:'center', alignItems: 'center'}}>
-            {loading
-                ? <Spin size="large" />
-                : (
+            {loading ? (
+                <Spin size="large" />
+            ) : data.length === 0 ? (
+                <Alert message="데이터가 없습니다." type="info" showIcon />
+            ): (
                 <ResponsiveLine
                     // chart에 표시될 데이터 배열, 각 데이터 시리즈는 id와 data 배열로 구성됩니다.
                     data={data}
