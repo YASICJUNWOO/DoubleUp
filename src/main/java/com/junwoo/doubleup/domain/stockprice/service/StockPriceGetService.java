@@ -30,6 +30,13 @@ public class StockPriceGetService {
 			.orElseThrow(() -> new IllegalArgumentException("해당 주식 가격 데이터가 존재하지 않습니다."));
 	}
 
+	//가장 최근 날짜의 주식 가격 조회
+	@Transactional(readOnly = true)
+	public StockPrice getStockPriceByRecentDate(Long stockId) {
+		return stockPriceRepository.findTopByStock_StockIdOrderByDateDesc(stockId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 주식 가격 데이터가 존재하지 않습니다."));
+	}
+
 	public List<StockPrice> getStockPrices(Long stockId, PeriodType periodType) {
 		//일단 데일리
 		return stockPriceRepository.findByStock_StockIdOrderByDateAsc(stockId);
