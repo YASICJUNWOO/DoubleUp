@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -35,8 +33,7 @@ public class StockPriceDataInitializer implements DataInitializer {
 	public void init() {
 		if (stockPriceRepository.count() > 0) {
 			log.info("StockPrice data already exists. Skip initialization.");
-			return;
-		}
+        }
 		else {
 			Map<String, List<StockPrice>> stringListMap = CsvUtils.initStockPrice();
 
