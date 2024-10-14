@@ -52,7 +52,7 @@ const PortfolioDetail: React.FC = () => {
 
 
     return (
-        <Row>
+        <Row gutter={16}>
             <Col span={12}>
                 <Card type="inner"
                       title={
@@ -69,7 +69,10 @@ const PortfolioDetail: React.FC = () => {
                 </Card>
             </Col>
             <Col span={12}>
-                <Card type="inner" title={<Title level={4}>보유 주식 목록</Title>}>
+                <Card
+                    type="inner"
+                    title={<Title level={4}>보유 주식 목록</Title>}
+                >
                     <List
                         itemLayout="vertical"
                         size="large"

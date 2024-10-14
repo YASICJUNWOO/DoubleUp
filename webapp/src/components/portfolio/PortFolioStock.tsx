@@ -3,6 +3,7 @@ import {Avatar, Descriptions, List, Typography} from "antd";
 import React from "react";
 import {formatMoney, formatPercent} from "../../util/money";
 import {useImageErrorHandling} from "../../util/image-loader";
+import {Link} from "react-router-dom";
 
 const {Title, Text} = Typography;
 
@@ -11,8 +12,6 @@ interface PortFolioStockProps {
 }
 
 const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
-
-    console.log(stockItem);
 
     const items = [
         {
@@ -59,17 +58,28 @@ const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
         <List.Item key={stockItem.id}>
             <List.Item.Meta
                 title={
-                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <div
+                        style={{
+                            display: "flex", justifyContent: "space-between"
+                        }}
+                    >
                         <div style={{display: "flex", alignItems: "center"}}>
-                            <Avatar
-                                src={getImageSrc(stockItem.stock.symbol, stockItem.stock.name)}
-                                onError={() => handleImgError(stockItem.stock.symbol)} // 이미지 로드 실패 시 호출
-                            />
-                            <Text
-                                style={{alignItems: "center"}}>{stockItem.stock.name} ({stockItem.stock.symbol})</Text>
+                            <Link to={`/stocks/${stockItem.stock.stockId}`}>
+                                <Avatar
+                                    src={getImageSrc(stockItem.stock.symbol, stockItem.stock.name)}
+                                    onError={() => handleImgError(stockItem.stock.symbol)} // 이미지 로드 실패 시 호출
+                                />
+                                <Text
+                                    style={{
+                                        marginInline: "4px",
+                                        alignItems: "center"
+                                    }}
+                                >
+                                    {stockItem.stock.name} ({stockItem.stock.symbol})
+                                </Text>
+                            </Link>
                             <Text
                                 style={{
-                                    marginLeft: '5px',
                                     color: stockItem.profitAndLoss > 0 ? '#cf1322' : '#284ecc'
                                 }}
                             >
@@ -79,9 +89,10 @@ const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
                         <Title level={5}>{formatPercent(stockItem.ratio)} %</Title>
                     </div>
                 }
-                description={<Text type="secondary">{stockItem.stock.market}</Text>}
+                description={<Descriptions items={items}/>
+                }
             />
-            <Descriptions items={items}/>
+
         </List.Item>
     );
 }
