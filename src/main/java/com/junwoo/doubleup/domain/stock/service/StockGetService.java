@@ -1,9 +1,9 @@
 package com.junwoo.doubleup.domain.stock.service;
 
-import com.junwoo.doubleup.domain.stock.repository.StockRepository;
 import com.junwoo.doubleup.domain.stock.entity.Stock;
+import com.junwoo.doubleup.domain.stock.entity.StockType;
+import com.junwoo.doubleup.domain.stock.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +28,10 @@ public class StockGetService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Stock> findAllByFilter(Pageable pageable, String sortingValue) {
+	public List<Stock> findAllByFilter(Pageable pageable, String sortingValue, String stockType) {
 
 		if(sortingValue.equals("marketCap")) {
-			return stockRepository.findAllByOrderByMarketCapDesc(pageable);
+			return stockRepository.findAllByStockTypeOrderByMarketCapDesc(StockType.valueOf(stockType), pageable);
 		}
 
 		// todo: 예외 처리

@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,8 +25,8 @@ public class StockController {
 
     //시가총액 순 정렬
     @PostMapping("/marketCap")
-    private List<StockResponse> filter(Pageable pageable) {
-        List<Stock> marketCap = stockGetService.findAllByFilter(pageable, "marketCap");
+    private List<StockResponse> filter(Pageable pageable, @RequestParam(name = "stockType", defaultValue = "COMMON") String stockType) {
+        List<Stock> marketCap = stockGetService.findAllByFilter(pageable, "marketCap", stockType);
         return marketCap.stream().map(stockMapper::toResponse).toList();
     }
 

@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {Avatar, Col, Row, Table} from "antd";
+import {Avatar, Col, Row, Table, Tabs} from "antd";
 import {IStock} from "../../interface/interface";
 import axios from "axios";
 import {formatMarketCap} from "../../util/money";
 import {useNavigate} from "react-router-dom";
 import {useImageErrorHandling} from "../../util/image-loader";
 
+const { TabPane } = Tabs;
 
 export const NewStockList:React.FC = () => {
 
@@ -60,21 +61,27 @@ export const NewStockList:React.FC = () => {
     //=================================================
 
     const [stocks, setStocks] = useState<IStock[]>([]);
+    const [loading, setLoading] = useState<boolean>(false); // 로딩 상태 추가
+    const [stockType, setStockType] = useState<string>("COMMON"); // 기본값은 COMMON
 
     useEffect(() => {
         const dataFetch = async () => {
-            axios.post<IStock[]>('/api/stocks/marketCap?size=10&page=0')
-                .then(response => {
+            setLoading(true); // 로딩 시작
+            axios
+                .post<IStock[]>(`/api/stocks/marketCap?size=10&page=0&stockType=${stockType}`)
+                .then((response) => {
                     setStocks(response.data);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error(error);
+                })
+                .finally(() => {
+                    setLoading(false); // 로딩 끝
                 });
-        }
-
+        };
 
         dataFetch();
-    }, []);
+    }, [stockType]); // stockType 변경 시 데이터 다시 가져오기
 
     // 행 클릭 시 실행될 함수
     const navigate = useNavigate();
@@ -83,23 +90,49 @@ export const NewStockList:React.FC = () => {
         navigate(`/stocks/${record.stockId}`);
     };
 
+    // 탭 변경 시 호출될 함수
+    const handleTabChange = (key: string) => {
+        setStockType(key);
+    };
+
     return (
         <div>
             <Row>
                 <Col offset={4} span={16}>
-                    <Table
-                        id="stockList"
-                        dataSource={stocks}
-                        columns={columns}
-                        rowKey="stockId"
-                        scroll={{ x: 768 }}
-                        size="small"
-                        onRow={(record) => {
-                            return {
-                                onClick: () => handleRowClick(record), // 행 클릭 이벤트 핸들러
-                            };
-                        }}
-                    />
+                    <Tabs defaultActiveKey="COMMON" onChange={handleTabChange}>
+                        <TabPane tab="일반주" key="COMMON">
+                            <Table
+                                id="stockList"
+                                dataSource={stocks}
+                                columns={columns}
+                                rowKey="stockId"
+                                scroll={{x: 768}}
+                                size="small"
+                                onRow={(record) => {
+                                    return {
+                                        onClick: () => handleRowClick(record), // 행 클릭 이벤트 핸들러
+                                    };
+                                }}
+                                loading={loading} // 로딩 상태 반영
+                            />
+                        </TabPane>
+                        <TabPane tab="ETF" key="ETF">
+                            <Table
+                                id="stockList"
+                                dataSource={stocks}
+                                columns={columns}
+                                rowKey="stockId"
+                                scroll={{x: 768}}
+                                size="small"
+                                onRow={(record) => {
+                                    return {
+                                        onClick: () => handleRowClick(record), // 행 클릭 이벤트 핸들러
+                                    };
+                                }}
+                                loading={loading} // 로딩 상태 반영
+                            />
+                        </TabPane>
+                    </Tabs>
                 </Col>
             </Row>
         </div>

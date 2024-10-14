@@ -13,7 +13,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     //유형별 주식 조회
     boolean existsStockByStockType(StockType stockType);
 
-    List<Stock> findAllByOrderByMarketCapDesc(Pageable pageable);
+    List<Stock> findAllByStockTypeOrderByMarketCapDesc(StockType stockType, Pageable pageable);
 
     Optional<Stock> findBySymbol(String symbol);
 }
