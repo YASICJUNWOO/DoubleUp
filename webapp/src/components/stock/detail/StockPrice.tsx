@@ -71,7 +71,7 @@ const StockPrice: React.FC = () => {
                                 <Statistic
                                     value={stockPrices.priceChange}
                                     precision={2}
-                                    valueStyle={stockPrices.priceChangeRate > 0 ? {color: '#3f8600'} : {color: '#cf1322'}}
+                                    valueStyle={stockPrices.priceChangeRate > 0 ? {color: '#cf1322'} : {color: '#284ecc'}}
                                     prefix={stockPrices.priceChangeRate > 0 ? <ArrowUpOutlined/> : <ArrowDownOutlined/>}
                                     suffix={` (${stockPrices.priceChangeRate.toFixed(2)}%)`}
                                 />

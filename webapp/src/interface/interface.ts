@@ -24,16 +24,28 @@ export interface StockPrice {
     volume: number | null;
 }
 
+export interface IPortfolio {
+    id: number;
+    memberName: string;
+    name: string;
+    totalAmount: number;
+    portfolioStocks: PortfolioStockDetail[];
+}
+
 export interface IPortfolioStock {
     id: number;
     stock: IStock;
     quantity: number;
-    totalAmount: number;
     averagePrice: number;
 }
 
 export interface PortfolioStockDetail extends IPortfolioStock {
+    totalAmount: number;
     ratio: number;
+    currentPrice: number;
+    currentValue: number;
+    profitAndLoss: number;
+    profitAndLossRate: number;
 }
 
 export interface Template {

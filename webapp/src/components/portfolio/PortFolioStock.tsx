@@ -33,12 +33,7 @@ const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
         {
             key: 'currentPrice',
             label: '현재 가격',
-            children: <span>미구현</span>
-        },
-        {
-            key: 'profitAndLoss',
-            label: '손익',
-            children: <span>미구현</span>
+            children: <span>{formatMoney(stockItem.currentPrice)}</span>
         },
 
         //주식 이름 및 심볼: 보유한 주식의 이름과 심볼을 표시.
@@ -53,12 +48,7 @@ const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
         {
             key: 'currentValue',
             label: '현재 가치',
-            children: <span>미구현</span>
-        },
-        {
-            key: 'profitAndLossAmount',
-            label: '수익/손실 금액',
-            children: <span>미구현</span>
+            children: <span>{formatMoney(stockItem.currentValue)}</span>
         }
     ];
 
@@ -77,6 +67,14 @@ const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
                             />
                             <Text
                                 style={{alignItems: "center"}}>{stockItem.stock.name} ({stockItem.stock.symbol})</Text>
+                            <Text
+                                style={{
+                                    marginLeft: '5px',
+                                    color: stockItem.profitAndLoss > 0 ? '#cf1322' : '#284ecc'
+                                }}
+                            >
+                                {formatMoney(stockItem.profitAndLoss)} ({stockItem.profitAndLossRate}%)
+                            </Text>
                         </div>
                         <Title level={5}>{formatPercent(stockItem.ratio)} %</Title>
                     </div>

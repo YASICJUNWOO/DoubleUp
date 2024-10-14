@@ -1,25 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {Card, Col, List, Row, Segmented, Spin, Typography} from 'antd';
+import {Button, Card, Col, List, Row, Segmented, Spin, Typography} from 'antd';
 import PortfolioAssetPieChart from './PortfolioAssetPieChart';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import PortFolioStock from "./PortFolioStock"; // 차트 컴포넌트 가져오기
-import {PortfolioStockDetail} from "../../interface/interface";
+import {IPortfolio} from "../../interface/interface";
 
 const {Title, Text} = Typography;
-
-interface PortfolioData {
-    id: number;
-    memberName: string;
-    name: string;
-    portfolioStocks: PortfolioStockDetail[];
-}
 
 const PortfolioDetail: React.FC = () => {
 
     const {id} = useParams<{ id: string }>();
+    const navigate = useNavigate();
 
-    const [portfolio, setPortfolio] = useState<PortfolioData | null>(null);
+    const [portfolio, setPortfolio] = useState<IPortfolio | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     const [options, setOptions] = useState(['주식별', '유형별', '시장별']);
@@ -43,6 +37,11 @@ const PortfolioDetail: React.FC = () => {
         setTotalSum(portfolio?.portfolioStocks.reduce((acc, stock) => acc + Number(stock.totalAmount), 0) || 0);
     }, [portfolio]);
 
+    const handleEditClick = () => {
+        console.log("Edit button clicked!",portfolio);
+        navigate(`/portfolio/edit/${id}`, { state: { portfolio } });
+    };
+
     if (loading) {
         return <Spin tip="Loading portfolio..."/>;
     }
@@ -55,7 +54,16 @@ const PortfolioDetail: React.FC = () => {
     return (
         <Row>
             <Col span={12}>
-                <Card type="inner" title={<Title level={4}>{portfolio.name}</Title>}>
+                <Card type="inner"
+                      title={
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <Title level={4} style={{ marginBottom: 0 }}>{portfolio.name}</Title>
+                              {/* 수정 버튼 추가 */}
+                              <Button type="primary" onClick={handleEditClick}>
+                                  수정
+                              </Button>
+                          </div>
+                      }>
                     <Segmented id='chartOption' options={options}/>
                     <PortfolioAssetPieChart portfolioStocks={portfolio.portfolioStocks}/>
                 </Card>

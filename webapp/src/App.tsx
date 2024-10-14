@@ -45,7 +45,8 @@ function App() {
                       //============= Portfolio ==============
                       <Route path="/portfolio" element={<PortfolioList />} />
                       <Route path="/portfolio/:id" element={<PortfolioDetail />} />
-                      <Route path="/portfolio/create" element={<NewPortfolioCreate />} />
+                      <Route path="/portfolio/create" element={<NewPortfolioCreate isEdit={false}/>} />
+                        <Route path="/portfolio/edit/:id" element={<NewPortfolioCreate isEdit={true} />} />
                   </Routes>
               </Content>
           </Layout>

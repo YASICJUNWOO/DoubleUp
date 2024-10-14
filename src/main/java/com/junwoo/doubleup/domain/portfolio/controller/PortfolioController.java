@@ -57,7 +57,7 @@ public class PortfolioController {
                                 .orElseGet(() -> {
                                     // 오늘의 현재가가 없는 경우 어제의 종가를 조회
                                     LocalDate yesterday = LocalDate.now().minusDays(1);
-                                    return stockPriceGetService.getStockPriceByDate(stock.getStockId(), yesterday).getClosePrice();
+                                    return stockPriceGetService.getStockPriceByRecentDate(stock.getStockId()).getClosePrice();
                                 })
 				));
 
@@ -73,7 +73,13 @@ public class PortfolioController {
 		Map<String, BigDecimal> currentPriceMap = portfolio.getPortfolioStocks().stream()
 				.map(PortfolioStock::getStock)
 				.collect(Collectors.toMap(Stock::getSymbol, stock ->
-						todayStockPriceRepository.getTodayStockPrice(stock.getSymbol()).get().getCurrentPrice()
+						todayStockPriceRepository.getTodayStockPrice(stock.getSymbol())
+								.map(StockPrice::getCurrentPrice) // 오늘의 현재가가 있는 경우
+								.orElseGet(() -> {
+									// 오늘의 현재가가 없는 경우 어제의 종가를 조회
+									LocalDate yesterday = LocalDate.now().minusDays(1);
+									return stockPriceGetService.getStockPriceByDate(stock.getStockId(), yesterday).getClosePrice();
+								})
 				));
 
 		return portfolioMapper.toResponse(portfolio, currentPriceMap);

@@ -2,30 +2,11 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Button, Card, List, message, Modal} from "antd";
 import {Link} from "react-router-dom";
-
-interface PortfolioStock {
-    id: number;
-    stock: {
-        id: number;
-        symbol: string;
-        name: string;
-        market: string;
-    };
-    quantity: number;
-    totalAmount: number;
-    averagePrice: number;
-}
-
-interface PortfolioData {
-    id: number;
-    name: string;
-    totalAmount: number;
-    portfolioStocks: PortfolioStock[];
-}
+import {IPortfolio} from "../../interface/interface";
 
 const PortfolioList: React.FC = () => {
 
-    const [portfolioList, setPortfolioList] = useState<PortfolioData[]>([]);
+    const [portfolioList, setPortfolioList] = useState<IPortfolio[]>([]);
 
     useEffect(() => {
         const fetchPortfolioList = async () => {

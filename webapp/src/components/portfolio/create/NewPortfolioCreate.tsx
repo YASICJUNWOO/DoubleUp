@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Avatar, Button, Col, Input, Result, Row, Table, Typography} from "antd";
-import {IStock} from "../../../interface/interface";
+import {IPortfolio, IStock} from "../../../interface/interface";
 import axios from "axios";
 import "./NewPortfolioCreat.css";
 import SelectedStockDetails from "./SelectedStockDetails";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {useImageErrorHandling} from "../../../util/image-loader";
@@ -16,12 +16,34 @@ interface PortfolioReq {
 }
 
 
-const PortfolioCreate: React.FC = () => {
+const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const initialData: IPortfolio = location.state?.portfolio;
+
+    console.log("initialData", initialData);
 
     const [stocks, setStocks] = React.useState<IStock[]>([]);
     const [selectedStocks, setSelectedStocks] = React.useState<IStock[]>([]);
     const [isSuccess, setIsSuccess] = useState<boolean>(false); // 성공 여부 常態
+
+    //================columns==================
+    useEffect(() => {
+        if (isEdit && initialData) {
+            // 수정 모드일 때 초기 데이터를 설정
+            formik.setValues({
+                portfolioName: initialData.name,
+                portfolioData: initialData.portfolioStocks.map(portfolioStock => ({
+                    stockId: portfolioStock.stock.stockId,
+                    quantity: portfolioStock.quantity,
+                    averagePrice: portfolioStock.averagePrice,
+                }))
+            });
+
+            setSelectedStocks(initialData.portfolioStocks.map(portfolioStock => portfolioStock.stock));
+
+        }
+    }, [isEdit, initialData]);
 
     //================columns==================
     // 분리된 이미지 처리 함수 사용
