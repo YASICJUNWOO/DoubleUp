@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Avatar, Button, Col, Input, Result, Row, Table, Typography} from "antd";
+import {Avatar, Button, Col, Input, Result, Row, Select, Table, Typography} from "antd";
 import {IPortfolio, IStock} from "../../../interface/interface";
 import axios from "axios";
 import "./NewPortfolioCreat.css";
@@ -25,7 +25,9 @@ const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
 
     const [stocks, setStocks] = React.useState<IStock[]>([]);
     const [selectedStocks, setSelectedStocks] = React.useState<IStock[]>([]);
-    const [isSuccess, setIsSuccess] = useState<boolean>(false); // 성공 여부 常態
+    const [isSuccess, setIsSuccess] = useState<boolean>(false); // 성공 여부
+    const [stockType, setStockType] = useState<string>('COMMON'); // COMMON과 ETF 선택
+
 
     //================columns==================
     useEffect(() => {
@@ -47,7 +49,7 @@ const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
 
     //================columns==================
     // 분리된 이미지 처리 함수 사용
-    const { getImageSrc, handleImgError } = useImageErrorHandling();
+    const {getImageSrc, handleImgError} = useImageErrorHandling();
 
     const columns = [
         {
@@ -65,7 +67,7 @@ const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
                 return (
                     <>
                         <Avatar
-                            style={{ marginRight: "10px" }}
+                            style={{marginRight: "10px"}}
                             src={getImageSrc(record.symbol, text)}
                             onError={() => handleImgError(record.symbol)} // 이미지 로드 실패 시 호출
                         />
@@ -112,14 +114,7 @@ const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            axios.post('/api/stocks/marketCap',
-                {
-                    params: {
-                        page: 0,
-                        size: 20
-                    }
-                }
-            )
+            axios.post(`/api/stocks/marketCap?size=10&page=0&stockType=${stockType}`)
                 .then(response => {
                     setStocks(response.data);
                     console.log("Stocks fetched successfully!", response.data);
@@ -127,10 +122,10 @@ const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
                 .catch(error => {
                     console.error("There was an error fetching the stocks!", error);
                 });
-        }
+        };
 
         fetchData();
-    }, []);
+    }, [stockType]);  // stockType이 변경될 때마다 새 데이터를 불러옴
 
     //================STOCK==================
 
@@ -230,14 +225,24 @@ const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
                     />
                 </Col>
             </Row>
+
+
             <Row>
                 <Col offset={2} span={9}>
+                    {/* COMMON과 ETF 필터링 */}
+                    <Row style={{ justifyContent: "center", marginBottom: "20px" }}>
+                        <Col>
+                            <Select defaultValue="COMMON" onChange={setStockType} size="large">\
+                                <Select.Option value="COMMON">일반주</Select.Option>
+                                <Select.Option value="ETF">ETF</Select.Option>
+                            </Select>
+                        </Col>
+                    </Row>
                     <Input.Search
                         placeholder="종목명 또는 종목코드를 입력하세요."
                         enterButton="검색"
                         size="large"
                         onSearch={value => console.log(value)}/>
-
                     <Table
                         size="small"
                         columns={columns}
@@ -267,18 +272,17 @@ const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
             <Row>
                 <Col offset={2} span={20}>
                     {/* 저장 버튼 추가 */}
-                        <Button
-                            type="primary" style={{marginTop: "10px", width: "100%"}}
-                            htmlType="submit"
-                        >
-                            저장
-                        </Button>
+                    <Button
+                        type="primary" style={{marginTop: "10px", width: "100%"}}
+                        htmlType="submit"
+                    >
+                        저장
+                    </Button>
                 </Col>
             </Row>
         </form>
     );
 };
-
 
 
 export default PortfolioCreate;
