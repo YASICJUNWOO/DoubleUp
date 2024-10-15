@@ -23,4 +23,9 @@ public class MemberGetService {
 	public Member findById(Long id) {
 		return memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다. id=" + id));
 	}
+
+	@Transactional(readOnly = true)
+	public Member findByEmail(String email) {
+		return memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다. email=" + email));
+	}
 }
