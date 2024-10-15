@@ -18,7 +18,7 @@ export const NewStockList:React.FC = () => {
             title: '티커',
             dataIndex: 'symbol',
             key: 'symbol',
-            width: 100
+            width: 80
         },
         {
             title: '종목명',
@@ -33,7 +33,7 @@ export const NewStockList:React.FC = () => {
                             src={getImageSrc(record.symbol, text)}
                             onError={() => handleImgError(record.symbol)}
                         />
-                        {text} ({record.symbol})
+                        {text}
                     </>
                 );
             }

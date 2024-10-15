@@ -56,7 +56,7 @@ const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
             title: '종목코드',
             dataIndex: 'symbol',
             key: 'symbol',
-            width: 150,
+            width: 100,
         },
         {
             title: '종목명',
@@ -71,7 +71,7 @@ const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
                             src={getImageSrc(record.symbol, text)}
                             onError={() => handleImgError(record.symbol)} // 이미지 로드 실패 시 호출
                         />
-                        {text} ({record.symbol})
+                        {text}
                     </>
                 );
             },

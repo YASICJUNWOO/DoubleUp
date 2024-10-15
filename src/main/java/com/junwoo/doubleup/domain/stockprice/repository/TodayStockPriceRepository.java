@@ -120,6 +120,8 @@ public class TodayStockPriceRepository {
     public Map<String, StockPrice> importFromCSV() {
         Map<String, StockPrice> stockPriceMap = new HashMap<>();
 
+        log.info("기존에 저장된 TODAY STOCK PRICE 데이터를 불러옵니다.");
+
         try (CSVReader reader = new CSVReader(new FileReader(EXPORT_PATH))) {
             String[] line;
             boolean isFirstLine = true;
@@ -155,6 +157,7 @@ public class TodayStockPriceRepository {
             return stockPriceMap;
         }
 
+        log.info("기존의 TODAY STOCK PRICE 데이터를 성공적으로 불러왔습니다.");
         return stockPriceMap;
     }
 

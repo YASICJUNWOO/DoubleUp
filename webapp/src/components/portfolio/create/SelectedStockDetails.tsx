@@ -1,6 +1,7 @@
 import React from "react";
-import {Button, Col, InputNumber, Row, Typography} from "antd";
+import {Avatar, Button, Col, InputNumber, Row, Typography} from "antd";
 import {IStock} from "../../../interface/interface";
+import {useImageErrorHandling} from "../../../util/image-loader";
 
 type SelectedStockDetailsProps = {
     stock: IStock;
@@ -11,6 +12,8 @@ type SelectedStockDetailsProps = {
 const SelectedStockDetails: React.FC<SelectedStockDetailsProps> = ({ stock, onRemove, updatePortfolioData }) => {
     const [quantity, setQuantity] = React.useState<number>(1);
     const [averagePrice, setAveragePrice] = React.useState<number>(1);
+
+    const {getImageSrc, handleImgError} = useImageErrorHandling();
 
     const handleQuantityChange = (value: any) => {
         setQuantity(value);
@@ -25,8 +28,13 @@ const SelectedStockDetails: React.FC<SelectedStockDetailsProps> = ({ stock, onRe
     return (
         <div style={{ marginBottom: "20px", borderBottom: "1px solid #ccc", paddingBottom: "10px" }}>
             <Row gutter={5}>
-                <Col span={6}>
-                    <Typography>{stock.name} ({stock.symbol})</Typography>
+                <Col span={8} style={{display:"flex"}}>
+                    <Avatar
+                        style={{marginRight: "10px"}}
+                        src={getImageSrc(stock.symbol, stock.name)}
+                        onError={() => handleImgError(stock.symbol)}
+                    />
+                    <Typography>{stock.name}</Typography>
                 </Col>
                 <Col span={6}>
                     <InputNumber
