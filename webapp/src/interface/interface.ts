@@ -1,3 +1,10 @@
+export interface IMember {
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+}
+
 export interface IStock {
     stockId: number;
     symbol: string;
