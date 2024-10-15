@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {Button, Col, Drawer, MenuProps, Row} from 'antd';
-import {Avatar, Layout, Menu, Typography} from 'antd';
-import {Link} from 'react-router-dom';
-import {MenuOutlined, UserOutlined} from '@ant-design/icons';
+import {Avatar, Button, Col, Drawer, Layout, Menu, MenuProps, Row, Typography} from 'antd';
+import {Link, useNavigate} from 'react-router-dom';
+import {MenuOutlined} from '@ant-design/icons';
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
+import {useAuth} from "./auth/AuthContext";
+import UserMenu from "./auth/UserMenu";
 
 const {Header} = Layout;
 const {Title} = Typography;
@@ -67,6 +68,12 @@ const AppHeader: React.FC = () => {
     const screens = useBreakpoint();  // 화면 크기 감지
     const [drawerVisible, setDrawerVisible] = useState(false); // Drawer 열기/닫기 상태 관리
 
+    //======================================AUTH===============================================
+    const { isAuthenticated, member, logout } = useAuth();
+    const navigate = useNavigate();
+    //================================================================================
+
+
     // Drawer 열기
     const showDrawer = () => {
         setDrawerVisible(true);
@@ -113,10 +120,17 @@ const AppHeader: React.FC = () => {
                     </Col>
                 )}
 
-                {/* Right: Avatar */}
+                {/* Right: Login/Logout Button */}
                 <Col>
-                    <Avatar icon={<UserOutlined/>} style={{backgroundColor: '#87d068'}}/>
+                    {member ? (
+                        <UserMenu></UserMenu>
+                    ) : (
+                        <Button type="primary" onClick={() => navigate('/login')}>
+                            로그인
+                        </Button>
+                    )}
                 </Col>
+
 
                 {/* 작은 화면에서 Drawer */}
                 <Drawer

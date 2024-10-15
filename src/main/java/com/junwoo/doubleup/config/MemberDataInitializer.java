@@ -5,6 +5,8 @@ import com.junwoo.doubleup.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class MemberDataInitializer implements DataInitializer {
@@ -15,13 +17,20 @@ public class MemberDataInitializer implements DataInitializer {
 	public void init() {
 
 		Member member = Member.builder()
-				.id(1L)
+				.id(2L)
 				.email("testEmail@gmail.com")
 				.password("testPassword")
 				.name("testName")
 				.build();
 
-		memberRepository.save(member);
+		Member admin = Member.builder()
+				.id(1L)
+				.email("admin")
+				.password("admin")
+				.name("admin")
+				.build();
+
+		memberRepository.saveAll(List.of(member, admin));
 	}
 
 }
