@@ -2,15 +2,14 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Input, List, Spin} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import axios from 'axios';
+import {IStock} from "../interface/interface";
+import {useNavigate} from "react-router-dom";
 
 const { Search } = Input;
 
-interface SearchComponentProps {
-    onSelect: (stockId: string) => void;
-}
-
-const SearchComponent: React.FC<SearchComponentProps> = ({ onSelect }) => {
-    const [searchResults, setSearchResults] = useState<any[]>([]);
+const SearchComponent: React.FC = () => {
+    const navigate = useNavigate();
+    const [searchResults, setSearchResults] = useState<IStock[]>([]);
     const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false); // 검색 모달 열림 상태 관리
@@ -23,7 +22,11 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSelect }) => {
         setLoading(true);
         setIsOpen(true); // 검색 결과 모달 열기
         try {
-            const response = await axios.get(`/api/search`, { params: { query: value } });
+            const body = {
+                keyword: value
+            }
+            const response = await axios.post(`/api/search/stock`, body);
+            console.log(response.data);
             setSearchResults(response.data);
         } catch (error) {
             console.error('검색 중 오류 발생:', error);
@@ -48,6 +51,13 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSelect }) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    //======================================SEARCH=========================================
+    // 검색 결과 선택 시 호출되는 함수
+    const handleSelectStock = (stockId: number) => {
+        // 예: 선택된 주식 상세 페이지로 이동
+        navigate(`/stocks/${stockId}`);
+    };
 
     return (
         <div ref={searchRef} style={{ position: 'relative', width: '100%' }}>
@@ -76,13 +86,13 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSelect }) => {
                         <List
                             itemLayout="horizontal"
                             dataSource={searchResults}
-                            renderItem={(item: any) => (
+                            renderItem={(item: IStock) => (
                                 <List.Item onClick={() => {
-                                    onSelect(item.id);
+                                    handleSelectStock(item.stockId);
                                     setIsOpen(false); // 아이템 클릭 시 모달 닫기
                                 }}>
                                     <List.Item.Meta
-                                        title={<a href={`/stocks/${item.id}`}>{item.name}</a>}
+                                        title={<a href={`/stocks/${item.stockId}`}>{item.name}</a>}
                                         description={`주식 코드: ${item.symbol}`}
                                     />
                                 </List.Item>

@@ -85,13 +85,6 @@ const AppHeader: React.FC = () => {
         setDrawerVisible(false);
     };
 
-    //======================================SEARCH=========================================
-    // 검색 결과 선택 시 호출되는 함수
-    const handleSelectStock = (stockId: string) => {
-        // 예: 선택된 주식 상세 페이지로 이동
-        navigate(`/stocks/${stockId}`);
-    };
-
     return (
         <Header style={{padding: '0 20px', background: '#001529'}}>
             <Row align="middle" justify="space-between">
@@ -118,7 +111,7 @@ const AppHeader: React.FC = () => {
                         />
                     )}
                     <div style={{flexGrow: 0, marginLeft: '20px', minWidth: '300px'}}>
-                        <SearchComponent onSelect={handleSelectStock}/>
+                        <SearchComponent/>
                     </div>
                 </Col>
 
