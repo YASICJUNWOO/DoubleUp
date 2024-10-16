@@ -26,7 +26,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/login", "/resources/**", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        //h2
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
+                )
+                .headers(headers -> headers
+                        .frameOptions().sameOrigin() // H2 콘솔을 위한 프레임 허용
                 )
                 .formLogin((form) -> form
                         //.loginPage("/login")
