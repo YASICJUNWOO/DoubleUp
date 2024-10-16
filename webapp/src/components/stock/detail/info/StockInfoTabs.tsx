@@ -3,7 +3,7 @@ import {ConfigProvider, Tabs} from "antd";
 import StockPriceChart from "./chart/StockPriceChart";
 import StockInfo from "./StockInfo";
 import {CompassOutlined, InfoCircleOutlined, LineChartOutlined} from "@ant-design/icons";
-import StockComments from "../StockComments";
+import StockComments from "./StockComments";
 
 const onChange = (key: string) => {
     console.log(key);
