@@ -3,7 +3,7 @@ import {ConfigProvider, Tabs} from "antd";
 import StockPriceChart from "./chart/StockPriceChart";
 import StockInfo from "./StockInfo";
 import {CompassOutlined, InfoCircleOutlined, LineChartOutlined} from "@ant-design/icons";
-import StockComments from "../StockComments";
+import StockComments from "./StockComments";
 
 const onChange = (key: string) => {
     console.log(key);
@@ -13,7 +13,7 @@ const onChange = (key: string) => {
 const contentTemplate = (Component: React.ReactNode) => {
     // 전달된 컴포넌트에 스타일을 적용하여 반환
     return (
-        <div id="contentTemplate" style={{marginBottom:"20px", border:'1px solid #f0f0f0', padding:'20px'}}>
+        <div id="contentTemplate" style={{marginBottom:"20px", border:'1px solid #f0f0f0', padding:'20px'}} className={'custom-shadow'}>
             {Component}
         </div>
     );

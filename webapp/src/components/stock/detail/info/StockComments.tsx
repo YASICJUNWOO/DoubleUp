@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {Avatar, Button, Input, List, message, Typography} from "antd";
 import axios from "axios";
-import {useAuth} from "../../auth/AuthContext";
-import {useStock} from "./StockDetail";
+import {useAuth} from "../../../auth/AuthContext";
+import {useStock} from "../StockDetail";
 import {useNavigate} from "react-router-dom";
-import {IMember, IStock} from "../../../interface/interface";
+import {IMember, IStock} from "../../../../interface/interface";
 import {LikeOutlined, MessageOutlined} from "@ant-design/icons";
-import {useImageErrorHandling} from "../../../util/image-loader";
+import {useImageErrorHandling} from "../../../../util/image-loader";
 
 const {TextArea} = Input;
 
@@ -124,7 +124,7 @@ const StockComments: React.FC = () => {
                                         <Typography.Text strong>{item.member.name}</Typography.Text>
                                         <Typography.Text
                                             type="secondary">
-                                            "2시간 전"
+                                            2시간 전
                                             {/*{moment(item.createdAt).fromNow()}*/}
                                         </Typography.Text>
                                     </div>

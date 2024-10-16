@@ -83,6 +83,7 @@ const PortfolioList: React.FC = () => {
                         <List.Item>
                             <Link to={`/portfolio/${portfolio.id}`}>
                                 <Card
+                                    className={'custom-shadow'}
                                     title={portfolio.name}
                                     bordered={true}
                                     extra={(

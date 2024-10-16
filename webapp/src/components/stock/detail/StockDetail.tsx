@@ -1,11 +1,13 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {Alert, Col, message, Row, Spin, Typography} from "antd";
-import {StarOutlined} from "@ant-design/icons";
+import {StarFilled, StarOutlined} from "@ant-design/icons";
 import StockPrice from "./StockPrice";
 import {IStock} from "../../../interface/interface";
 import {StockAnalTabs} from "./smillar/StockAnalTabs";
 import StockInfoTabs from "./info/StockInfoTabs";
+import axios from "axios";
+import {useAuth} from "../../auth/AuthContext";
 
 /**
  * 특정 주식 정보를 나타내는 컴포넌트
@@ -31,17 +33,92 @@ export const useStock = (): StockContextType => {
 };
 
 const StockDetail: React.FC = () => {
+    const {member} = useAuth();
     const {id} = useParams<{ id: string }>();
     const [stock, setStock] = useState<IStock | null>(null);
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     const [messageApi, contextHolder] = message.useMessage();
-    const info = () => {
-        messageApi.open({
-            type: 'success',
-            content: '즐겨찾기에 추가되었습니다',
-        });
+
+    // 즐겨찾기 여부 조회 함수
+    const checkFavoriteStatus = async () => {
+        if (member && id) {
+            try {
+                const response = await axios.get(`/api/favorites/check`, {
+                    params: { memberId: member.id, stockId: id }
+                });
+                setIsFavorite(response.data.isFavorite);
+            } catch (err) {
+                console.error('Error checking favorite status', err);
+            }
+        }
+    };
+
+    // 즐겨찾기 수정
+    const updateFavorite = (body: any) => {
+
+        if(isFavorite){
+            axios.delete('/api/favorites', {data: body})
+                .then((data) => {
+                    console.log(data);
+                    setIsFavorite(false); // 즐겨찾기 삭제 시 false로 변경
+
+                    messageApi.open({
+                        type: 'success',
+                        content: '즐겨찾기에서 삭제되었습니다',
+                    });
+
+                })
+                .catch((err) => {
+                    console.error(err);
+
+                    messageApi.open({
+                        type: 'error',
+                        content: '즐겨찾기 삭제에 실패했습니다',
+                    });
+                });
+        }
+
+        axios.post('/api/favorites', body)
+            .then((data) => {
+                console.log(data);
+                setIsFavorite(true); // 즐겨찾기 성공 시 true로 변경
+
+                messageApi.open({
+                    type: 'success',
+                    content: '즐겨찾기에 추가되었습니다',
+                });
+
+            })
+            .catch((err) => {
+                console.error(err);
+
+                messageApi.open({
+                    type: 'error',
+                    content: '즐겨찾기 추가에 실패했습니다',
+                });
+            });
+    }
+
+    // 즐겨찾기 버튼 클릭 시
+    const requestFavorite = () => {
+
+        if (!member) {
+            messageApi.open({
+                type: 'error',
+                content: '로그인이 필요한 서비스입니다',
+            });
+            return;
+        }
+
+        const body = {
+            stockId: id,
+            memberId: member.id,
+        }
+
+        updateFavorite(body);
     };
 
     useEffect(() => {
@@ -63,6 +140,9 @@ const StockDetail: React.FC = () => {
                     setLoading(false);
                 });
         }
+
+        // 즐겨찾기 상태 조회
+        checkFavoriteStatus();
     }, [id]);
 
     if (loading) {
@@ -96,8 +176,25 @@ const StockDetail: React.FC = () => {
                                                  display: 'flex',
                                                  alignContent: "center",
                                                  justifyContent: 'center'
-                                             }}>c
-                                            <StarOutlined style={{fontSize: '25px', color: '#f1c40f'}} onClick={info}/>
+                                             }}>
+                                            {/* 즐겨찾기 여부에 따라 아이콘 변경 */}
+                                            {isFavorite ? (
+                                                <StarFilled
+                                                    style={{
+                                                        fontSize: '25px',
+                                                        color: isFavorite ? '#f1c40f' : '#d3d3d3'
+                                                    }}
+                                                    onClick={requestFavorite}
+                                                />
+                                            ) : (
+                                                <StarOutlined
+                                                    style={{
+                                                        fontSize: '25px',
+                                                        color: isFavorite ? '#f1c40f' : '#d3d3d3'
+                                                    }}
+                                                    onClick={requestFavorite}
+                                                />
+                                            )}
                                         </Col>
                                     </Row>
                                     <Row id={'summary'}>
