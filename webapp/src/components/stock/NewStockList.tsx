@@ -98,7 +98,7 @@ export const NewStockList:React.FC = () => {
     return (
         <div>
             <Row>
-                <Col offset={4} span={16}>
+                <Col offset={4} span={16}  className='custom-shadow' style={{padding:'20px'}}>
                     <Tabs defaultActiveKey="COMMON" onChange={handleTabChange}>
                         <TabPane tab="일반주" key="COMMON">
                             <Table

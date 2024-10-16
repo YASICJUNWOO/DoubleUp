@@ -13,7 +13,7 @@ const onChange = (key: string) => {
 const contentTemplate = (Component: React.ReactNode) => {
     // 전달된 컴포넌트에 스타일을 적용하여 반환
     return (
-        <div id="contentTemplate" style={{marginBottom:"20px", border:'1px solid #f0f0f0', padding:'20px'}}>
+        <div id="contentTemplate" style={{marginBottom:"20px", border:'1px solid #f0f0f0', padding:'20px'}} className={'custom-shadow'}>
             {Component}
         </div>
     );

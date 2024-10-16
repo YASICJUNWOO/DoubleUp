@@ -24,10 +24,6 @@ const items: MenuItem[] = [
         //     key: '2',
         // },
         {
-            label: <Link to="/members">MemberList</Link>,
-            key: '3',
-        },
-        {
             label: '주식',
             key: '주식 메뉴',
             children: [
