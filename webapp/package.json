@@ -14,19 +14,27 @@
     "@types/node": "^16.18.106",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "@types/react-lottie": "^1.2.10",
     "antd": "^5.20.3",
     "antd-style": "^3.6.3",
     "axios": "^1.7.6",
     "buffer": "^6.0.3",
+    "d3": "^7.9.0",
+    "d3-format": "^3.1.0",
+    "d3-time-format": "^4.1.0",
+    "formik": "^2.4.6",
+    "lottie-react": "^2.4.0",
     "next-plugin-antd-less": "^1.8.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-financial-charts": "^2.0.1",
     "react-highlight-words": "^0.20.0",
     "react-router-dom": "^6.26.1",
     "react-scripts": "5.0.1",
     "stream-browserify": "^3.0.0",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.4.0"
   },
   "scripts": {
     "start": "export PORT=1113 && react-scripts start",
@@ -52,8 +60,9 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost:1998",
   "devDependencies": {
+    "@types/d3-dsv": "^3.0.7",
     "@types/react-highlight-words": "^0.20.0",
     "babel-plugin-import": "^1.13.8"
   }
