@@ -23,6 +23,16 @@ const items: MenuItem[] = [
         //     label: <Link to="/signup">Sign Up</Link>,
         //     key: '2',
         // },
+    {
+        label: '홈',
+        key: '홈',
+        children: [
+            {
+                label: <Link to="/play">홈</Link>,
+                key: '홈',
+            }
+        ],
+    },
         {
             label: '주식',
             key: '주식 메뉴',

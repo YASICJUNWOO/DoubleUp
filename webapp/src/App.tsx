@@ -15,6 +15,7 @@ import NewPortfolioCreate from "./components/portfolio/create/NewPortfolioCreate
 import Login from "./components/auth/Login";
 import {AuthProvider} from "./components/auth/AuthContext";
 import Register from "./components/auth/Register";
+import Play from "./components/Play";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                     <AppHeader/>
                     <Content style={{padding: '20px', marginTop: '10px', background: '#ffffff'}}>
                         <Routes>
+                            <Route path="/play" element={<Play/>}/>
                             //============= Default Route ==============
                             {/* 루트 경로(/)를 /stocks로 리디렉션 */}
                             <Route path="/" element={<Navigate to="/stocks/rank"/>}/>

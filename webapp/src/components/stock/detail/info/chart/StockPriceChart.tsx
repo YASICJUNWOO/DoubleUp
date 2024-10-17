@@ -1,55 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {ResponsiveLine} from '@nivo/line';
-import axios from "axios";
-import {useStock} from "../../StockDetail";
 import {Alert, Spin} from "antd";
+import {StockPriceData} from "./StockChartTabs";
 
 // interface Props {
 //     stockPriceDataList: StockPriceData[];
 // }
-
-interface StockPriceData {
-    stockPriceId: number;
-    date: string;
-    openPrice: number;
-    closePrice: number;
-    highPrice: number;
-    lowPrice: number;
-    volume: number;
-}
 
 interface ChartRenderData {
     id: string;
     data: { x: string; y: number }[];
 }
 
-const StockLineChart: React.FC = () => {
-    const {stockId} = useStock();
-    const [stockPriceList, setStockPriceList] = useState<StockPriceData[]>([]);
+interface Props {
+    stockPriceList: StockPriceData[];
+}
+
+const StockLineChart: React.FC<Props> = ({stockPriceList}) => {
+
+
     const [data, setData] = useState<ChartRenderData[]>([]);
     const [minValue, setMinValue] = useState<number>(Number.MAX_VALUE);
     const [maxValue, setMaxValue] = useState<number>(Number.MIN_VALUE);
-    const [loading, setLoading] = useState<boolean>(true);
-
-    // 주식 가격 정보 가져오기 ( 일봉 )
-    useEffect(() => {
-        const fetchStockPriceList = async () => {
-            axios.get('/api/stock-prices', {
-                params: {
-                    'stockId': stockId,
-                    'periodType': 'DAILY'
-                }
-            }).then((response) => {
-                console.log("<<<<<<<Stock prices list>>>>>>", response.data);
-                setStockPriceList(response.data);
-                setLoading(false);
-            }).catch((error) => {
-                console.error("Error fetching stock prices list:", error);
-            });
-        }
-
-        fetchStockPriceList();
-    }, []);
+    const [loading, setLoading] = useState<boolean>(false);
 
     // 차트 그리기
     useEffect(() => {
