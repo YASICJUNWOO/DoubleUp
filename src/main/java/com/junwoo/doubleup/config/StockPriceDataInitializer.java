@@ -5,6 +5,7 @@ import com.junwoo.doubleup.domain.stock.repository.StockRepository;
 import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
 import com.junwoo.doubleup.domain.stockprice.repository.StockPriceRepository;
 import com.junwoo.doubleup.outapi.naverapi.CsvUtils;
+import com.junwoo.doubleup.outapi.naverapi.EtfCsvUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,10 @@ public class StockPriceDataInitializer implements DataInitializer {
         }
 		else {
 			Map<String, List<StockPrice>> stringListMap = CsvUtils.initStockPrice();
+			Map<String, List<StockPrice>> etfStringListMap = EtfCsvUtils.initStockPrice();
+
+			// 합치기
+			stringListMap.putAll(etfStringListMap);
 
 			for (String symbol : stringListMap.keySet()) {
 
