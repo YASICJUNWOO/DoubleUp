@@ -5,10 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 @Getter
@@ -25,6 +22,7 @@ public class Member extends BaseTimeEntity {
 	@Comment("이메일")
 	private String email;
 
+	@Setter
 	@Comment("비밀번호")
 	private String password;
 

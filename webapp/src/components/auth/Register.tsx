@@ -1,10 +1,10 @@
 import React from 'react';
-import {Alert, Button, Col, Form, Input, Row, Typography} from 'antd';
+import {Alert, Button, Col, Form, Input, message, Row, Typography} from 'antd';
 import {LockOutlined, MailOutlined, UserOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 
-const { Title } = Typography;
+const {Title} = Typography;
 
 const Register: React.FC = () => {
     const navigate = useNavigate();
@@ -12,24 +12,23 @@ const Register: React.FC = () => {
 
     // 폼 제출 핸들러
     const onFinish = (values: any) => {
-        const { name, email, password } = values;
+        const {name, email, password} = values;
 
         const registerRequest = () => {
-            const formData = new URLSearchParams();
-            formData.append('name', name);
-            formData.append('email', email);
-            formData.append('password', password);
 
-            axios.post('/register', formData, {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            })
+            const body = {
+                name: name,
+                email: email,
+                password: password,
+            };
+
+
+            axios.post('/api/member', body)
                 .then(response => {
-                    console.log(response);
-
                     // 회원가입 성공 후 로그인 페이지로 이동
+
                     navigate('/login');
+                    message.success('회원가입이 완료되었습니다. 로그인해주세요.');
                 })
                 .catch(error => {
                     console.log(error);
@@ -41,9 +40,9 @@ const Register: React.FC = () => {
     };
 
     return (
-        <Row justify="center" align="middle" style={{ height: '70vh' }}>
+        <Row justify="center" align="middle" style={{height: '70vh'}}>
             <Col xs={24} sm={16} md={12} lg={8}>
-                <Title level={2} style={{ textAlign: 'center' }}>
+                <Title level={2} style={{textAlign: 'center'}}>
                     회원가입
                 </Title>
                 {isError ? (
@@ -51,7 +50,7 @@ const Register: React.FC = () => {
                         message="회원가입에 실패했습니다. 다시 시도해주세요."
                         type="error"
                         showIcon
-                        style={{ marginBottom: '24px', textAlign: 'center' }}
+                        style={{marginBottom: '24px', textAlign: 'center'}}
                     />
                 ) : null}
                 <Form
@@ -63,11 +62,11 @@ const Register: React.FC = () => {
                     <Form.Item
                         name="name"
                         rules={[
-                            { required: true, message: '이름을 입력해주세요!' },
+                            {required: true, message: '이름을 입력해주세요!'},
                         ]}
                     >
                         <Input
-                            prefix={<UserOutlined />}
+                            prefix={<UserOutlined/>}
                             placeholder="이름"
                             size="large"
                         />
@@ -77,11 +76,11 @@ const Register: React.FC = () => {
                     <Form.Item
                         name="email"
                         rules={[
-                            { required: true, message: '이메일을 입력해주세요!' },
+                            {required: true, message: '이메일을 입력해주세요!'},
                         ]}
                     >
                         <Input
-                            prefix={<MailOutlined />}
+                            prefix={<MailOutlined/>}
                             placeholder="이메일"
                             size="large"
                         />
@@ -90,10 +89,10 @@ const Register: React.FC = () => {
                     {/* 비밀번호 입력 필드 */}
                     <Form.Item
                         name="password"
-                        rules={[{ required: true, message: '비밀번호를 입력해주세요!' }]}
+                        rules={[{required: true, message: '비밀번호를 입력해주세요!'}]}
                     >
                         <Input.Password
-                            prefix={<LockOutlined />}
+                            prefix={<LockOutlined/>}
                             placeholder="비밀번호"
                             size="large"
                         />

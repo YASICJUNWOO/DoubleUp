@@ -1,17 +1,15 @@
 package com.junwoo.doubleup.config;
 
 import com.junwoo.doubleup.domain.member.entity.Member;
-import com.junwoo.doubleup.domain.member.repository.MemberRepository;
+import com.junwoo.doubleup.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class MemberDataInitializer implements DataInitializer {
 
-	private final MemberRepository memberRepository;
+	private final MemberService memberService;
 
 	@Override
 	public void init() {
@@ -30,7 +28,8 @@ public class MemberDataInitializer implements DataInitializer {
 				.name("admin")
 				.build();
 
-		memberRepository.saveAll(List.of(member, admin));
+		memberService.addMember(member);
+		memberService.addMember(admin);
 	}
 
 }
