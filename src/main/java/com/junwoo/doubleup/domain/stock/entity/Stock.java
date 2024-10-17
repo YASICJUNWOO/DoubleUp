@@ -1,5 +1,6 @@
 package com.junwoo.doubleup.domain.stock.entity;
 
+import com.junwoo.doubleup.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import org.hibernate.annotations.Comment;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Stock {
+public class Stock extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

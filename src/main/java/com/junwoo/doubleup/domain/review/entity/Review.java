@@ -1,5 +1,6 @@
 package com.junwoo.doubleup.domain.review.entity;
 
+import com.junwoo.doubleup.BaseTimeEntity;
 import com.junwoo.doubleup.domain.member.entity.Member;
 import com.junwoo.doubleup.domain.stock.entity.Stock;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review {
+public class Review extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

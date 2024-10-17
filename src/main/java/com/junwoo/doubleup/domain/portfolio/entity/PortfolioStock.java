@@ -2,6 +2,7 @@ package com.junwoo.doubleup.domain.portfolio.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.junwoo.doubleup.BaseTimeEntity;
 import com.junwoo.doubleup.domain.stock.entity.Stock;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class PortfolioStock {
+public class PortfolioStock extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
