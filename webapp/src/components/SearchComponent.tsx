@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, List, Spin} from 'antd';
+import {Avatar, Input, List, Spin} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import {IStock} from "../interface/interface";
@@ -86,12 +86,17 @@ const SearchComponent: React.FC = () => {
                         <List
                             itemLayout="horizontal"
                             dataSource={searchResults}
+                            style={{ height: '400px', overflowY: 'scroll' }} // 고정 높이 및 스크롤 추가
                             renderItem={(item: IStock) => (
-                                <List.Item onClick={() => {
-                                    handleSelectStock(item.stockId);
-                                    setIsOpen(false); // 아이템 클릭 시 모달 닫기
-                                }}>
+                                <List.Item
+                                    onClick={() => {
+                                        handleSelectStock(item.stockId);
+                                        setIsOpen(false); // 아이템 클릭 시 모달 닫기
+                                    }}
+                                    extra={<div>현재가: 100</div>} // 오른쪽 끝에 현재가 추가
+                                >
                                     <List.Item.Meta
+                                        avatar={<Avatar src="https://via.placeholder.com/40" />} // 아바타 추가 (플레이스홀더 이미지 사용)
                                         title={<a href={`/stocks/${item.stockId}`}>{item.name}</a>}
                                         description={`주식 코드: ${item.symbol}`}
                                     />
