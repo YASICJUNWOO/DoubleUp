@@ -22,6 +22,7 @@ public class PortfolioService {
 	private final PortfolioRepository portfolioRepository;
 
 	private final PortfolioStockService portfolioStockService;
+	private final PortfolioGetService portfolioGetService;
 	private final MemberGetService memberGetService;
 
 	@Transactional
@@ -35,6 +36,18 @@ public class PortfolioService {
 
 		portfolio.addPortfolioStock(portfolioStocks);
 		return portfolioRepository.save(portfolio);
+	}
+
+	@Transactional
+	public Portfolio updatePortfolio(Long portfolioId, PortfolioAddRequest portfolioAddRequest) {
+		Portfolio findById = portfolioGetService.findById(portfolioId);
+
+		// PortfolioStocks 생성
+		List<PortfolioStock> portfolioStocks =
+				portfolioStockService.createPortfolioStocks(portfolioAddRequest.getPortfolioStocks());
+
+		// Portfolio 업데이트
+		return findById.update(portfolioAddRequest, portfolioStocks);
 	}
 
 }

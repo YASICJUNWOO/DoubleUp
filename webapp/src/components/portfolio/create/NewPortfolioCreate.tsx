@@ -175,15 +175,30 @@ const PortfolioCreate: React.FC<{ isEdit: boolean }> = ({isEdit}) => {
 
     // 포트폴리오 저장
     const postPortfolio = async (body: any) => {
-        axios.post('/api/portfolio', body)
-            .then(response => {
-                console.log("Portfolio saved successfully!", response.data);
 
-                setIsSuccess(true); // 성공 시 Result 화면으로 전환
-            })
-            .catch(error => {
-                console.error("There was an error saving the portfolio!", error);
-            });
+        if(isEdit && initialData) {
+            axios.patch(`/api/portfolio/${initialData.id}`, body)
+                .then(response => {
+                    console.log("Portfolio updated successfully!", response.data);
+
+                    setIsSuccess(true); // 성공 시 Result 화면으로 전환
+                })
+                .catch(error => {
+                    console.error("There was an error updating the portfolio!", error);
+                });
+        }
+        else {
+            axios.post('/api/portfolio', body)
+                .then(response => {
+                    console.log("Portfolio saved successfully!", response.data);
+
+                    setIsSuccess(true); // 성공 시 Result 화면으로 전환
+                })
+                .catch(error => {
+                    console.error("There was an error saving the portfolio!", error);
+                });
+        }
+
     }
 
     // 성공 여부에 따른 조건부 렌더링

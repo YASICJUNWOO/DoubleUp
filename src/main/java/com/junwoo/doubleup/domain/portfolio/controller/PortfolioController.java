@@ -85,6 +85,13 @@ public class PortfolioController {
 		return portfolioMapper.toResponse(portfolio, currentPriceMap);
 	}
 
+	// 포트폴리오 수정
+	@PatchMapping("/{id}")
+	public PortfolioBaseResponse update(@PathVariable(name = "id") Long id, @RequestBody PortfolioAddRequest portfolioAddRequest) {
+		Portfolio portfolio = portfolioService.updatePortfolio(id, portfolioAddRequest);
+		return portfolioMapper.toBaseResponse(portfolio);
+	}
+
 	// 포트폴리오 삭제
 	@DeleteMapping("/{id}")
 	private void delete(@PathVariable(name = "id") Long id) {
