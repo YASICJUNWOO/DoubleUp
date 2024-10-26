@@ -28,12 +28,12 @@ public interface PortfolioMapper {
 	Portfolio toEntity(Member member, PortfolioAddRequest portfolioAddRequest);
 
 	// 기본 portfolio
-	@Mapping(target = "totalAmount", source = "portfolio", qualifiedByName = "calculatePortfolioTotalAmount")
+	@Mapping(target = "totalInvestmentAmount", source = "portfolio", qualifiedByName = "calculatePortfolioTotalAmount")
 	PortfolioBaseResponse toBaseResponse(Portfolio portfolio);
 
 	// 상세 portfolio
 	@Mapping(target = "portfolioStocks", source = "portfolio.portfolioStocks", qualifiedByName = "mapStocksToResponsesWithPrices")
-	@Mapping(target = "totalAmount", source = "portfolio", qualifiedByName = "calculatePortfolioTotalAmount")
+	@Mapping(target = "totalInvestmentAmount", source = "portfolio", qualifiedByName = "calculatePortfolioTotalAmount")
 	@Mapping(target = "memberName", source = "portfolio.member.name")
 	PortfolioDetailResponse toResponse(Portfolio portfolio, @Context Map<String, BigDecimal> currentPrices);
 
@@ -62,9 +62,9 @@ public interface PortfolioMapper {
 	 */
 	// 상세 portfolio의 개별 주식
 	@Mapping(target = "currentPrice", expression = "java(currentPrice)")
-	@Mapping(target = "totalAmount", source = "portfolioStock", qualifiedByName = "calculateStockTotalAmount")
+	@Mapping(target = "investmentAmount", source = "portfolioStock", qualifiedByName = "calculateStockTotalAmount")
 	@Mapping(target = "ratio", source = "portfolioStock", qualifiedByName = "calculateRatio")
-	@Mapping(target = "currentValue", source = "portfolioStock", qualifiedByName = "calculateCurrentValue")
+	@Mapping(target = "currentAmount", source = "portfolioStock", qualifiedByName = "calculateCurrentValue")
 	@Mapping(target = "profitAndLoss", source = "portfolioStock", qualifiedByName = "calculateProfitAndLoss")
 	@Mapping(target = "profitAndLossRate", source = "portfolioStock", qualifiedByName = "calculateStockProfitAndLossRate")
 	PortfolioDetailResponse.PortfolioStockResponse toStockResponse(PortfolioStock portfolioStock, @Context BigDecimal currentPrice);

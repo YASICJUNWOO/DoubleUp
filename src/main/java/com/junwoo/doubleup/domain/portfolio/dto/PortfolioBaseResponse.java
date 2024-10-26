@@ -11,6 +11,7 @@ public class PortfolioBaseResponse {
 
     private Long id;
     private String name;
-    private BigDecimal totalAmount;
+    private BigDecimal totalInvestmentAmount;
+    private BigDecimal totalCurrentValue;
 
 }

@@ -9,7 +9,7 @@ interface PortfolioAssetPieChartProps {
 }
 
 const PortfolioAssetPieChart: React.FC<PortfolioAssetPieChartProps> = ({portfolioStocks, option}) => {
-    const totalSum = portfolioStocks.reduce((acc, stock) => acc + Number(stock.totalAmount), 0);
+    const totalSum = portfolioStocks.reduce((acc, stock) => acc + Number(stock.investmentAmount), 0);
     console.log('totalSum:', totalSum);
 
 // 차트 데이터를 option에 맞게 준비
@@ -20,7 +20,7 @@ const PortfolioAssetPieChart: React.FC<PortfolioAssetPieChartProps> = ({portfoli
             data =  portfolioStocks.map(stock => ({
                 id: stock.stock.symbol, // 주식 심볼을 고유한 ID로 사용
                 label: stock.stock.name,
-                value: stock.totalAmount > 0 ? stock.totalAmount : 0.1, // 값이 0인 항목을 방지하기 위해 최소값 설정
+                value: stock.investmentAmount > 0 ? stock.investmentAmount : 0.1, // 값이 0인 항목을 방지하기 위해 최소값 설정
             }));
         } else if (option === '유형별') {
             const typeMap: { [key: string]: number } = {};
@@ -30,7 +30,7 @@ const PortfolioAssetPieChart: React.FC<PortfolioAssetPieChartProps> = ({portfoli
                 if (!typeMap[type]) {
                     typeMap[type] = 0;
                 }
-                typeMap[type] += Number(stock.totalAmount);
+                typeMap[type] += Number(stock.investmentAmount);
             });
 
             console.log('typeMap:', typeMap);
@@ -47,7 +47,7 @@ const PortfolioAssetPieChart: React.FC<PortfolioAssetPieChartProps> = ({portfoli
                 if (!marketMap[market]) {
                     marketMap[market] = 0;
                 }
-                marketMap[market] += Number(stock.totalAmount);
+                marketMap[market] += Number(stock.investmentAmount);
             });
 
             console.log('marketMap:', marketMap);

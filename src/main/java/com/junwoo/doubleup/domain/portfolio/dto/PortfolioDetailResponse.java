@@ -14,7 +14,8 @@ public class PortfolioDetailResponse {
 	private Long id;
 	private String memberName;
 	private String name;
-	private String totalAmount;
+	private String totalInvestmentAmount; // 총 투자금액
+	private BigDecimal totalCurrentValue; // 총 평가금액
 	private List<PortfolioStockResponse> portfolioStocks;
 
 	@Getter
@@ -23,19 +24,16 @@ public class PortfolioDetailResponse {
 		private Long id;
 		private Stock stock;
 		private int quantity;
-		private String averagePrice;
 
-		//계산 값
-		// 총 매수 금액
-		private String totalAmount;
-		// 비중
-		private String ratio;
-		private BigDecimal currentPrice;
-		private BigDecimal currentValue;
+		private String ratio; // 비중
+		private String averagePrice; // 평균 단가
+		private String investmentAmount; // 각 주식의 투자금액
+		private BigDecimal currentPrice; // 현재 가격
+		private BigDecimal currentAmount; // 현재 가치
 
-		// 손익
-		private BigDecimal profitAndLoss;
-		private BigDecimal profitAndLossRate;
+		private BigDecimal profitAndLoss; // 손익
+		private BigDecimal profitAndLossRate; // 손익률
+
 	}
 
 }

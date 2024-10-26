@@ -99,7 +99,7 @@ const PortfolioList: React.FC = () => {
                                             삭제
                                         </Button>
                                     )}>
-                                    <p>Total Amount: {portfolio.totalAmount}</p>
+                                    <p>Total Amount: {portfolio.totalInvestmentAmount}</p>
                                 </Card>
                             </Link>
                         </List.Item>

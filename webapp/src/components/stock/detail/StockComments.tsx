@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {Avatar, Button, Input, List, message, Typography} from "antd";
 import axios from "axios";
-import {useAuth} from "../../../auth/AuthContext";
-import {useStock} from "../StockDetail";
+import {useAuth} from "../../auth/AuthContext";
+import {useStockOld} from "./StockDetail";
 import {useNavigate} from "react-router-dom";
-import {IMember, IStock} from "../../../../interface/interface";
+import {IMember, IStock} from "../../../interface/interface";
 import {LikeOutlined, MessageOutlined} from "@ant-design/icons";
-import {useImageErrorHandling} from "../../../../util/image-loader";
+import {useImageErrorHandling} from "../../../util/image-loader";
 
 const {TextArea} = Input;
 
@@ -20,7 +20,7 @@ interface Review {
 
 const StockComments: React.FC = () => {
 
-    const {stockId, stock} = useStock();
+    const {stockId, stock} = useStockOld();
     const {member} = useAuth();
 
     const navigate = useNavigate();

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { ConfigProvider, Tabs } from "antd";
-import { CompassOutlined, LineChartOutlined } from "@ant-design/icons";
+import React, {useEffect, useState} from "react";
+import {ConfigProvider, Tabs} from "antd";
+import {CompassOutlined, LineChartOutlined} from "@ant-design/icons";
 import StockCandleChart from "./StockCandleChart"; // 추가한 컴포넌트 가져오기
 import StockPriceChart from "./StockPriceChart";
 import axios from "axios";
-import { useStock } from "../../StockDetail";
+import {useStockOld} from "../../StockDetail";
 
 const onChange = (key: string) => {
     console.log(key);
@@ -33,7 +33,7 @@ export interface StockPriceData {
 
 const StockInfoTabs: React.FC = () => {
 
-    const {stockId} = useStock();
+    const {stockId} = useStockOld();
     const [stockPriceList, setStockPriceList] = useState<StockPriceData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 

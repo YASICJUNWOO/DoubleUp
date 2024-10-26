@@ -1,0 +1,1 @@
+export { StockDetailPage } from './stocks/stockDetail';

@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "lodash": "^4.17.21"
+    "@ant-design/charts": "^2.2.1",
+    "lodash": "^4.17.21",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.10"

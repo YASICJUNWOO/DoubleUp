@@ -1,0 +1,178 @@
+import {useStylesContext} from "../../../../context";
+import {HomeOutlined, PieChartOutlined} from "@ant-design/icons";
+import {DASHBOARD_ITEMS} from "../../../../constants";
+import {Link, useParams} from "react-router-dom";
+import {Col, message, Row, Spin} from "antd";
+import {
+    CustomerReviewsCard,
+    PageHeader,
+    StockCandleChart,
+    StockDetailHeader,
+    StockDetailSubHeader,
+    StockNews
+} from "../../../../components";
+import {Helmet} from "react-helmet-async";
+import {createContext, ReactNode, useContext, useEffect, useState} from "react";
+import {
+    deleteStockFavorite,
+    getCurrentStockPrice,
+    getStockFavorite,
+    postStockFavorite
+} from "../../../../constants/api";
+import {IStockWithPresentPrice} from "../../../../interface/interface";
+
+// StockContext 생성
+const StockContext = createContext<IStockWithPresentPrice | undefined>(undefined);
+
+// StockProvider 정의
+export const StockProvider =({stockWithPrice, children}: { stockWithPrice: IStockWithPresentPrice; children: ReactNode }) => {
+    return (
+        <StockContext.Provider value={stockWithPrice}>
+            {children}
+        </StockContext.Provider>
+    );
+};
+
+// useStockId 훅 정의
+export const useStock = () => {
+    const context = useContext(StockContext);
+
+    if (!context) {
+        throw new Error("useStockId must be used within a StockProvider");
+    }
+    return context;
+};
+
+
+export const StockDetailPage = () => {
+    const {stockId} = useParams();
+    const stylesContext = useStylesContext();
+
+    const [stockWithPrice, setStockWithPrice] = useState<IStockWithPresentPrice | undefined>(undefined);
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
+    const [favorite, setFavorite] = useState<boolean>(false);
+
+    const handleFavorite = () => {
+
+        if(favorite) {
+            deleteStockFavorite({ memberId:'1' , stockId: stockId! })
+                .then((res) => {
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
+        else{
+            postStockFavorite({ memberId:'1' , stockId: stockId! })
+                .then((res) => {
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
+
+        setFavorite((prev) => !prev)
+        message.success(`즐겨찾기 ${favorite ? '삭제' : '추가'} 완료`);
+    }
+
+    useEffect(() => {
+        getCurrentStockPrice({ stockId: stockId! })
+            .then((res) => {
+                setStockWithPrice(res.data);
+                setLoading(false); // 로딩 완료
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false); // 에러가 발생해도 로딩 완료
+            });
+
+        getStockFavorite({ memberId:'1' , stockId: stockId! })
+            .then((res) => {
+                setFavorite(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+
+    }, [stockId]);
+
+    if (loading) {
+        return <Spin size="large" />; // 로딩 중일 때 Spin 컴포넌트 표시
+    }
+
+    if (!stockWithPrice) {
+        return <div>주식 데이터를 불러오지 못했습니다.</div>; // 에러 처리
+    }
+
+
+    return (
+        <StockProvider stockWithPrice={stockWithPrice}>
+            <div>
+                <Helmet>
+                    <title>Marketing | Antd Dashboard</title>
+                </Helmet>
+                <PageHeader
+                    title="marketing dashboard"
+                    breadcrumbs={[
+                        {
+                            title: (
+                                <>
+                                    <HomeOutlined/>
+                                    <span>home</span>
+                                </>
+                            ),
+                            path: '/',
+                        },
+                        {
+                            title: (
+                                <>
+                                    <PieChartOutlined/>
+                                    <span>dashboards</span>
+                                </>
+                            ),
+                            menu: {
+                                items: DASHBOARD_ITEMS.map((d) => ({
+                                    key: d.title,
+                                    title: <Link to={d.path}>{d.title}</Link>,
+                                })),
+                            },
+                        },
+                        {
+                            title: 'marketing',
+                        },
+                    ]}
+                />
+                <Row {...stylesContext?.rowProps}>
+                    <Col xs={24} xl={16}>
+                        <Row {...stylesContext?.rowProps}>
+                            <Col span={24}>
+                                <StockDetailHeader favorite={favorite} handleFavorite={handleFavorite}/>
+                            </Col>
+
+                            <Col span={24}>
+                                <StockCandleChart title="차트"/>
+                            </Col>
+
+                            <Col span={24}>
+                                <StockNews/>
+                            </Col>
+                        </Row>
+                    </Col>
+
+                    <Col xs={24} xl={8}>
+                        <Row {...stylesContext?.rowProps}>
+                            <Col span={24}>
+                                <StockDetailSubHeader/>
+                            </Col>
+
+                            <Col span={24}>
+                                <CustomerReviewsCard title="의견"/>
+                            </Col>
+                        </Row>
+                    </Col>
+
+                </Row>
+            </div>
+        </StockProvider>
+    );
+};

@@ -110,7 +110,7 @@ const Login: React.FC = () => {
                     </Col>
                     <Col>
                         <Link
-                            to="/find"
+                            to="/find-password"
                             style={{ color: 'black' }}
                         >아이디/비밀번호 찾기</Link>
                     </Col>

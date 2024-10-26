@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Spin, Statistic, Typography} from "antd";
 import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
-import {useStock} from "./StockDetail";
+import {useStockOld} from "./StockDetail";
 import {formatNumber} from "../../../util/money";
 
 const {Text} = Typography;
@@ -25,7 +25,7 @@ interface StockPriceData {
 
 
 const StockPrice: React.FC = () => {
-    const {stockId} = useStock();
+    const {stockId} = useStockOld();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [stockPrices, setStockPrices] = useState<StockPriceData>();

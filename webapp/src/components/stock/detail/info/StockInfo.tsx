@@ -1,13 +1,12 @@
 import React from "react";
-import {Button, Descriptions, DescriptionsProps, Typography} from "antd";
-import {IStock} from "../../../../interface/interface";
-import {useStock} from "../StockDetail";
+import {Descriptions, DescriptionsProps} from "antd";
+import {useStockOld} from "../StockDetail";
 import {formatMarketCap} from "../../../../util/money";
 
 
 const StockInfo:React.FC = () => {
 
-    const { stock } = useStock();
+    const { stock } = useStockOld();
 
     if (!stock) {
         return <p>주식 정보가 없습니다.</p>;

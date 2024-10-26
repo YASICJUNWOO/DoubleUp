@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Alert, Col, message, Row, Spin, Typography} from "antd";
+import {Alert, Card, Col, message, Row, Spin, Typography} from "antd";
 import {StarFilled, StarOutlined} from "@ant-design/icons";
 import StockPrice from "./StockPrice";
 import {IStock} from "../../../interface/interface";
@@ -8,6 +8,7 @@ import {StockAnalTabs} from "./smillar/StockAnalTabs";
 import StockInfoTabs from "./info/StockInfoTabs";
 import axios from "axios";
 import {useAuth} from "../../auth/AuthContext";
+import StockComments from "./StockComments";
 
 /**
  * 특정 주식 정보를 나타내는 컴포넌트
@@ -22,7 +23,7 @@ interface StockContextType {
 
 const StockContext = createContext<StockContextType | undefined>(undefined);
 
-export const useStock = (): StockContextType => {
+export const useStockOld = (): StockContextType => {
     const context = useContext(StockContext);
 
     if (!context) {
@@ -205,6 +206,15 @@ const StockDetail: React.FC = () => {
                                     <Row id="stockInfoTabsRow">
                                         <Col span={20}>
                                             <StockInfoTabs/>
+                                        </Col>
+                                    </Row>
+                                    <Row id="stockAnalTabsRow">
+                                        <Col span={20}>
+                                            <Card
+                                                title="Comments"
+                                                className="custom-shadow" style={{height:"50vh"}}>
+                                                <StockComments/>
+                                            </Card>
                                         </Col>
                                     </Row>
                                     <Row>

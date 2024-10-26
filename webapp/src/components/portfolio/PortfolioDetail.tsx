@@ -82,7 +82,7 @@ const PortfolioDetail: React.FC = () => {
                 case 'quantity':
                     return b.quantity - a.quantity;
                 case 'totalAmount':
-                    return b.totalAmount - a.totalAmount;
+                    return b.investmentAmount - a.investmentAmount;
                 default:
                     return 0;
             }

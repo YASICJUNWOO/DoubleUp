@@ -2,7 +2,6 @@ import React from "react";
 import {ConfigProvider, Tabs} from "antd";
 import StockInfo from "./StockInfo";
 import {CompassOutlined, InfoCircleOutlined, LineChartOutlined} from "@ant-design/icons";
-import StockComments from "./StockComments";
 import StockChartTabs from "./chart/StockChartTabs";
 
 const onChange = (key: string) => {
@@ -25,7 +24,6 @@ const StockInfoTabs: React.FC = () => {
     const items = [
         {label: '차트', key: '1', children:contentTemplate(<StockChartTabs/>), icon: <LineChartOutlined/>}, // remember to pass the key prop
         {label: '상세 정보', key: '2', children: contentTemplate(<StockInfo/>), icon: <InfoCircleOutlined/>},
-        {label: '커뮤니티', key: '3', children: contentTemplate(<StockComments/>), icon: <CompassOutlined/>},
         {label: '비교', key: '4', children: contentTemplate(<span>구현예정</span>), icon: <CompassOutlined />},
     ];
 

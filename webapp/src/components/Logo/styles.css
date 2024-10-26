@@ -1,0 +1,10 @@
+.logo-link {
+  text-decoration: none;
+  color: inherit; /* 부모 요소의 텍스트 색상을 상속 */
+}
+
+.logo-link:hover,
+.logo-link:focus {
+  text-decoration: none; /* 링크에 밑줄이 생기지 않도록 */
+  color: inherit; /* 링크에 기본 색상이 적용되지 않도록 */
+}

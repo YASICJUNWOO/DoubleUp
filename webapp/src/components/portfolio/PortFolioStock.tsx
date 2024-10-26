@@ -22,7 +22,7 @@ const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
         {
             key: 'totalAmount',
             label: '총 금액',
-            children: <span>{formatMoney(stockItem.totalAmount)}</span>
+            children: <span>{formatMoney(stockItem.investmentAmount)}</span>
         },
         {
             key: 'averagePrice',
@@ -47,7 +47,7 @@ const PortFolioStock: React.FC<PortFolioStockProps> = ({stockItem}) => {
         {
             key: 'currentValue',
             label: '현재 가치',
-            children: <span>{formatMoney(stockItem.currentValue)}</span>
+            children: <span>{formatMoney(stockItem.currentAmount)}</span>
         }
     ];
 

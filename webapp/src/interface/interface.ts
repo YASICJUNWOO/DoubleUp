@@ -35,7 +35,8 @@ export interface IPortfolio {
     id: number;
     memberName: string;
     name: string;
-    totalAmount: number;
+    totalInvestmentAmount: number;
+    totalCurrentValue: number;
     portfolioStocks: PortfolioStockDetail[];
 }
 
@@ -47,10 +48,10 @@ export interface IPortfolioStock {
 }
 
 export interface PortfolioStockDetail extends IPortfolioStock {
-    totalAmount: number;
+    investmentAmount: number;
     ratio: number;
     currentPrice: number;
-    currentValue: number;
+    currentAmount: number;
     profitAndLoss: number;
     profitAndLossRate: number;
 }

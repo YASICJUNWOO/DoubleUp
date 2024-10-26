@@ -1,18 +1,18 @@
 import React from "react";
-import { format } from "d3-format";
-import { timeFormat } from "d3-time-format";
+import {format} from "d3-format";
+import {timeFormat} from "d3-time-format";
 import {
-    discontinuousTimeScaleProviderBuilder,
+    CandlestickSeries,
     Chart,
     ChartCanvas,
-    CandlestickSeries,
-    XAxis,
-    YAxis,
     CrossHairCursor,
+    discontinuousTimeScaleProviderBuilder,
+    lastVisibleItemBasedZoomAnchor,
     MouseCoordinateX,
     MouseCoordinateY,
     OHLCTooltip,
-    lastVisibleItemBasedZoomAnchor,
+    XAxis,
+    YAxis,
 } from "react-financial-charts";
 import {StockPriceData} from "./StockChartTabs";
 
@@ -21,8 +21,7 @@ const StockCandleChart: React.FC<{ stockPriceList: StockPriceData[] }> = ({ stoc
         (d) => new Date(d.date)
     );
 
-    const height = 400;
-    const width = 800;
+
     const margin = { left: 50, right: 50, top: 10, bottom: 30 };
 
     // 데이터 변환: 필드명을 CandlestickSeries에 맞게 변경
@@ -43,8 +42,8 @@ const StockCandleChart: React.FC<{ stockPriceList: StockPriceData[] }> = ({ stoc
 
     return (
         <ChartCanvas
-            height={height}
-            width={width}
+            height={400}
+            width={1000}
             margin={margin}
             data={data}
             displayXAccessor={displayXAccessor}
