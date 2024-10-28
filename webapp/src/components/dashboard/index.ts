@@ -20,6 +20,7 @@ export {
 // custom
 export { StocksTable } from './stocks';
 
+export * from './goal';
 export { PortfolioStatCard, PortfolioHeaderCard, PortfolioStockCard, PortfolioCreateModal } from './portfolio';
 
 export * from './sub';

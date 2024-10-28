@@ -6,13 +6,14 @@ import {NewStockList} from "../components/stock/NewStockList";
 import {DashboardLayout} from "../layouts/dashboards";
 import {StocksDashboardPage} from "../pages/dashboards/Stocks";
 import {
-  EcommerceDashboardPage,
-  LearningDashboardPage,
-  MarketingDashboardPage,
-  PortfolioDashboardPage,
-  ProjectsDashboardPage
+    EcommerceDashboardPage,
+    LearningDashboardPage,
+    MarketingDashboardPage,
+    PortfolioDashboardPage,
+    ProjectsDashboardPage
 } from "../pages";
 import {StockDetailPage} from "../pages/dashboards/sub";
+import {GoalSetup} from "../pages/dashboards/Goal";
 
 export const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();  // 현재 경로 정보를 가져옴.
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
         path: 'portfolio',
         element: <PortfolioDashboardPage />,
       },
+      {
+        path: 'goal',
+        element: <GoalSetup />,
+      },
   //     {
   //       path: 'social',
   //       element: <SocialDashboardPage />,
@@ -96,7 +101,7 @@ const router = createBrowserRouter([
       {
         path: 'learning',
         element: <LearningDashboardPage />,
-      },
+      }
   //     {
   //       path: 'logistics',
   //       element: <LogisticsDashboardPage />,

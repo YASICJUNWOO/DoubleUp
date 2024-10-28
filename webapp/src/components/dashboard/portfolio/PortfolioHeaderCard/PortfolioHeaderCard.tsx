@@ -1,6 +1,6 @@
 import {Button, CardProps, Flex, Space, Typography} from 'antd';
 // import { TinyColumn } from '@ant-design/charts';
-import {Card} from "../../../Card/Card";
+import {Card} from '../../../index';
 import {TinyColumn} from "@ant-design/charts"; // 커스텀 Card 컴포넌트 임포트
 
 // ChartData 타입 정의: 숫자 네 개로 구성된 배열

@@ -251,7 +251,11 @@ export const PortfolioDashboardPage = () => {
 
     // 빈 카드 수 계산
     const emptyCards = useCallback(() => {
-        return portfolioList.length % 4 === 0 ? 0 : 4 - (portfolioList.length % 4);
+        const totalCards = portfolioList.length + 1; // +1 for PlusCircle
+        const remainder = totalCards % 4;
+        console.log('totalCards', totalCards);
+        console.log('remainder', remainder);
+        return remainder === 0 ? 0 : 4 - remainder;
     }, [portfolioList]);
 
     // 포트폴리오 목록을 가져오는 함수
@@ -397,11 +401,12 @@ export const PortfolioDashboardPage = () => {
             />
             <Row {...stylesContext?.rowProps}>
                 {/* 포트폴리오 목록을 접고 펼치는 토글 버튼 */}
-                <Col span={24}>
-                    <Button onClick={togglePortfolioList}>
-                        {isPortfolioListExpanded ? "포트폴리오 목록 접기" : "포트폴리오 목록 펼치기"}
-                    </Button>
-                </Col>
+                {/*todo : 버튼 ui 고도화 후 주석 해제*/}
+                {/*<Col span={24}>*/}
+                {/*    <Button onClick={togglePortfolioList}>*/}
+                {/*        {isPortfolioListExpanded ? "포트폴리오 목록 접기" : "포트폴리오 목록 펼치기"}*/}
+                {/*    </Button>*/}
+                {/*</Col>*/}
 
                 {/* isPortfolioListExpanded가 true일 때만 포트폴리오 목록 렌더링 */}
                 {isPortfolioListExpanded && portfolioList?.map((portfolio: IPortfolio) => (
@@ -429,8 +434,9 @@ export const PortfolioDashboardPage = () => {
                 )}
 
                 {/* 빈 칸을 카드로 채우기 */}
-                {Array(emptyCards).fill(() => 0 ).map((_, index) => (
+                {Array(emptyCards()).fill(0).map((_, index) => (
                     <Col xs={24} sm={12} lg={6} key={`empty-card-${index}`}>
+                        {/* 빈 카드 공간 */}
                     </Col>
                 ))}
 

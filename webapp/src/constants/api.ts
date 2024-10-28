@@ -2,6 +2,7 @@ import axios from "axios";
 import {
     DELETE_STOCK_FAVORITE,
     GET_CURRENT_STOCK_PRICE,
+    GET_NEWS_LIST_BY_STOCK,
     GET_PORTFOLIO_DETAIL,
     GET_PORTFOLIO_LIST,
     GET_STOCK_DETAIL,
@@ -35,6 +36,10 @@ export const getCurrentStockPrice = async (queryParams: { [key: string]: string 
 
 export const getStockFavorite = async (queryParams: { [key: string]: string }) => {
     return axios.get(createUrlWithParams(GET_STOCK_FAVORITE, {}, queryParams));
+}
+
+export const getNewsListByStock = async (queryParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_NEWS_LIST_BY_STOCK, {}, queryParams));
 }
 
 // [[ ===================== POST ===================== ]]

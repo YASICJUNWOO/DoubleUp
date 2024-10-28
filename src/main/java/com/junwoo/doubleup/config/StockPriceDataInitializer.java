@@ -10,10 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 @Slf4j
 @Component
@@ -23,12 +21,6 @@ public class StockPriceDataInitializer implements DataInitializer {
 	private final StockPriceRepository stockPriceRepository;
 
 	private final StockRepository stockRepository;
-
-	// 랜덤값 생성 메서드
-	public static BigDecimal getRandomPrice(double min, double max) {
-		Random random = new Random();
-		return BigDecimal.valueOf(min + (max - min) * random.nextDouble()).setScale(2, BigDecimal.ROUND_HALF_UP);
-	}
 
 	@Override
 	public void init() {

@@ -37,4 +37,9 @@ public class StockGetService {
 		// todo: 예외 처리
 		return stockRepository.findAll();
 	}
+
+	@Transactional(readOnly = true)
+	public Stock findAllBySymbol(String symbol) {
+		return stockRepository.findBySymbol(symbol).orElseThrow(() -> new IllegalArgumentException("해당 주식이 존재하지 않습니다."));
+	}
 }

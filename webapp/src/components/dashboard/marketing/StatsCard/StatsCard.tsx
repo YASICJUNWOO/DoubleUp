@@ -1,7 +1,7 @@
 import {CardProps, Col, Flex, Row, Tag, Typography} from 'antd';
 // import { TinyColumn } from '@ant-design/charts';
 import CountUp from 'react-countup'; // CountUp을 사용하여 숫자를 애니메이션 효과로 표시
-import {Card} from "../../../Card/Card"; // 커스텀 Card 컴포넌트 임포트
+import {Card} from '../../../index'; // 커스텀 Card 컴포넌트 임포트
 
 // ChartData 타입 정의: 숫자 네 개로 구성된 배열
 type ChartData = [number, number, number, number];

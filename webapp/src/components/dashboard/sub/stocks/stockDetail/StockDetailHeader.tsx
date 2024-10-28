@@ -1,6 +1,5 @@
-import {Avatar, Button, CardProps, Flex, Space, Typography} from "antd";
+import {Avatar, Button, Card, CardProps, Flex, Space, Typography} from "antd";
 import {useImageErrorHandling} from "../../../../../util/image-loader";
-import {Card} from "../../../../Card/Card";
 import {green, red} from "@ant-design/colors";
 import {StarFilled, StarOutlined} from "@ant-design/icons";
 import {useStock} from "../../../../../pages/dashboards/sub/stocks/stockDetail";

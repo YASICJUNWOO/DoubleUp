@@ -11,13 +11,11 @@ public class TotalDataInitializer implements DataInitializer {
 	private final MemberDataInitializer memberDataInitializer;
 	private final StockDataInitializer stockDataInitializer;
 	private final StockPriceDataInitializer stockPriceDataInitializer;
-	private final PortfolioDataInitializer portfolioDataInitializer;
 
 	@PostConstruct
 	public void init() {
 		memberDataInitializer.init();
 		stockDataInitializer.init();
 		stockPriceDataInitializer.init();
-		portfolioDataInitializer.init();
 	}
 }

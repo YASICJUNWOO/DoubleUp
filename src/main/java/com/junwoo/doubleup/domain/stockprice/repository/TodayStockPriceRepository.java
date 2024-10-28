@@ -62,11 +62,11 @@ public class TodayStockPriceRepository {
     public void fetchStockPricesAsync() {
 
         while(true){
+            log.info("TODAY STOCK PRICE 데이터를 업데이트합니다.");
             List<Stock> all = stockRepository.findAll();
 
             //50개씩
             for (int i = 0; i < all.size(); i += 50) {
-                log.info("i : {}", i);
                 int count = 0;  // 심볼의 개수를 추적할 변수
 
                 StringBuilder sb = new StringBuilder();
@@ -88,6 +88,9 @@ public class TodayStockPriceRepository {
     }
 
     public void exportToCSV() throws IOException {
+
+        log.info("TODAY STOCK PRICE 데이터를 CSV 파일로 내보냅니다.");
+
         try (CSVWriter writer = new CSVWriter(new FileWriter(EXPORT_PATH))) {
             // CSV 헤더 작성
             String[] header = {"Stock Symbol", "Date", "Open Price", "Close Price", "Current Price",
@@ -111,7 +114,6 @@ public class TodayStockPriceRepository {
                         stockPrice.getVolume().toString()  // Volume
                 };
 
-                log.info("Exporting today stock price data: {}", row);
                 writer.writeNext(row);
             }
         }

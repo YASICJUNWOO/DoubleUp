@@ -16,10 +16,11 @@ import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {
     deleteStockFavorite,
     getCurrentStockPrice,
+    getNewsListByStock,
     getStockFavorite,
     postStockFavorite
 } from "../../../../constants/api";
-import {IStockWithPresentPrice} from "../../../../interface/interface";
+import {INews, IStockWithPresentPrice} from "../../../../interface/interface";
 
 // StockContext 생성
 const StockContext = createContext<IStockWithPresentPrice | undefined>(undefined);
@@ -49,6 +50,8 @@ export const StockDetailPage = () => {
     const stylesContext = useStylesContext();
 
     const [stockWithPrice, setStockWithPrice] = useState<IStockWithPresentPrice | undefined>(undefined);
+    const [newsList, setNewsList] = useState<INews[]>([]);
+
     const [loading, setLoading] = useState(true); // 로딩 상태 추가
     const [favorite, setFavorite] = useState<boolean>(false);
 
@@ -93,6 +96,15 @@ export const StockDetailPage = () => {
             .catch((err) => {
                 console.error(err);
             });
+
+        getNewsListByStock({ stockId: stockId! })
+            .then((res) => {
+                setNewsList(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+            }
+        );
 
     }, [stockId]);
 
@@ -154,7 +166,7 @@ export const StockDetailPage = () => {
                             </Col>
 
                             <Col span={24}>
-                                <StockNews/>
+                                <StockNews data = {newsList}/>
                             </Col>
                         </Row>
                     </Col>

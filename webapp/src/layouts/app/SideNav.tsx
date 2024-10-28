@@ -73,6 +73,11 @@ const items: MenuProps['items'] = [
             'portfolio',
             null
         ),
+        getItem(
+            <Link to={PATH_DASHBOARD.goal}>Goal</Link>,
+            'goal',
+            null
+        ),
         // getItem(<Link to={PATH_DASHBOARD.social}>Social</Link>, 'social', null),
         // getItem(<Link to={PATH_DASHBOARD.bidding}>Bidding</Link>, 'bidding', null),
         // getItem(

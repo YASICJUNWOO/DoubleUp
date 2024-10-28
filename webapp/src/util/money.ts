@@ -25,3 +25,26 @@ export const formatNumber = (num: number): string => {
 export const formatPercent = (percent: number): string => {
     return (percent * 100).toFixed(1);
 }
+
+// 금액을 단위별로 변환하는 함수
+export const formatCurrency = (value:any) => {
+    if (value === undefined) return '';
+    const num = Number(value);
+    if (num >= 1_000_000_000_000) { // 1조 단위
+        return `${(num / 1_000_000_000_000).toFixed(1)}조`;
+    } else if (num >= 100_000_000) { // 1억 단위
+        return `${(num / 100_000_000).toFixed(1)}억`;
+    } else if (num >= 10_000) { // 100만 단위
+        return `${(num / 10_000).toFixed(1)}만원`;
+    } else if (num >= 1_000) { // 1천 단위
+        return `${(num / 1_000).toFixed(1)} 천원`;
+    } else {
+        return `${num}원`; // 그 이하
+    }
+};
+
+// 입력 필드에서 단위를 제거하여 숫자로 변환하는 함수
+export const parseCurrency = (value:any) => {
+    if (!value) return '';
+    return value.replace(/조|억|만원|원/g, '');
+};

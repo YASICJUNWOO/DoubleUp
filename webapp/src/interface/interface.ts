@@ -60,3 +60,23 @@ export interface Template {
     name:string,
     rates:{type:string, rate:number}[]
 }
+
+// ================================= NEWS ================================================
+
+export interface INews {
+    id: string;
+    title: string;
+    summary: string;
+    imageUrl: string;
+    totalContent: string | null;
+
+    source: ISource;
+}
+
+export interface ISource {
+    code: string;
+    name: string;
+    faviconUrl: string;
+    logoImageUrl: string;
+    logoImageUrlDark: string;
+}

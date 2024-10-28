@@ -1,12 +1,12 @@
 import {CardProps, Segmented} from 'antd';
 // import { TinyColumn } from '@ant-design/charts';
-import {Card} from "../../../../Card/Card";
 import ReactApexChart from "react-apexcharts";
 import {ApexOptions} from "apexcharts";
 import {useEffect, useRef, useState} from "react";
 import {getStockPricesByPeriod} from "../../../../../constants/api";
 import {StockPrice} from "../../../../../interface/interface";
-import {useStock} from "../../../../../pages/dashboards/sub/stocks/stockDetail"; // 커스텀 Card 컴포넌트 임포트
+import {useStock} from "../../../../../pages/dashboards/sub/stocks/stockDetail";
+import {Card} from "../../../../Card/Card"; // 커스텀 Card 컴포넌트 임포트
 
 const chartTypes = [
     {label: '캔들 차트', value: 'candlestick'},
