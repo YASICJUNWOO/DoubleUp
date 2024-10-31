@@ -49,7 +49,6 @@ export const PortfolioStatCard = ({
                             ...others  // 추가 속성들 (CardProps)
                           }: Props) => {
 
-    console.log('value', value)
   return (
       <Card {...others}>
         <Flex vertical>

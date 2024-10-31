@@ -2,8 +2,9 @@ import {useStylesContext} from "../../../../context";
 import {HomeOutlined, PieChartOutlined} from "@ant-design/icons";
 import {DASHBOARD_ITEMS} from "../../../../constants";
 import {Link, useParams} from "react-router-dom";
-import {Col, message, Row, Spin} from "antd";
+import {Col, message, Row, Spin, Tabs} from "antd";
 import {
+    Card,
     CustomerReviewsCard,
     PageHeader,
     StockCandleChart,
@@ -21,12 +22,16 @@ import {
     postStockFavorite
 } from "../../../../constants/api";
 import {INews, IStockWithPresentPrice} from "../../../../interface/interface";
+import {CommunityCard} from "../../../../components/dashboard/sub/stocks/stockDetail/CommunityCard";
 
 // StockContext 생성
 const StockContext = createContext<IStockWithPresentPrice | undefined>(undefined);
 
 // StockProvider 정의
-export const StockProvider =({stockWithPrice, children}: { stockWithPrice: IStockWithPresentPrice; children: ReactNode }) => {
+export const StockProvider = ({stockWithPrice, children}: {
+    stockWithPrice: IStockWithPresentPrice;
+    children: ReactNode
+}) => {
     return (
         <StockContext.Provider value={stockWithPrice}>
             {children}
@@ -55,18 +60,21 @@ export const StockDetailPage = () => {
     const [loading, setLoading] = useState(true); // 로딩 상태 추가
     const [favorite, setFavorite] = useState<boolean>(false);
 
+
+    const [activeTabKey, setActiveTabKey] = useState('1'); // 선택된 탭 키 관리
+
+
     const handleFavorite = () => {
 
-        if(favorite) {
-            deleteStockFavorite({ memberId:'1' , stockId: stockId! })
+        if (favorite) {
+            deleteStockFavorite({memberId: '1', stockId: stockId!})
                 .then((res) => {
                 })
                 .catch((err) => {
                     console.error(err);
                 });
-        }
-        else{
-            postStockFavorite({ memberId:'1' , stockId: stockId! })
+        } else {
+            postStockFavorite({memberId: '1', stockId: stockId!})
                 .then((res) => {
                 })
                 .catch((err) => {
@@ -79,7 +87,7 @@ export const StockDetailPage = () => {
     }
 
     useEffect(() => {
-        getCurrentStockPrice({ stockId: stockId! })
+        getCurrentStockPrice({stockId: stockId!})
             .then((res) => {
                 setStockWithPrice(res.data);
                 setLoading(false); // 로딩 완료
@@ -89,7 +97,7 @@ export const StockDetailPage = () => {
                 setLoading(false); // 에러가 발생해도 로딩 완료
             });
 
-        getStockFavorite({ memberId:'1' , stockId: stockId! })
+        getStockFavorite({memberId: '1', stockId: stockId!})
             .then((res) => {
                 setFavorite(res.data);
             })
@@ -97,25 +105,34 @@ export const StockDetailPage = () => {
                 console.error(err);
             });
 
-        getNewsListByStock({ stockId: stockId! })
+        getNewsListByStock({stockId: stockId!})
             .then((res) => {
                 setNewsList(res.data);
             })
             .catch((err) => {
-                console.error(err);
-            }
-        );
+                    console.error(err);
+                }
+            );
 
     }, [stockId]);
 
     if (loading) {
-        return <Spin size="large" />; // 로딩 중일 때 Spin 컴포넌트 표시
+        return <Spin size="large"/>; // 로딩 중일 때 Spin 컴포넌트 표시
     }
 
     if (!stockWithPrice) {
         return <div>주식 데이터를 불러오지 못했습니다.</div>; // 에러 처리
     }
 
+    // 탭 변경 핸들러
+    const handleTabChange = (key: string) => {
+        setActiveTabKey(key); // 선택된 탭 업데이트
+    };
+
+    const items = [
+        {key: '1', label: '공지사항', content: <StockNews data={newsList}/>},
+        {key: '2', label: '커뮤니티', content: <CommunityCard/>},
+    ];
 
     return (
         <StockProvider stockWithPrice={stockWithPrice}>
@@ -166,7 +183,18 @@ export const StockDetailPage = () => {
                             </Col>
 
                             <Col span={24}>
-                                <StockNews data = {newsList}/>
+                                <Card
+                                    title={
+                                        <Tabs defaultActiveKey="1" activeKey={activeTabKey} onChange={handleTabChange}>
+                                            {items.map((item) => (
+                                                <Tabs.TabPane tab={item.label} key={item.key} />
+                                            ))}
+                                        </Tabs>
+                                    }
+                                >
+                                    {/* 선택된 탭의 content 렌더링 */}
+                                    {items.find((item) => item.key === activeTabKey)?.content}
+                                </Card>
                             </Col>
                         </Row>
                     </Col>

@@ -1,7 +1,6 @@
 import {Avatar, CardProps, List, Space, Typography} from "antd";
 import {useImageErrorHandling} from "../../../../../util/image-loader";
 import {INews} from "../../../../../interface/interface";
-import {Card} from "../../../../Card/Card";
 
 type Props = {
     data: INews[];
@@ -17,36 +16,34 @@ interface NewsArticle {
 }
 
 
-export const StockNews = ({ data, ...others }: Props) => {
+export const StockNews = ({data, ...others}: Props) => {
 
     const {getImageSrc, handleImgError} = useImageErrorHandling();
 
     return (
-        <Card title="뉴스" {...others}>
-                <List
-                    itemLayout="vertical"
-                    dataSource={data.slice(0, 5)}
-                    renderItem={(data:INews) => (
-                        <List.Item>
-                            <Space style={{ justifyContent: "space-between", width: "100%" }}>
-                                <div style={{ flex: 1 }}>
-                                    <List.Item.Meta
-                                        title={data.title}
-                                        description={data.source.name}
-                                    />
-                                    <Typography.Paragraph ellipsis={{ rows: 2 }}>
-                                        {data.title}
-                                    </Typography.Paragraph>
-                                </div>
-                                <Avatar
-                                    src={data.imageUrl}
-                                    shape="square"
-                                    style={{ width: 100, height: 100 }}
-                                />
-                            </Space>
-                        </List.Item>
-                    )}
-                />
-        </Card>
+        <List
+            itemLayout="vertical"
+            dataSource={data.slice(0, 5)}
+            renderItem={(data: INews) => (
+                <List.Item>
+                    <Space style={{justifyContent: "space-between", width: "100%"}}>
+                        <div style={{flex: 1}}>
+                            <List.Item.Meta
+                                title={data.title}
+                                description={data.source.name}
+                            />
+                            <Typography.Paragraph ellipsis={{rows: 2}}>
+                                {data.title}
+                            </Typography.Paragraph>
+                        </div>
+                        <Avatar
+                            src={data.imageUrl}
+                            shape="square"
+                            style={{width: 100, height: 100}}
+                        />
+                    </Space>
+                </List.Item>
+            )}
+        />
     );
 };

@@ -93,7 +93,7 @@ export const PortfolioStockCard = ({data, loading, error, ...others}: Props) => 
                 >
                     <CountUp
                         end={_}
-                    />%
+                    />
                 </Typography.Text>
             )
         },

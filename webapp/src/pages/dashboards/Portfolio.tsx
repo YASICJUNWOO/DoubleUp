@@ -253,8 +253,6 @@ export const PortfolioDashboardPage = () => {
     const emptyCards = useCallback(() => {
         const totalCards = portfolioList.length + 1; // +1 for PlusCircle
         const remainder = totalCards % 4;
-        console.log('totalCards', totalCards);
-        console.log('remainder', remainder);
         return remainder === 0 ? 0 : 4 - remainder;
     }, [portfolioList]);
 
@@ -275,7 +273,6 @@ export const PortfolioDashboardPage = () => {
         getPortfolioDetail({portfolioId: id.toString()})
             .then(response => {
                 setPortfolio(response.data);
-                console.log(response.data);
             })
             .catch(error => {
                 console.log(error);
@@ -299,7 +296,6 @@ export const PortfolioDashboardPage = () => {
             }
         } catch (error) {
             message.error('포트폴리오 삭제 중 오류가 발생했습니다.');
-            console.error(error);
         }
     };
 
