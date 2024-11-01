@@ -18,6 +18,9 @@ export const PATCH_PORTFOLIO: string = '/api/portfolio/{{portfolioId}}';
 export const DELETE_PORTFOLIO: string = '/api/portfolio/{{portfolioId}}';
 
 
+//================= PORTFOLIO PRICE =================
+export const POST_PORTFOLIO_PRICE_BY_DATE: string = '/api/portfolio-price';
+
 //================= STOCK =================
 
 // 주식 상세 정보

@@ -80,3 +80,9 @@ export interface ISource {
     logoImageUrl: string;
     logoImageUrlDark: string;
 }
+
+export interface IPortfolioPrice {
+    date: string;
+    investmentAmount: number;
+    valueAmount: number;
+}

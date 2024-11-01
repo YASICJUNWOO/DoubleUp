@@ -21,6 +21,6 @@ export {
 export { StocksTable } from './stocks';
 
 export * from './goal';
-export { PortfolioStatCard, PortfolioHeaderCard, PortfolioStockCard, PortfolioCreateModal } from './portfolio';
+export * from './portfolio';
 
 export * from './sub';

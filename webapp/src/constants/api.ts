@@ -10,6 +10,7 @@ import {
     GET_STOCK_LIST,
     GET_STOCK_PRICE_BY_PERIOD,
     POST_PORTFOLIO,
+    POST_PORTFOLIO_PRICE_BY_DATE,
     POST_STOCK_FAVORITE
 } from './ApiUrls';
 
@@ -53,6 +54,10 @@ export const getStockListByMarketCap = async (queryParams: { [key: string]: stri
 
 export const postStockFavorite = async (body: any) => {
     return axios.post(createUrlWithParams(POST_STOCK_FAVORITE, {}, {}), body);
+}
+
+export const postPortfolioPriceByDate = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_PORTFOLIO_PRICE_BY_DATE, {}, {}), body);
 }
 
 // [[ ===================== PATCH ===================== ]]

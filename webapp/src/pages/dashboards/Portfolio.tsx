@@ -1,4 +1,4 @@
-import {Button, ButtonProps, Col, Flex, message, Popover, Row, Segmented, Space, Tag, Typography} from 'antd';
+import {Col, Flex, message, Row, Segmented, Typography} from 'antd';
 import {
     Card,
     PageHeader,
@@ -6,16 +6,16 @@ import {
     PortfolioHeaderCard,
     PortfolioStatCard,
     PortfolioStockCard,
+    PortfolioValueChart,
 } from '../../components';
-import {ArrowUpOutlined, HomeOutlined, PieChartOutlined, PlusCircleOutlined, QuestionOutlined} from '@ant-design/icons';
+import {HomeOutlined, PieChartOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import {DASHBOARD_ITEMS} from '../../constants';
 import {Link} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
 import {useStylesContext} from '../../context';
-import React, {CSSProperties, memo, useCallback, useEffect, useMemo, useState} from "react";
-import {Area, Pie} from "@ant-design/charts";
+import React, {CSSProperties, useCallback, useEffect, useMemo, useState} from "react";
+import {Pie} from "@ant-design/charts";
 import {IPortfolio} from "../../interface/interface";
-import CountUp from "react-countup";
 import {deletePortfolio, getPortfolioDetail, getPortfolioList} from "../../constants/api";
 
 const {Text, Title} = Typography;
@@ -25,143 +25,6 @@ const chartTypes = [
     {label: '유형별', value: 'type'},
 ]
 
-const SalesChart: React.FC = memo(() => {
-    const data = useMemo(() => [
-        {
-            country: '평가 금액',
-            date: 'Jan',
-            value: 800.5,
-        },
-        {
-            country: '평가 금액',
-            date: 'Feb',
-            value: 1000.5,
-        },
-        {
-            country: '평가 금액',
-            date: 'Mar',
-            value: 902.7,
-        },
-        {
-            country: '평가 금액',
-            date: 'Apr',
-            value: 1021.9,
-        },
-        {
-            country: '평가 금액',
-            date: 'May',
-            value: 1703.7,
-        },
-        {
-            country: '평가 금액',
-            date: 'Jun',
-            value: 1767.8,
-        },
-        {
-            country: '평가 금액',
-            date: 'Jul',
-            value: 1806.2,
-        },
-        {
-            country: '평가 금액',
-            date: 'Aug',
-            value: 1803.5,
-        },
-        {
-            country: '평가 금액',
-            date: 'Sept',
-            value: 1986.6,
-        },
-        {
-            country: '평가 금액',
-            date: 'Oct',
-            value: 1952,
-        },
-        {
-            country: '평가 금액',
-            date: 'Nov',
-            value: 1910.4,
-        },
-        {
-            country: '평가 금액',
-            date: 'Dec',
-            value: 2015.8,
-        },
-        {
-            country: '투자 원금',
-            date: 'Jan',
-            value: 109.2,
-        },
-        {
-            country: '투자 원금',
-            date: 'Feb',
-            value: 1150.7,
-        },
-        {
-            country: '투자 원금',
-            date: 'Mar',
-            value: 1200.5,
-        },
-        {
-            country: '투자 원금',
-            date: 'Apr',
-            value: 1280,
-        },
-        {
-            country: '투자 원금',
-            date: 'May',
-            value: 1340.4,
-        },
-        {
-            country: '투자 원금',
-            date: 'Jun',
-            value: 1420.2,
-        },
-        {
-            country: '투자 원금',
-            date: 'Jul',
-            value: 1570.5,
-        },
-        {
-            country: '투자 원금',
-            date: 'Aug',
-            value: 1840.5,
-        },
-        {
-            country: '투자 원금',
-            date: 'Sept',
-            value: 1860.3,
-        },
-        {
-            country: '투자 원금',
-            date: 'Oct',
-            value: 1950.5,
-        },
-        {
-            country: '투자 원금',
-            date: 'Nov',
-            value: 1980,
-        },
-        {
-            country: '투자 원금',
-            date: 'Dec',
-            value: 2110.7,
-        },
-    ], []);
-
-    const config = useMemo(() => ({
-        data,
-        xField: 'date',
-        yField: 'value',
-        seriesField: 'country',
-        slider: {
-            start: 0.1,
-            end: 0.9,
-        },
-    }), [data]);
-
-    return <Area {...config} />;
-});
 
 // 포트폴리오 데이터를 가공하는 함수
 const processPortfolioDataForPieChart = (portfolio: IPortfolio): {
@@ -221,10 +84,6 @@ const CategoriesChart: React.FC<CategoriesChartProps> = ({data}) => {
 
     // @ts-ignore
     return <Pie {...config} />;
-};
-
-const POPOVER_BUTTON_PROPS: ButtonProps = {
-    type: 'text',
 };
 
 const cardStyles: CSSProperties = {
@@ -457,27 +316,9 @@ export const PortfolioDashboardPage = () => {
                 />
 
                 <Col xs={24} lg={12}>
-                    <Card
-                        title="자산 추이"
-                        extra={
-                            <Popover content="Total sales over period x" title="Total sales">
-                                <Button icon={<QuestionOutlined/>} {...POPOVER_BUTTON_PROPS} />
-                            </Popover>
-                        }
-                        style={cardStyles}
-                    >
-                        <Flex vertical gap="middle">
-                            <Space>
-                                <Title level={3} style={{margin: 0}}>
-                                    ₩ <CountUp end={24485.67}/>
-                                </Title>
-                                <Tag color="green-inverse" icon={<ArrowUpOutlined/>}>
-                                    8.7%
-                                </Tag>
-                            </Space>
-                            <SalesChart/>
-                        </Flex>
-                    </Card>
+                    <PortfolioValueChart
+                        portfolioId={selectedPortfolioId}
+                    />
                 </Col>
                 <Col xs={24} lg={12}>
                     <Card
