@@ -24,3 +24,5 @@ export * from './goal';
 export * from './portfolio';
 
 export * from './sub';
+
+export * from './default';

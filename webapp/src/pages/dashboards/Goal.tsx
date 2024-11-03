@@ -25,6 +25,7 @@ import {Card} from "../../components";
 import {formatCurrency, formatNumber} from "../../util/money";
 import {green, red} from "@ant-design/colors";
 import {useMediaQuery} from "react-responsive";
+import {postGoal} from "../../constants/api";
 
 const {Title, Text} = Typography;
 const {Step} = Steps;
@@ -86,17 +87,22 @@ export const GoalSetup = () => {
 
     const handleGoalSave = () => {
         const body = {
-            memeberId: 1,
-            initialValues: formik.values.startAmount,
+            memberId: 1,
+            initialAmount: formik.values.startAmount,
             goalAmount: formik.values.goalAmount,
             goalDate: formik.values.deadline,
-            goalDetail: tableData.map((item) => ({
-                year: item.year,
+            goalDetails: tableData.map((item) => ({
+                goalYear: item.year,
                 goalAmount: item.goalAmount,
             })),
         }
 
-        console.log(body);
+        postGoal(body).then((response) => {
+            console.log("목표 저장 결과:", response);
+        })
+            .catch((error) => {
+                console.error("목표 저장 실패:", error);
+            });
     }
 
     const renderStepContent = () => {

@@ -18,7 +18,7 @@ import {useMediaQuery} from 'react-responsive';
 import SideNav from './SideNav';
 import HeaderNav from './HeaderNav';
 import FooterNav from './FooterNav';
-import {PATH_LANDING} from '../../constants';
+import {PATH_AUTH, PATH_USER_PROFILE} from '../../constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {toggleTheme} from '../../redux/theme/themeSlice';
 import {RootState} from '../../redux/store';
@@ -48,7 +48,17 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
     {
       key: 'user-profile-link',
       label: 'profile',
-      icon: <UserOutlined />,
+        icon: <UserOutlined />,
+        onClick: () => {
+            message.open({
+                type: 'loading',
+                content: 'signing you out',
+            });
+
+            setTimeout(() => {
+                navigate(PATH_USER_PROFILE.details);
+            }, 1000);
+        },
     },
     {
       key: 'user-settings-link',
@@ -75,7 +85,8 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
         });
 
         setTimeout(() => {
-          navigate(PATH_LANDING.root);
+            console.log(`move to ${PATH_AUTH.signin}`)
+          navigate(PATH_AUTH.signin);
         }, 1000);
       },
     },

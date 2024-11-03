@@ -1,27 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {ConfigProvider, Layout, Menu, MenuProps, SiderProps} from 'antd';
-import {
-    AppstoreAddOutlined,
-    BranchesOutlined,
-    BugOutlined,
-    GithubOutlined,
-    InfoCircleOutlined,
-    PieChartOutlined,
-    ProductOutlined,
-    SecurityScanOutlined,
-    SnippetsOutlined,
-} from '@ant-design/icons';
+import {BranchesOutlined, BugOutlined, PieChartOutlined, SecurityScanOutlined,} from '@ant-design/icons';
 import {Link, useLocation} from 'react-router-dom';
-import {
-    PATH_ABOUT,
-    PATH_AUTH,
-    PATH_DASHBOARD,
-    PATH_DOCS,
-    PATH_ERROR,
-    PATH_GITHUB,
-    PATH_LANDING,
-    PATH_SITEMAP,
-} from '../../constants';
+import {PATH_AUTH, PATH_DASHBOARD, PATH_ERROR, PATH_LANDING, PATH_SITEMAP,} from '../../constants';
 import {COLOR} from '../../App';
 import {Logo} from "../../components/Logo/Logo";
 
@@ -46,8 +27,8 @@ const getItem = (
 };
 
 const items: MenuProps['items'] = [
-    getItem('Dashboards', 'dashboards', <PieChartOutlined/>, [
-        // getItem(<Link to={PATH_DASHBOARD.default}>Default</Link>, 'default', null),
+    getItem('대시보드', 'dashboards', <PieChartOutlined/>, [
+        getItem(<Link to={PATH_DASHBOARD.default}>메인</Link>, 'default', null),
         // getItem(
         //     <Link to={PATH_DASHBOARD.projects}>Projects</Link>,
         //     'projects',
@@ -64,17 +45,17 @@ const items: MenuProps['items'] = [
         //     null
         // ),
         getItem(
-            <Link to={PATH_DASHBOARD.stocks}>Stocks</Link>,
+            <Link to={PATH_DASHBOARD.stocks}>주식</Link>,
             'stocks',
             null
         ),
         getItem(
-            <Link to={PATH_DASHBOARD.portfolio}>Portfolio</Link>,
+            <Link to={PATH_DASHBOARD.portfolio}>포트폴리오</Link>,
             'portfolio',
             null
         ),
         getItem(
-            <Link to={PATH_DASHBOARD.goal}>Goal</Link>,
+            <Link to={PATH_DASHBOARD.goal}>목표 관리</Link>,
             'goal',
             null
         ),
@@ -92,12 +73,7 @@ const items: MenuProps['items'] = [
         // ),
     ]),
     getItem(
-        <Link to={PATH_ABOUT.root}>About</Link>,
-        'about',
-        <InfoCircleOutlined/>
-    ),
-    getItem(
-        <Link to={PATH_SITEMAP.root}>Sitemap</Link>,
+        <Link to={PATH_SITEMAP.root}>사이트맵</Link>,
         'sitemap',
         <BranchesOutlined/>
     ),
@@ -156,7 +132,7 @@ const items: MenuProps['items'] = [
     //     ),
     // ]),
 
-    getItem('Authentication', 'authentication', <SecurityScanOutlined/>, [
+    getItem('인증 관리', 'authentication', <SecurityScanOutlined/>, [
         getItem(<Link to={PATH_AUTH.signin}>Sign In</Link>, 'auth-signin', null),
         getItem(<Link to={PATH_AUTH.signup}>Sign Up</Link>, 'auth-signup', null),
         getItem(<Link to={PATH_AUTH.welcome}>Welcome</Link>, 'auth-welcome', null),
@@ -178,43 +154,48 @@ const items: MenuProps['items'] = [
         ),
     ]),
 
-    getItem('Errors', 'errors', <BugOutlined/>, [
+    getItem('오류', 'errors', <BugOutlined/>, [
         getItem(<Link to={PATH_ERROR.error400}>400</Link>, '400', null),
         getItem(<Link to={PATH_ERROR.error403}>403</Link>, '403', null),
         getItem(<Link to={PATH_ERROR.error404}>404</Link>, '404', null),
         getItem(<Link to={PATH_ERROR.error500}>500</Link>, '500', null),
         getItem(<Link to={PATH_ERROR.error503}>503</Link>, '503', null),
     ]),
-
-    getItem('Help', 'help', null, [], 'group'),
-    getItem(
-        <Link to={PATH_DOCS.productRoadmap} target="_blank">
-            Roadmap
-        </Link>,
-        'product-roadmap',
-        <ProductOutlined/>
-    ),
-    getItem(
-        <Link to={PATH_DOCS.components} target="_blank">
-            Components
-        </Link>,
-        'components',
-        <AppstoreAddOutlined/>
-    ),
-    getItem(
-        <Link to={PATH_DOCS.help} target="_blank">
-            Documentation
-        </Link>,
-        'documentation',
-        <SnippetsOutlined/>
-    ),
-    getItem(
-        <Link to={PATH_GITHUB.repo} target="_blank">
-            Give us a star
-        </Link>,
-        'give-us-a-star',
-        <GithubOutlined/>
-    ),
+    //
+    // getItem('Help', 'help', null, [], 'group'),
+    // getItem(
+    //     <Link to={PATH_DOCS.productRoadmap} target="_blank">
+    //         Roadmap
+    //     </Link>,
+    //     'product-roadmap',
+    //     <ProductOutlined/>
+    // ),
+    // getItem(
+    //     <Link to={PATH_DOCS.components} target="_blank">
+    //         Components
+    //     </Link>,
+    //     'components',
+    //     <AppstoreAddOutlined/>
+    // ),
+    // getItem(
+    //     <Link to={PATH_DOCS.help} target="_blank">
+    //         Documentation
+    //     </Link>,
+    //     'documentation',
+    //     <SnippetsOutlined/>
+    // ),
+    // getItem(
+    //     <Link to={PATH_GITHUB.repo} target="_blank">
+    //         Give us a star
+    //     </Link>,
+    //     'give-us-a-star',
+    //     <GithubOutlined/>
+    // ),
+    // getItem(
+    //     <Link to={PATH_ABOUT.root}>About</Link>,
+    //     'about',
+    //     <InfoCircleOutlined/>
+    // ),
 ];
 
 const rootSubmenuKeys = ['dashboards', 'corporate', 'user-profile'];

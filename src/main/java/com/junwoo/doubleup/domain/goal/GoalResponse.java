@@ -7,18 +7,11 @@ import java.util.List;
 
 @Builder
 @Data
-public class GoalRequest {
+public class GoalResponse {
 
-    private Long memberId;
+    private Long id;
     private String initialAmount;
     private String goalAmount;
-    private String goalDate;
     private List<GoalDetail> goalDetails;
 
-    @Builder
-    @Data
-    static class GoalDetail {
-        private String goalYear;
-        private String goalAmount;
-    }
 }

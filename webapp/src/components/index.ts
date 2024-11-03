@@ -8,3 +8,4 @@ export { UserAvatar } from './UserAvatar/UserAvatar';
 
 export * from './Nprogress';
 export * from './dashboard';
+export {Flex} from './Flex/Flex';

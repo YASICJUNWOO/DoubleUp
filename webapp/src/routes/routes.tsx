@@ -2,18 +2,28 @@
 import React, {ReactNode, useEffect} from "react";
 import {createBrowserRouter, Navigate, useLocation} from "react-router-dom";
 import {ErrorPage} from "../pages/errors/Error";
-import {NewStockList} from "../components/stock/NewStockList";
 import {DashboardLayout} from "../layouts/dashboards";
 import {StocksDashboardPage} from "../pages/dashboards/Stocks";
 import {
-    EcommerceDashboardPage,
-    LearningDashboardPage,
-    MarketingDashboardPage,
-    PortfolioDashboardPage,
-    ProjectsDashboardPage
+  EcommerceDashboardPage,
+  LearningDashboardPage,
+  MarketingDashboardPage,
+  PortfolioDashboardPage,
+  ProjectsDashboardPage
 } from "../pages";
 import {StockDetailPage} from "../pages/dashboards/sub";
 import {GoalSetup} from "../pages/dashboards/Goal";
+import {DefaultDashboardPage} from "../pages/dashboards/Default";
+import {
+  AccountDeactivePage,
+  PasswordResetPage,
+  SignInPage,
+  SignUpPage,
+  VerifyEmailPage,
+  WelcomePage
+} from "../pages/authentication";
+import {UserAccountLayout} from "../layouts";
+import {UserProfileDetailsPage} from "../pages/userAccount";
 
 export const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();  // 현재 경로 정보를 가져옴.
@@ -49,7 +59,7 @@ const PageWrapper = ({ children }: PageProps) => {
 const router = createBrowserRouter([
   {
     path: '/',  // 루트 경로
-    element: <Navigate to="/dashboards" />,  // 루트 경로에서 /dashboards로 리다이렉트
+    element: <Navigate to="/dashboards/default" />,  // 루트 경로에서 /dashboards로 리다이렉트
   },
   {
     path: '/dashboards',  // '/dashboards' 경로.
@@ -58,8 +68,8 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: '',  // '/dashboards/default' 경로일 때.
-        element: <NewStockList />,  // 기본 대시보드 페이지.
+        path: 'default',  // '/dashboards/default' 경로일 때.
+        element: <DefaultDashboardPage />
       },
       {
         path: 'projects',  // '/dashboards/projects' 경로일 때.
@@ -152,77 +162,77 @@ const router = createBrowserRouter([
   //     },
   //   ],
   // },
-  // {
-  //   path: '/user-profile',  // 사용자 프로필 관련 페이지들.
-  //   element: <PageWrapper children={<UserAccountLayout />} />,  // UserAccountLayout 레이아웃 사용.
-  //   errorElement: <ErrorPage />,
-  //   children: [
-  //     {
-  //       index: true,
-  //       path: 'details',  // '/user-profile/details' 경로일 때.
-  //       element: <UserProfileDetailsPage />,  // 사용자 상세 정보 페이지.
-  //     },
-  //     {
-  //       path: 'preferences',  // '/user-profile/preferences' 경로일 때.
-  //       element: <UserProfilePreferencesPage />,  // 사용자 설정 페이지.
-  //     },
-  //     // 기타 사용자 프로필 관련 페이지들.
-  //     {
-  //       path: 'information',
-  //       element: <UserProfileInformationPage />,
-  //     },
-  //     {
-  //       path: 'security',
-  //       element: <UserProfileSecurityPage />,
-  //     },
-  //     {
-  //       path: 'activity',
-  //       element: <UserProfileActivityPage />,
-  //     },
-  //     {
-  //       path: 'actions',
-  //       element: <UserProfileActionsPage />,
-  //     },
-  //     {
-  //       path: 'help',
-  //       element: <UserProfileHelpPage />,
-  //     },
-  //     {
-  //       path: 'feedback',
-  //       element: <UserProfileFeedbackPage />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: '/auth',  // 인증 관련 경로들.
-  //   errorElement: <ErrorPage />,
-  //   children: [
-  //     {
-  //       path: 'signup',  // '/auth/signup' 경로일 때.
-  //       element: <SignUpPage />,  // 회원가입 페이지.
-  //     },
-  //     {
-  //       path: 'signin',  // '/auth/signin' 경로일 때.
-  //       element: <SignInPage />,  // 로그인 페이지.
-  //     },
-  //     {
-  //       path: 'welcome',  // '/auth/welcome' 경로일 때.
-  //       element: <WelcomePage />,  // 환영 페이지.
-  //     },
-  //     {
-  //       path: 'verify-email',  // '/auth/verify-email' 경로일 때.
-  //       element: <VerifyEmailPage />,  // 이메일 인증 페이지.
-  //     },
-  //     {
-  //       path: 'password-reset',  // '/auth/password-reset' 경로일 때.
-  //       element: <PasswordResetPage />,  // 비밀번호 재설정 페이지.
-  //     },
-  //     {
-  //       path: 'account-delete',  // '/auth/account-delete' 경로일 때.
-  //       element: <AccountDeactivePage />,  // 계정 비활성화 페이지.
-  //     },
-  //   ],
-  // },
+  {
+    path: '/user-profile',  // 사용자 프로필 관련 페이지들.
+    element: <PageWrapper children={<UserAccountLayout />} />,  // UserAccountLayout 레이아웃 사용.
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        path: 'details',  // '/user-profile/details' 경로일 때.
+        element: <UserProfileDetailsPage />,  // 사용자 상세 정보 페이지.
+      },
+      // {
+      //   path: 'preferences',  // '/user-profile/preferences' 경로일 때.
+      //   element: <UserProfilePreferencesPage />,  // 사용자 설정 페이지.
+      // },
+      // // 기타 사용자 프로필 관련 페이지들.
+      // {
+      //   path: 'information',
+      //   element: <UserProfileInformationPage />,
+      // },
+      // {
+      //   path: 'security',
+      //   element: <UserProfileSecurityPage />,
+      // },
+      // {
+      //   path: 'activity',
+      //   element: <UserProfileActivityPage />,
+      // },
+      // {
+      //   path: 'actions',
+      //   element: <UserProfileActionsPage />,
+      // },
+      // {
+      //   path: 'help',
+      //   element: <UserProfileHelpPage />,
+      // },
+      // {
+      //   path: 'feedback',
+      //   element: <UserProfileFeedbackPage />,
+      // },
+    ],
+  },
+  {
+    path: '/auth',  // 인증 관련 경로들.
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: 'signup',  // '/auth/signup' 경로일 때.
+        element: <SignUpPage />,  // 회원가입 페이지.
+      },
+      {
+        path: 'signin',  // '/auth/signin' 경로일 때.
+        element: <SignInPage />,  // 로그인 페이지.
+      },
+      {
+        path: 'welcome',  // '/auth/welcome' 경로일 때.
+        element: <WelcomePage />,  // 환영 페이지.
+      },
+      {
+        path: 'verify-email',  // '/auth/verify-email' 경로일 때.
+        element: <VerifyEmailPage />,  // 이메일 인증 페이지.
+      },
+      {
+        path: 'password-reset',  // '/auth/password-reset' 경로일 때.
+        element: <PasswordResetPage />,  // 비밀번호 재설정 페이지.
+      },
+      {
+        path: 'account-delete',  // '/auth/account-delete' 경로일 때.
+        element: <AccountDeactivePage />,  // 계정 비활성화 페이지.
+      },
+    ],
+  },
   // {
   //   path: 'errors',  // 에러 페이지들.
   //   errorElement: <ErrorPage />,

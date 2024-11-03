@@ -1,5 +1,6 @@
 package com.junwoo.doubleup.domain.goal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.junwoo.doubleup.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class Goal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @OneToOne
     private Member member;
 
@@ -34,6 +36,7 @@ public class Goal {
     @Comment("목표 날짜")
     private String goalDate;
 
-    @OneToMany(mappedBy = "goal")
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GoalDetail> goalDetails;
+
 }

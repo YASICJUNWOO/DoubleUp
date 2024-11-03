@@ -1,10 +1,3 @@
-export interface IMember {
-    id: number;
-    name: string;
-    email: string;
-    role: string;
-}
-
 export interface IStock {
     stockId: number;
     symbol: string;
@@ -85,4 +78,27 @@ export interface IPortfolioPrice {
     date: string;
     investmentAmount: number;
     valueAmount: number;
+}
+
+// ================================== GOAL ==============================================
+
+export interface IGoal {
+    id: number;
+    initialAmount: number;
+    goalAmount: number;
+    goalDate: string;
+    goalDetails: IGoalDetail[];
+}
+
+export interface IGoalDetail{
+    goalYear: string;
+    goalAmount: number;
+}
+
+// ================================== AUTH ==============================================
+
+export interface IMember {
+    id: number;
+    name: string;
+    email: string;
 }

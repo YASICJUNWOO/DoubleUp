@@ -1,10 +1,8 @@
 package com.junwoo.doubleup.domain.goal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -19,6 +17,8 @@ public class GoalDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "goal_id")
     private Goal goal;

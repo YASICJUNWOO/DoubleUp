@@ -8,9 +8,7 @@ import {
     PortfolioStockCard,
     PortfolioValueChart,
 } from '../../components';
-import {HomeOutlined, PieChartOutlined, PlusCircleOutlined} from '@ant-design/icons';
-import {DASHBOARD_ITEMS} from '../../constants';
-import {Link} from 'react-router-dom';
+import {PlusCircleOutlined} from '@ant-design/icons';
 import {Helmet} from 'react-helmet-async';
 import {useStylesContext} from '../../context';
 import React, {CSSProperties, useCallback, useEffect, useMemo, useState} from "react";
@@ -226,32 +224,6 @@ export const PortfolioDashboardPage = () => {
             <PageHeader
                 title="포트폴리오"
                 breadcrumbs={[
-                    {
-                        title: (
-                            <>
-                                <HomeOutlined/>
-                                <span>home</span>
-                            </>
-                        ),
-                        path: '/',
-                    },
-                    {
-                        title: (
-                            <>
-                                <PieChartOutlined/>
-                                <span>dashboards</span>
-                            </>
-                        ),
-                        menu: {
-                            items: DASHBOARD_ITEMS.map((d) => ({
-                                key: d.title,
-                                title: <Link to={d.path}>{d.title}</Link>,
-                            })),
-                        },
-                    },
-                    {
-                        title: '포트폴리오',
-                    },
                 ]}
             />
             <Row {...stylesContext?.rowProps}>

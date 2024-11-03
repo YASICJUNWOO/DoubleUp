@@ -51,3 +51,16 @@ export const DELETE_STOCK_FAVORITE: string = '/api/favorites';
 // 종목 뉴스 리스트 조회
 export const GET_NEWS_LIST_BY_STOCK: string = '/api/news/stocks';
 
+// ================= GOAL =================
+
+// 목표 조회
+export const GET_GOAL: string = '/api/goal';
+
+// 목표 저장
+export const POST_GOAL: string = '/api/goal';
+
+// ================= AUTH =================
+
+// 로그인
+export const POST_LOGIN: string = '/login';
+

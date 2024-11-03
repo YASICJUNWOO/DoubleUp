@@ -2,6 +2,7 @@ import axios from "axios";
 import {
     DELETE_STOCK_FAVORITE,
     GET_CURRENT_STOCK_PRICE,
+    GET_GOAL,
     GET_NEWS_LIST_BY_STOCK,
     GET_PORTFOLIO_DETAIL,
     GET_PORTFOLIO_LIST,
@@ -9,6 +10,8 @@ import {
     GET_STOCK_FAVORITE,
     GET_STOCK_LIST,
     GET_STOCK_PRICE_BY_PERIOD,
+    POST_GOAL,
+    POST_LOGIN,
     POST_PORTFOLIO,
     POST_PORTFOLIO_PRICE_BY_DATE,
     POST_STOCK_FAVORITE
@@ -43,6 +46,10 @@ export const getNewsListByStock = async (queryParams: { [key: string]: string })
     return axios.get(createUrlWithParams(GET_NEWS_LIST_BY_STOCK, {}, queryParams));
 }
 
+export const getGoal = async (queryParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_GOAL, {}, queryParams));
+}
+
 // [[ ===================== POST ===================== ]]
 export const postPortfolio = async (body: any) => {
     return axios.post(POST_PORTFOLIO, body);
@@ -58,6 +65,16 @@ export const postStockFavorite = async (body: any) => {
 
 export const postPortfolioPriceByDate = async (body: any) => {
     return axios.post(createUrlWithParams(POST_PORTFOLIO_PRICE_BY_DATE, {}, {}), body);
+}
+
+export const postGoal = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_GOAL, {}, {}), body);
+}
+export const postLogin = async (body: any) => {
+    const data = new URLSearchParams();
+    data.append("email", body.email);
+    data.append("password", body.password);
+    return axios.post(createUrlWithParams(POST_LOGIN, {}, {}), body, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } , withCredentials: true });
 }
 
 // [[ ===================== PATCH ===================== ]]
