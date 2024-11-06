@@ -6,34 +6,36 @@ import {useNavigate} from "react-router-dom";
 import {formatMarketCap} from "../../../../util/money";
 
 const COLUMNS = (getImageSrc: any, handleImgError: any) => [
-    {
-        title: '순위',
-        key: 'rank',
-        width: '8%',
-        render: (_: any, __: any, index: number) => (
+   {
+    title: '순위',
+    key: 'rank',
+    width: '8%',
+    render: (_: any, __: any, index: number) => {
+        let color;
+        switch (index) {
+            case 0:
+                color = 'gold';
+                break;
+            case 1:
+                color = 'silver';
+                break;
+            case 2:
+                color = '#cd7f32';
+                break;
+            default:
+                color = 'inherit';
+        }
+        return (
             <Typography.Paragraph
                 ellipsis={{rows: 1}}
                 className="text-capitalize"
-                style={{marginBottom: 0}}
+                style={{marginBottom: 0, textAlign: 'center', color, fontSize: "16px", fontWeight: "bold"}}
             >
                 {index + 1}
             </Typography.Paragraph>
-        )
-    },
-    {
-        title: '티커',
-        dataIndex: 'symbol',
-        key: 'symbol',
-        render: (_: any, {symbol}: IStock) => (
-            <Typography.Paragraph
-                ellipsis={{rows: 1}}
-                className="text-capitalize"
-                style={{marginBottom: 0}}
-            >
-                {symbol}
-            </Typography.Paragraph>
-        ),
-    },
+        );
+    }
+},
     {
         title: '종목명',
         dataIndex: 'name',
@@ -51,10 +53,27 @@ const COLUMNS = (getImageSrc: any, handleImgError: any) => [
                         onError={() => handleImgError(record.symbol)}
                     />
                     {text}
+                    <Typography.Text type="secondary" style={{marginLeft: "10px", fontSize: "12px"}}>
+                        {record.symbol}
+                    </Typography.Text>
                 </Typography.Paragraph>
             );
         }
     },
+    // {
+    //     title: '티커',
+    //     dataIndex: 'symbol',
+    //     key: 'symbol',
+    //     render: (_: any, {symbol}: IStock) => (
+    //         <Typography.Paragraph
+    //             ellipsis={{rows: 1}}
+    //             className="text-capitalize"
+    //             style={{marginBottom: 0}}
+    //         >
+    //             {symbol}
+    //         </Typography.Paragraph>
+    //     ),
+    // },
     {
         title: "시장",
         dataIndex: "market",
@@ -89,6 +108,7 @@ export const StocksTable = ({data, ...others}: Props) => {
 
     return (
         <Table
+            size="middle"
             dataSource={data}
             columns={COLUMNS(getImageSrc, handleImgError)} // 컬럼 데이터를 함수로 전달
             className="overflow-scroll"

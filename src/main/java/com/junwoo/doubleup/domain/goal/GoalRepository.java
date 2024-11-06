@@ -2,9 +2,9 @@ package com.junwoo.doubleup.domain.goal;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface GoalRepository extends JpaRepository<Goal, Long> {
 
-    Optional<Goal> findByMemberId(Long memberId);
+    List<Goal> findAllByMemberId(Long memberId);
 }

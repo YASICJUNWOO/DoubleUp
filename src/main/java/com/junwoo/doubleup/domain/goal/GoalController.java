@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/goal")
 @RequiredArgsConstructor
@@ -17,9 +19,8 @@ public class GoalController {
     private final GoalMapper goalMapper = GoalMapper.INSTANCE;
 
     @GetMapping
-    public Goal getGoal(@RequestParam(name = "memberId") Long memberId) {
-        return goalRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자의 목표가 없습니다."));
+    public List<Goal> getGoal(@RequestParam(name = "memberId") Long memberId) {
+        return goalRepository.findAllByMemberId(memberId);
     }
 
     @PostMapping
@@ -33,6 +34,19 @@ public class GoalController {
         }
 
         return goalRepository.save(goal);
+    }
+
+    @PostMapping("/sub")
+    @Transactional
+    public Goal createSubGoal(@RequestBody SubGoalRequest subGoalRequest) {
+        Member member = memberGetService.findById(subGoalRequest.getMemberId());
+        Goal goal = goalMapper.toEntity(subGoalRequest, member);
+        return goalRepository.save(goal);
+    }
+
+    @DeleteMapping("/{goalId}")
+    public void deleteGoal(@PathVariable Long goalId) {
+        goalRepository.deleteById(goalId);
     }
 
 }

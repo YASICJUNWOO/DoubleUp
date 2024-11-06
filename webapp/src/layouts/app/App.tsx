@@ -23,6 +23,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {toggleTheme} from '../../redux/theme/themeSlice';
 import {RootState} from '../../redux/store';
 import {NProgress} from "../../components/Nprogress";
+import {useAuth} from "../../context/AuthContext";
+import {RecommendLoginModal} from "../../components/auth/recommendLoginModal";
 
 const { Content } = Layout;
 
@@ -44,20 +46,17 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   const floatBtnRef = useRef(null);
   const dispatch = useDispatch();
   const { mytheme } = useSelector((state: RootState) => state.theme);
+
+  const {logout, isAuthenticated} = useAuth();
+  const [visible, setVisible] = useState(!isAuthenticated);
+
   const items: MenuProps['items'] = [
     {
       key: 'user-profile-link',
       label: 'profile',
         icon: <UserOutlined />,
         onClick: () => {
-            message.open({
-                type: 'loading',
-                content: 'signing you out',
-            });
-
-            setTimeout(() => {
-                navigate(PATH_USER_PROFILE.details);
-            }, 1000);
+            navigate(PATH_USER_PROFILE.details)
         },
     },
     {
@@ -83,6 +82,8 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           type: 'loading',
           content: 'signing you out',
         });
+
+        logout();
 
         setTimeout(() => {
             console.log(`move to ${PATH_AUTH.signin}`)
@@ -198,7 +199,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
               <Dropdown menu={{ items }} trigger={['click']}>
                 <Flex>
                   <img
-                    src="/me.jpg"
+                    src={isAuthenticated ? "/me.jpg" : "https://ui-avatars.com/api/?name=John+Doe"}
                     alt="user profile photo"
                     height={36}
                     width={36}
@@ -236,6 +237,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
                   {() => (
                     <div ref={nodeRef} style={{ background: 'none' }}>
                       {children}
+                        {!isAuthenticated && <RecommendLoginModal visible={visible} setVisible={setVisible} />}
                     </div>
                   )}
                 </CSSTransition>

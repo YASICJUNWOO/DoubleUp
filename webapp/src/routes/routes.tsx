@@ -5,22 +5,23 @@ import {ErrorPage} from "../pages/errors/Error";
 import {DashboardLayout} from "../layouts/dashboards";
 import {StocksDashboardPage} from "../pages/dashboards/Stocks";
 import {
-  EcommerceDashboardPage,
-  LearningDashboardPage,
-  MarketingDashboardPage,
-  PortfolioDashboardPage,
-  ProjectsDashboardPage
+    EcommerceDashboardPage,
+    GoalList,
+    LearningDashboardPage,
+    MarketingDashboardPage,
+    PortfolioDashboardPage,
+    ProjectsDashboardPage
 } from "../pages";
 import {StockDetailPage} from "../pages/dashboards/sub";
 import {GoalSetup} from "../pages/dashboards/Goal";
 import {DefaultDashboardPage} from "../pages/dashboards/Default";
 import {
-  AccountDeactivePage,
-  PasswordResetPage,
-  SignInPage,
-  SignUpPage,
-  VerifyEmailPage,
-  WelcomePage
+    AccountDeactivePage,
+    PasswordResetPage,
+    SignInPage,
+    SignUpPage,
+    VerifyEmailPage,
+    WelcomePage
 } from "../pages/authentication";
 import {UserAccountLayout} from "../layouts";
 import {UserProfileDetailsPage} from "../pages/userAccount";
@@ -99,6 +100,10 @@ const router = createBrowserRouter([
       {
         path: 'goal',
         element: <GoalSetup />,
+      },
+      {
+        path: 'goals',
+        element: <GoalList />,
       },
   //     {
   //       path: 'social',

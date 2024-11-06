@@ -59,6 +59,12 @@ export const GET_GOAL: string = '/api/goal';
 // 목표 저장
 export const POST_GOAL: string = '/api/goal';
 
+// 서브 목표 저장
+export const POST_GOAL_SUB: string = '/api/goal/sub';
+
+// 목표 삭제
+export const DELETE_GOAL: string = '/api/goal/{{goalId}}';
+
 // ================= AUTH =================
 
 // 로그인

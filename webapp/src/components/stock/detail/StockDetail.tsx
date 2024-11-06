@@ -7,7 +7,7 @@ import {IStock} from "../../../interface/interface";
 import {StockAnalTabs} from "./smillar/StockAnalTabs";
 import StockInfoTabs from "./info/StockInfoTabs";
 import axios from "axios";
-import {useAuth} from "../../auth/AuthContext";
+import {useAuth} from "../../../context/AuthContext";
 import StockComments from "./StockComments";
 
 /**

@@ -25,6 +25,10 @@ import {IGoal} from "../../interface/interface";
 import {getGoal} from "../../constants/api";
 import {formatCurrency} from "../../util/money";
 import {blue, cyan, green, red, yellow} from "@ant-design/colors";
+import {useAuth} from "../../context/AuthContext";
+import {calculatePercent} from "../../util/goal";
+import {View} from '@antv/g2';
+import {gapDate} from "../../util/date"; // G2의 타입을 가져옵니다.
 
 
 const calculateProgress = (current: number, target: number) => {
@@ -96,18 +100,14 @@ const generateRandomString = () => {
 // Ant Design의 밝은 색상 코드 배열
 const colors = ['#69c0ff', '#b37feb', '#5cdbd3', '#95de64', '#ff85c0'];
 
-const DemoLiquid = () => {
+const DemoLiquid: React.FC<{ goal: IGoal }> = ({goal}) => {
 
-    // 컴포넌트가 마운트될 때 랜덤 색상을 선택
-    const [brandColor, setBrandColor] = useState('');
+    const brandColor = colors[goal.id % colors.length];
 
-    useEffect(() => {
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        setBrandColor(randomColor);
-    }, []);
+    console.log(calculatePercent(goal));
 
     const config = {
-        percent: Math.random(),
+        percent: calculatePercent(goal) / 100,
         outline: {
             border: 4,
             distance: 8,
@@ -122,31 +122,51 @@ const DemoLiquid = () => {
         },
         statistic: {
             title: {
-                content: generateRandomString(),
+                customHtml: (container: HTMLElement, view: View, datum?: any, data?: any): string => { // datum과 data를 any로 설정
+                    return `
+                    <div style="text-align: center; font-size: 16px;">
+                        <div>${goal.goalName}</div>
+                        ${goal.goalType === 'PERIOD' ?
+                        (
+                            `<div>${gapDate(goal.startDate, new Date().toISOString().split('T')[0])}일 / ${gapDate(goal.startDate, goal.endDate)}일</div>`
+                        ) :
+                        (
+                            `<div>${formatCurrency(goal.currentAmount)} / ${formatCurrency(goal.goalAmount)}</div>`
+                        )
+                    }
+                    </div>
+                `;
+                },
             },
-        }
-    };
+        },
+    }
 
-return <Liquid {...config} />;
+    return <Liquid {...config} />;
 }
 
 export const DefaultDashboardPage = () => {
+
+    const {member} = useAuth();
+
     const stylesContext = useStylesContext();
 
     const [income, setIncome] = useState<number>(2_830_000);
     const [expend, setExpend] = useState<number>(980_000);
 
-    const [goal, setGoal] = useState<IGoal>();
+    const [goal, setGoal] = useState<IGoal[]>([]);
 
     useEffect(() => {
-        getGoal({memberId: '1'})
-            .then((response) => {
-                setGoal(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (member !== null) {
+            console.log(member);
+            getGoal({memberId: member.id.toString()})
+                .then((response) => {
+                    setGoal(response.data);
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
 
     }, []);
 
@@ -159,6 +179,8 @@ export const DefaultDashboardPage = () => {
         loading: projectsLoading,
     } = useFetchData('../mocks/Projects.json');
 
+    const goalWithDetails = goal?.find(g => g.goalDetails.length > 0);
+
     return (
         <div>
             <Helmet>
@@ -170,17 +192,17 @@ export const DefaultDashboardPage = () => {
                         <Col span={24}>
                             <GetStartedCard/>
                         </Col>
-                            <Col xs={24} lg={16}>
+                        <Col xs={24} lg={16}>
                             <Card
                                 title="목표 달성률"
                                 extra={<Button>View all</Button>}
                                 bordered={false}
                             >
-                                {goal === undefined ? (
+                                {goal === undefined || goal.every(g => g.goalDetails.length === 0) ? (
                                     <Loader/>
                                 ) : (
-                                    goal.goalDetails.map((goalDetail) => {
-                                        const percent = calculateProgress(goal?.initialAmount, goalDetail.goalAmount);
+                                    goalWithDetails?.goalDetails.map((goalDetail) => {
+                                        const percent = calculateProgress(goalWithDetails?.initialAmount, goalDetail.goalAmount);
                                         const color = getProgressColor(percent);
 
                                         return percent !== undefined && (
@@ -194,7 +216,7 @@ export const DefaultDashboardPage = () => {
                                                     </Typography.Text>
                                                 </Space>
                                                 <Tooltip
-                                                    title={`목표 금액: ${goalDetail.goalAmount.toLocaleString()}원, 현재 금액: ${goal?.initialAmount.toLocaleString()}원`}
+                                                    title={`목표 금액: ${goalDetail.goalAmount.toLocaleString()}원, 현재 금액: ${goalWithDetails?.initialAmount.toLocaleString()}원`}
                                                 >
                                                     <Progress
                                                         percent={Number(percent.toFixed(2))}
@@ -208,55 +230,55 @@ export const DefaultDashboardPage = () => {
                                 )}
                             </Card>
                         </Col>
-                            <Col xs={24} lg={8}>
-                                <Row {...stylesContext?.rowProps}>
-                                    <Col span={24}>
-                                        <Card
-                                            title=" 이번달 수입"
-                                            extra={<Button icon={<EditOutlined />} />}
-                                            bordered={false}
-                                        >
-                                            <Flex vertical gap="middle">
-                                                <Typography.Title level={4} className="m-0">
-                                                    + <CountUp end={income} /> 원
-                                                </Typography.Title>
-                                            </Flex>
-                                        </Card>
-                                    </Col>
-                                    <Col span={24}>
-                                        <Card
-                                            title="이번달 지출"
-                                            extra={<Button icon={<EditOutlined />} />}
-                                            bordered={false}
-                                        >
-                                            <Flex vertical gap="middle">
-                                                <Typography.Title level={4} className="m-0">
-                                                    - <CountUp end={expend} /> 원
-                                                </Typography.Title>
-                                            </Flex>
-                                        </Card>
-                                    </Col>
-                                    <Col span={24}>
-                                        <Card
-                                            title="이번달 저축"
-                                            extra={<Button icon={<EditOutlined />} />}
-                                            bordered={false}
-                                        >
-                                            <Flex vertical gap="middle">
-                                                <Typography.Title level={4} className="m-0">
-                                                     <CountUp
-                                                         end={income - expend}
-                                                         style={{color:green[4]}}
-                                                         prefix="+"
-                                                         suffix=" "
-                                                     />
-                                                          원
-                                                </Typography.Title>
-                                            </Flex>
-                                        </Card>
-                                    </Col>
-                                </Row>
-                            </Col>
+                        <Col xs={24} lg={8}>
+                            <Row {...stylesContext?.rowProps}>
+                                <Col span={24}>
+                                    <Card
+                                        title=" 이번달 수입"
+                                        extra={<Button icon={<EditOutlined/>}/>}
+                                        bordered={false}
+                                    >
+                                        <Flex vertical gap="middle">
+                                            <Typography.Title level={4} className="m-0">
+                                                + <CountUp end={income}/> 원
+                                            </Typography.Title>
+                                        </Flex>
+                                    </Card>
+                                </Col>
+                                <Col span={24}>
+                                    <Card
+                                        title="이번달 지출"
+                                        extra={<Button icon={<EditOutlined/>}/>}
+                                        bordered={false}
+                                    >
+                                        <Flex vertical gap="middle">
+                                            <Typography.Title level={4} className="m-0">
+                                                - <CountUp end={expend}/> 원
+                                            </Typography.Title>
+                                        </Flex>
+                                    </Card>
+                                </Col>
+                                <Col span={24}>
+                                    <Card
+                                        title="이번달 저축"
+                                        extra={<Button icon={<EditOutlined/>}/>}
+                                        bordered={false}
+                                    >
+                                        <Flex vertical gap="middle">
+                                            <Typography.Title level={4} className="m-0">
+                                                <CountUp
+                                                    end={income - expend}
+                                                    style={{color: green[4]}}
+                                                    prefix="+"
+                                                    suffix=" "
+                                                />
+                                                원
+                                            </Typography.Title>
+                                        </Flex>
+                                    </Card>
+                                </Col>
+                            </Row>
+                        </Col>
                         <Col xs={24} lg={24}>
                             <Card
                                 title="예비 컴포넌트"
@@ -280,8 +302,9 @@ export const DefaultDashboardPage = () => {
                                     autoplay
                                     autoplaySpeed={3000}
                                 >
-                                    <DemoLiquid/>
-                                    <DemoLiquid/>
+                                    {goal.map((goal: IGoal) => (
+                                        <DemoLiquid goal={goal}/>
+                                    ))}
                                 </Carousel>
                             </Card>
                         </Col>

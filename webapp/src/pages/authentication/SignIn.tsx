@@ -7,6 +7,7 @@ import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import {postLogin} from "../../constants/api";
 import {IMember} from "../../interface/interface";
+import {useAuth} from "../../context/AuthContext";
 
 const {Title, Text, Link} = Typography;
 
@@ -17,6 +18,8 @@ type FieldType = {
 };
 
 export const SignInPage = () => {
+
+    const {login} = useAuth();
 
         const {
             token: {colorPrimary},
@@ -38,7 +41,13 @@ export const SignInPage = () => {
             postLogin(body)
                 .then((res) => {
 
-                    const member:IMember = res.data;
+                    const member: IMember = {
+                        id: res.data.id,
+                        name: res.data.name,
+                        email: res.data.email
+                    };
+
+                    login(member); // context에 저장
 
                     message.open({
                         type: 'success',
@@ -106,8 +115,8 @@ export const SignInPage = () => {
                             labelCol={{span: 24}}
                             wrapperCol={{span: 24}}
                             initialValues={{
-                                email: 'demo@email.com',
-                                password: 'demo123',
+                                email: 'admin',
+                                password: 'admin',
                                 remember: true,
                             }}
                             onFinish={onFinish}

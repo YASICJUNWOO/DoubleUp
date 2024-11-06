@@ -9,10 +9,14 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -45,9 +49,19 @@ public class SecurityConfig {
                         .failureHandler(loginFailureHandler) // 실패 핸들러 설정
                         .permitAll()
                 )
-                .logout(LogoutConfigurer::permitAll);
+                .logout(LogoutConfigurer::permitAll)
+                // 예외 처리 설정 추가
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(restAuthenticationEntryPoint())
+                );
 
         return http.build();
+    }
+
+    // AuthenticationEntryPoint를 401 Unauthorized를 반환하도록 설정
+    @Bean
+    public AuthenticationEntryPoint restAuthenticationEntryPoint() {
+        return new HttpStatusEntryPoint(UNAUTHORIZED);
     }
 
     @Bean

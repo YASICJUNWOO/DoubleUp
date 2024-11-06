@@ -1,4 +1,5 @@
-import {Col, Row} from 'antd';
+import type {TabsProps} from 'antd';
+import {Col, Row, Tabs} from 'antd';
 import {Card, PageHeader, StocksTable} from '../../components';
 import {useEffect, useState} from 'react';
 import {FundOutlined, LineChartOutlined,} from '@ant-design/icons';
@@ -6,20 +7,6 @@ import {Helmet} from 'react-helmet-async';
 import {usePostData} from '../../hooks';
 import {IStock} from "../../interface/interface";
 
-const PROJECT_TABS = [
-    {
-        key: 'marketCapStock',
-        label: <><LineChartOutlined /> 시가총액 TOP - 일반주</>,
-    },
-    {
-        key: 'marketCapEtf',
-        label: <><FundOutlined /> 시가총액 TOP - ETF</>,
-    },
-    {
-        key: 'onHold',
-        label: 'On Hold',
-    },
-];
 
 export const StocksDashboardPage = () => {
 
@@ -58,21 +45,30 @@ export const StocksDashboardPage = () => {
         fetchData();
     }, [projectTabsKey, postData]);
 
-    const PROJECT_TABS_CONTENT: Record<string, React.ReactNode> = {
-        marketCapStock: <StocksTable key="all-projects-table" data={projectsData} />,
-        marketCapEtf: (
-            <StocksTable
+
+    const STOCK_TABS: TabsProps['items'] = [
+        {
+            key: 'marketCapStock',
+            label: <><LineChartOutlined />시가총액 TOP - 일반주</>,
+            children: <StocksTable key="all-projects-table" data={projectsData} />,
+        },
+        {
+            key: 'marketCapEtf',
+            label: <><FundOutlined /> 시가총액 TOP - ETF</>,
+            children: <StocksTable
                 key="in-progress-projects-table"
                 data={projectsData}
-            />
-        ),
-        onHold: (
-            <StocksTable
+            />,
+        },
+        {
+            key: '3',
+            label: 'Tab 3',
+            children: <StocksTable
                 key="on-hold-projects-table"
                 data={projectsData}
-            />
-        ),
-    };
+            />,
+        },
+    ];
 
     const onProjectsTabChange = (key: string) => {
         setProjectsTabKey(key);
@@ -96,13 +92,39 @@ export const StocksDashboardPage = () => {
             >
                 <Col span={24}>
                     <Card
-                        title="Projects"
+                        title="주식 스크리너"
                         extra={null}
-                        tabList={PROJECT_TABS}
-                        activeTabKey={projectTabsKey}
-                        onTabChange={onProjectsTabChange}
                     >
-                        {PROJECT_TABS_CONTENT[projectTabsKey]}
+                        <Tabs
+                            items={STOCK_TABS}
+                            activeKey={projectTabsKey}
+                            onChange={onProjectsTabChange}
+                        />
+                    </Card>
+                </Col>
+
+                <Col span={18}>
+                    <Card
+                        title="주식 스크리너"
+                        extra={null}
+                    >
+                        <Tabs
+                            items={STOCK_TABS}
+                            activeKey={projectTabsKey}
+                            onChange={onProjectsTabChange}
+                        />
+                    </Card>
+                </Col>
+                <Col span={6}>
+                    <Card
+                        title="주식 스크리너"
+                        extra={null}
+                    >
+                        <Tabs
+                            items={STOCK_TABS}
+                            activeKey={projectTabsKey}
+                            onChange={onProjectsTabChange}
+                        />
                     </Card>
                 </Col>
             </Row>

@@ -2,7 +2,7 @@ import React from 'react';
 import {Alert, Button, Col, Divider, Form, Input, Row, Typography} from 'antd';
 import {LockOutlined, MailOutlined} from '@ant-design/icons';
 import axios from "axios";
-import {useAuth} from "./AuthContext";
+import {useAuth} from "../../context/AuthContext";
 import {Link, useNavigate} from "react-router-dom";
 
 const { Title } = Typography;

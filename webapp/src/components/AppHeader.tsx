@@ -3,7 +3,7 @@ import {Avatar, Button, Col, Drawer, Layout, Menu, MenuProps, Row, Typography} f
 import {Link, useNavigate} from 'react-router-dom';
 import {MenuOutlined} from '@ant-design/icons';
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
-import {useAuth} from "./auth/AuthContext";
+import {useAuth} from "../context/AuthContext";
 import UserMenu from "./auth/UserMenu";
 import SearchComponent from "./SearchComponent";
 

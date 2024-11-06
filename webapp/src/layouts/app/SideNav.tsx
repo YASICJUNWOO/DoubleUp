@@ -55,6 +55,11 @@ const items: MenuProps['items'] = [
             null
         ),
         getItem(
+            <Link to={PATH_DASHBOARD.goalList}>목표 목록</Link>,
+            'goals',
+            null
+        ),
+        getItem(
             <Link to={PATH_DASHBOARD.goal}>목표 관리</Link>,
             'goal',
             null

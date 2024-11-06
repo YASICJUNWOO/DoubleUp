@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import {RouterProvider} from "react-router-dom";
 import {ConfigProvider} from "antd";
-import {AuthProvider} from "./components/auth/AuthContext";
+import {AuthProvider} from "./context/AuthContext";
 import routes from "./routes/routes";
 import {StylesContext} from './context';
 import {persistor, store} from "./redux/store";
@@ -26,89 +26,89 @@ export const COLOR = {
 
 function App() {
     return (
-        <PersistGate persistor={persistor}>
-            <Provider store={store}>
-                <HelmetProvider>
-                    <ConfigProvider
-                        theme={{
-                            token: {
-                                colorPrimary: COLOR['500'],
-                                borderRadius: 6,
-                                fontFamily: 'Lato, sans-serif',
-                            },
-                            components: {
-                                Breadcrumb: {
-                                    // linkColor: 'rgba(0,0,0,.8)',
-                                    // itemColor: 'rgba(0,0,0,.8)',
-                                },
-                                Button: {
-                                    colorLink: COLOR['500'],
-                                    colorLinkActive: COLOR['700'],
-                                    colorLinkHover: COLOR['300'],
-                                },
-                                Calendar: {
-                                    colorBgContainer: 'none',
-                                },
-                                Card: {
-                                    colorBorderSecondary: COLOR['borderColor'],
-                                },
-                                Carousel: {
-                                    colorBgContainer: COLOR['800'],
-                                    dotWidth: 8,
-                                },
-                                Rate: {
-                                    colorFillContent: COLOR['100'],
-                                    colorText: COLOR['600'],
-                                },
-                                Segmented: {
-                                    colorBgLayout: COLOR['100'],
+        <AuthProvider>
+            <PersistGate persistor={persistor}>
+                <Provider store={store}>
+                    <HelmetProvider>
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    colorPrimary: COLOR['500'],
                                     borderRadius: 6,
-                                    colorTextLabel: '#000000',
+                                    fontFamily: 'Lato, sans-serif',
                                 },
-                                Table: {
-                                    borderColor: COLOR['100'],
-                                    colorBgContainer: 'none',
-                                    headerBg: 'none',
-                                    rowHoverBg: COLOR['50'],
+                                components: {
+                                    Breadcrumb: {
+                                        // linkColor: 'rgba(0,0,0,.8)',
+                                        // itemColor: 'rgba(0,0,0,.8)',
+                                    },
+                                    Button: {
+                                        colorLink: COLOR['500'],
+                                        colorLinkActive: COLOR['700'],
+                                        colorLinkHover: COLOR['300'],
+                                    },
+                                    Calendar: {
+                                        colorBgContainer: 'none',
+                                    },
+                                    Card: {
+                                        colorBorderSecondary: COLOR['borderColor'],
+                                    },
+                                    Carousel: {
+                                        colorBgContainer: COLOR['800'],
+                                        dotWidth: 8,
+                                    },
+                                    Rate: {
+                                        colorFillContent: COLOR['100'],
+                                        colorText: COLOR['600'],
+                                    },
+                                    Segmented: {
+                                        colorBgLayout: COLOR['100'],
+                                        borderRadius: 6,
+                                        colorTextLabel: '#000000',
+                                    },
+                                    Table: {
+                                        borderColor: COLOR['100'],
+                                        colorBgContainer: 'none',
+                                        headerBg: 'none',
+                                        rowHoverBg: COLOR['50'],
+                                    },
+                                    Tabs: {
+                                        colorBorderSecondary: COLOR['100'],
+                                    },
+                                    Timeline: {
+                                        dotBg: 'none',
+                                    },
+                                    Typography: {
+                                        colorLink: COLOR['500'],
+                                        colorLinkActive: COLOR['700'],
+                                        colorLinkHover: COLOR['300'],
+                                        linkHoverDecoration: 'underline',
+                                    },
                                 },
-                                Tabs: {
-                                    colorBorderSecondary: COLOR['100'],
-                                },
-                                Timeline: {
-                                    dotBg: 'none',
-                                },
-                                Typography: {
-                                    colorLink: COLOR['500'],
-                                    colorLinkActive: COLOR['700'],
-                                    colorLinkHover: COLOR['300'],
-                                    linkHoverDecoration: 'underline',
-                                },
-                            },
-                            // algorithm:
-                            // mytheme === 'dark'
-                            // ? antdTheme.darkAlgorithm
-                            // : antdTheme.defaultAlgorithm,
-                        }}
-                    >
-                        <StylesContext.Provider
-                            value={{
-                                rowProps: {
-                                    gutter: [
-                                        {xs: 8, sm: 16, md: 24, lg: 32},
-                                        {xs: 8, sm: 16, md: 24, lg: 32},
-                                    ],
-                                },
-                                carouselProps: {
-                                    autoplay: true,
-                                    dots: true,
-                                    dotPosition: 'bottom',
-                                    infinite: true,
-                                    slidesToShow: 3,
-                                    slidesToScroll: 1,
-                                },
+                                // algorithm:
+                                // mytheme === 'dark'
+                                // ? antdTheme.darkAlgorithm
+                                // : antdTheme.defaultAlgorithm,
                             }}
                         >
-                            <AuthProvider>
+                            <StylesContext.Provider
+                                value={{
+                                    rowProps: {
+                                        gutter: [
+                                            {xs: 8, sm: 16, md: 24, lg: 32},
+                                            {xs: 8, sm: 16, md: 24, lg: 32},
+                                        ],
+                                    },
+                                    carouselProps: {
+                                        autoplay: true,
+                                        dots: true,
+                                        dotPosition: 'bottom',
+                                        infinite: true,
+                                        slidesToShow: 3,
+                                        slidesToScroll: 1,
+                                    },
+                                }}
+                            >
                                 <RouterProvider router={routes}/>
                                 {/*<BrowserRouter>*/}
                                 {/*    <Layout>*/}
@@ -141,12 +141,13 @@ function App() {
                                 {/*        </Content>*/}
                                 {/*    </Layout>*/}
                                 {/*</BrowserRouter>*/}
-                            </AuthProvider>
-                        </StylesContext.Provider>
-                    </ConfigProvider>
-                </HelmetProvider>
-            </Provider>
-        </PersistGate>
+
+                            </StylesContext.Provider>
+                        </ConfigProvider>
+                    </HelmetProvider>
+                </Provider>
+            </PersistGate>
+        </AuthProvider>
     );
 }
 

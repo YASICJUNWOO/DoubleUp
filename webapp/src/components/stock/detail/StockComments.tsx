@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Avatar, Button, Input, List, message, Typography} from "antd";
 import axios from "axios";
-import {useAuth} from "../../auth/AuthContext";
+import {useAuth} from "../../../context/AuthContext";
 import {useStockOld} from "./StockDetail";
 import {useNavigate} from "react-router-dom";
 import {IMember, IStock} from "../../../interface/interface";

@@ -1,7 +1,7 @@
 import {Button, Dropdown} from 'antd';
 import {DownOutlined, LogoutOutlined, UserOutlined} from '@ant-design/icons';
 import {useNavigate} from 'react-router-dom';
-import {useAuth} from './AuthContext'; // assuming useAuth provides member and logout
+import {useAuth} from '../../context/AuthContext'; // assuming useAuth provides member and logout
 
 const UserMenu: React.FC = () => {
     const { member, logout } = useAuth();

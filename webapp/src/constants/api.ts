@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+    DELETE_GOAL,
     DELETE_STOCK_FAVORITE,
     GET_CURRENT_STOCK_PRICE,
     GET_GOAL,
@@ -11,6 +12,7 @@ import {
     GET_STOCK_LIST,
     GET_STOCK_PRICE_BY_PERIOD,
     POST_GOAL,
+    POST_GOAL_SUB,
     POST_LOGIN,
     POST_PORTFOLIO,
     POST_PORTFOLIO_PRICE_BY_DATE,
@@ -70,6 +72,11 @@ export const postPortfolioPriceByDate = async (body: any) => {
 export const postGoal = async (body: any) => {
     return axios.post(createUrlWithParams(POST_GOAL, {}, {}), body);
 }
+
+export const postSubGoal = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_GOAL_SUB, {}, {}), body);
+}
+
 export const postLogin = async (body: any) => {
     const data = new URLSearchParams();
     data.append("email", body.email);
@@ -89,6 +96,11 @@ export const deletePortfolio = async (pathParams: { [key: string]: string }) => 
 
 export const deleteStockFavorite = async (body: any) => {
     return axios.delete(createUrlWithParams(DELETE_STOCK_FAVORITE, {}, {}), {data: body});
+}
+
+// 목표 삭제
+export const deleteGoal = async (pathParams: { [key: string]: string }) => {
+    return axios.delete(createUrlWithParams(DELETE_GOAL, pathParams, {}));
 }
 
 

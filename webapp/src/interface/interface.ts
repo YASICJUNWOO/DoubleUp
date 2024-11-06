@@ -1,3 +1,5 @@
+import {GoalType, InstallFrequencyType} from "./GoalTypes";
+
 export interface IStock {
     stockId: number;
     symbol: string;
@@ -84,9 +86,20 @@ export interface IPortfolioPrice {
 
 export interface IGoal {
     id: number;
+
+    goalName: string;
+    goalType: GoalType;
+
     initialAmount: number;
     goalAmount: number;
-    goalDate: string;
+    currentAmount: number;
+
+    installmentFrequency: InstallFrequencyType;
+    installmentAmount: number;
+
+    startDate: string;
+    endDate: string;
+
     goalDetails: IGoalDetail[];
 }
 

@@ -1,4 +1,6 @@
 // utils.tsx
+import dayjs from "dayjs";
+
 export const dateFormatYYYYMMDD = (date: Date): string => {
 
     const year = date.getFullYear();
@@ -7,3 +9,7 @@ export const dateFormatYYYYMMDD = (date: Date): string => {
 
     return `${year}-${month}-${day}`;
 };
+
+export const gapDate = (startDate: string, endDate: string): number => {
+    return dayjs(endDate).diff(dayjs(startDate), 'day');
+}
