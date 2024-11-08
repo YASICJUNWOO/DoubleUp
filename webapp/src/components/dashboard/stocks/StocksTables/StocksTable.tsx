@@ -108,7 +108,7 @@ export const StocksTable = ({data, ...others}: Props) => {
 
     return (
         <Table
-            size="middle"
+            size="small"
             dataSource={data}
             columns={COLUMNS(getImageSrc, handleImgError)} // 컬럼 데이터를 함수로 전달
             className="overflow-scroll"

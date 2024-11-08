@@ -1,4 +1,5 @@
 import {GoalType, InstallFrequencyType} from "./GoalTypes";
+import {SectorTypeKey} from "./SectorType";
 
 export interface IStock {
     stockId: number;
@@ -106,6 +107,22 @@ export interface IGoal {
 export interface IGoalDetail{
     goalYear: string;
     goalAmount: number;
+}
+
+// ================================== STOCK INFO ==============================================
+export interface IStockInfo {
+    // "stock_id": 905,
+    //   "sectorCategory": "MANUFACTURING",
+    //   "sectorCode": "032604",
+    //   "sectorName": "통신 및 방송 장비 제조업",
+    //   "ceo": "한종희",
+    //   "address": "경기도 수원시 영통구  삼성로 129 (매탄동) "
+    stockId: number;
+    sectorCategory: SectorTypeKey;
+    sectorCode: string;
+    sectorName: string;
+    ceo: string;
+    address: string;
 }
 
 // ================================== AUTH ==============================================

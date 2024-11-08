@@ -9,6 +9,7 @@ import {
     GET_PORTFOLIO_LIST,
     GET_STOCK_DETAIL,
     GET_STOCK_FAVORITE,
+    GET_STOCK_INFO,
     GET_STOCK_LIST,
     GET_STOCK_PRICE_BY_PERIOD,
     POST_GOAL,
@@ -16,6 +17,7 @@ import {
     POST_LOGIN,
     POST_PORTFOLIO,
     POST_PORTFOLIO_PRICE_BY_DATE,
+    POST_SIGNUP,
     POST_STOCK_FAVORITE
 } from './ApiUrls';
 
@@ -55,10 +57,6 @@ export const getGoal = async (queryParams: { [key: string]: string }) => {
 // [[ ===================== POST ===================== ]]
 export const postPortfolio = async (body: any) => {
     return axios.post(POST_PORTFOLIO, body);
-}
-
-export const getStockListByMarketCap = async (queryParams: { [key: string]: string }) => {
-    return axios.post(createUrlWithParams(GET_STOCK_LIST, {}, queryParams));
 }
 
 export const postStockFavorite = async (body: any) => {
@@ -101,6 +99,29 @@ export const deleteStockFavorite = async (body: any) => {
 // 목표 삭제
 export const deleteGoal = async (pathParams: { [key: string]: string }) => {
     return axios.delete(createUrlWithParams(DELETE_GOAL, pathParams, {}));
+}
+
+// ======================== STOCK ========================
+
+// POST
+// 시가총액 순으로 주식 리스트 조회
+export const getStockListByMarketCap = async (queryParams: { [key: string]: string }) => {
+    return axios.post(createUrlWithParams(GET_STOCK_LIST, {}, queryParams));
+}
+
+// ======================== STOCK INFO ========================
+
+// GET
+// 개별 주식 정보 조회
+export const getStockInfo = async (queryParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_STOCK_INFO, {}, queryParams));
+}
+
+// ======================== MEMBER ========================
+
+// POST
+export const signUp = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_SIGNUP, {}, {}), body);
 }
 
 

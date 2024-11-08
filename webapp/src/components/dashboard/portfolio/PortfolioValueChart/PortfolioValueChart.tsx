@@ -8,6 +8,7 @@ import {postPortfolioPriceByDate} from "../../../../constants/api";
 import dayjs from "dayjs";
 import {formatNumber} from "../../../../util/money";
 import {Loading} from "../../shared";
+import {useAuth} from "../../../../context/AuthContext";
 
 const POPOVER_BUTTON_PROPS: ButtonProps = {
     type: 'text',
@@ -78,13 +79,16 @@ const convertPortfolioPriceToChartData = (portfolioPrices: IPortfolioPrice[]): C
 
 export const PortfolioValueChart: React.FC<Props> = memo(({portfolioId}) => {
 
+    const {member} = useAuth();
+
     const [portfolioValueData, setPortfolioValueData] = useState<IPortfolioPrice[]>([]);
     const [chartData, setChartData] = useState<ChartData[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [selectedPieChartType, setSelectedPieChartType] = useState('day');
 
     const fetchData = async () => {
         if (portfolioId !== null) {
+            setIsLoading(true);
             const response = await postPortfolioPriceByDate({
                 portfolioId,
                 startDate: '2024-08-01',
@@ -128,8 +132,18 @@ export const PortfolioValueChart: React.FC<Props> = memo(({portfolioId}) => {
             }
             style={cardStyles}
         >
-            {isLoading ?
-                <Loading/> :
+            {isLoading ? (
+                <Loading/>
+            ) : member ? (
+                    <Space direction="vertical" style={{display:"flex", alignItems:"center"}}>
+                        <Typography.Title level={4} style={{ textAlign: 'center', color: '#1890ff' }}>
+                            😊 {member?.name}님! 아직 포트폴리오를 설정하지 않으셨네요!
+                        </Typography.Title>
+                        <Typography.Paragraph style={{ textAlign: 'center', fontSize: '16px', color: '#595959' }}>
+                            지금 포트폴리오를 설정하고 성공을 향해 첫 발을 내딛어보세요!
+                        </Typography.Paragraph>
+                    </Space>
+                ) :
                 (
                     <Flex vertical gap="middle">
                         <Space>

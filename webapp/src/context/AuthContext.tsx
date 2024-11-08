@@ -27,6 +27,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     useEffect(() => {
         const storedMember = localStorage.getItem('member');
         if (storedMember) {
+            console.log('storedMember', storedMember);
             setMember(JSON.parse(storedMember));
             setIsAuthenticated(true);
         }

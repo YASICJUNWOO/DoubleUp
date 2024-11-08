@@ -3,6 +3,7 @@ package com.junwoo.doubleup.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -32,6 +33,9 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers(HttpMethod.GET, "/api/stock/info/**").permitAll() // GET 허용
+                        .requestMatchers(HttpMethod.POST, "/api/member").permitAll()  // POST 허용
+                        .requestMatchers("/api/stocks/**").permitAll()
                         .requestMatchers("/login", "/resources/**", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
                         //h2
                         .requestMatchers("/h2-console/**").permitAll()

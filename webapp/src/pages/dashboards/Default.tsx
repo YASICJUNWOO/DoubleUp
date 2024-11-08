@@ -14,7 +14,7 @@ import {
     Tooltip,
     Typography,
 } from 'antd';
-import {EditOutlined} from '@ant-design/icons';
+import {EditOutlined, SmileOutlined} from '@ant-design/icons';
 import {Helmet} from 'react-helmet-async';
 import {useStylesContext} from '../../context';
 import {useFetchData} from '../../hooks';
@@ -28,7 +28,8 @@ import {blue, cyan, green, red, yellow} from "@ant-design/colors";
 import {useAuth} from "../../context/AuthContext";
 import {calculatePercent} from "../../util/goal";
 import {View} from '@antv/g2';
-import {gapDate} from "../../util/date"; // G2의 타입을 가져옵니다.
+import {gapDate} from "../../util/date";
+import {useNavigate} from "react-router-dom"; // G2의 타입을 가져옵니다.
 
 
 const calculateProgress = (current: number, target: number) => {
@@ -147,7 +148,7 @@ const DemoLiquid: React.FC<{ goal: IGoal }> = ({goal}) => {
 export const DefaultDashboardPage = () => {
 
     const {member} = useAuth();
-
+    const navigate = useNavigate();
     const stylesContext = useStylesContext();
 
     const [income, setIncome] = useState<number>(2_830_000);
@@ -198,8 +199,28 @@ export const DefaultDashboardPage = () => {
                                 extra={<Button>View all</Button>}
                                 bordered={false}
                             >
-                                {goal === undefined || goal.every(g => g.goalDetails.length === 0) ? (
+                                {goal === undefined ? (
                                     <Loader/>
+                                ) : goal.every(g => g.goalDetails.length === 0) ? (
+                                    // 목표 생성 유도 카드
+                                    <>
+                                        <Typography.Title level={4} style={{ textAlign: 'center', color: '#1890ff' }}>
+                                            😊 {member?.name}님! 목표를 생성하러 가볼까요?
+                                        </Typography.Title>
+                                        <Typography.Paragraph style={{ textAlign: 'center', fontSize: '16px', color: '#595959' }}>
+                                            지금 목표를 설정하고 성공을 향해 첫 발을 내딛어보세요!
+                                        </Typography.Paragraph>
+                                        <Space style={{ width: '100%', justifyContent: 'center', marginTop: '20px' }}>
+                                            <Button
+                                                type="primary"
+                                                size="large"
+                                                onClick={() => navigate('/dashboards/goals')} // 목표 생성 페이지로 이동
+                                                icon={<SmileOutlined />}
+                                            >
+                                                목표 생성하러 가기
+                                            </Button>
+                                        </Space>
+                                    </>
                                 ) : (
                                     goalWithDetails?.goalDetails.map((goalDetail) => {
                                         const percent = calculateProgress(goalWithDetails?.initialAmount, goalDetail.goalAmount);

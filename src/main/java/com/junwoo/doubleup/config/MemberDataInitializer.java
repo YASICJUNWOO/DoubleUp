@@ -3,8 +3,10 @@ package com.junwoo.doubleup.config;
 import com.junwoo.doubleup.domain.member.entity.Member;
 import com.junwoo.doubleup.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MemberDataInitializer implements DataInitializer {
@@ -13,6 +15,8 @@ public class MemberDataInitializer implements DataInitializer {
 
 	@Override
 	public void init() {
+
+		log.info("Member 데이터 초기화 시작");
 
 		Member member = Member.builder()
 				.id(2L)

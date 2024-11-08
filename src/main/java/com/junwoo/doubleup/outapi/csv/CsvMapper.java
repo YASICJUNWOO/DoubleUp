@@ -1,4 +1,4 @@
-package com.junwoo.doubleup.outapi.naverapi;
+package com.junwoo.doubleup.outapi.csv;
 
 import com.junwoo.doubleup.domain.stock.entity.Stock;
 import com.junwoo.doubleup.domain.stock.entity.StockType;

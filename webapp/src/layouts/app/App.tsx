@@ -47,7 +47,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
   const dispatch = useDispatch();
   const { mytheme } = useSelector((state: RootState) => state.theme);
 
-  const {logout, isAuthenticated} = useAuth();
+  const {logout, isAuthenticated, member} = useAuth();
   const [visible, setVisible] = useState(!isAuthenticated);
 
   const items: MenuProps['items'] = [
@@ -199,7 +199,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
               <Dropdown menu={{ items }} trigger={['click']}>
                 <Flex>
                   <img
-                    src={isAuthenticated ? "/me.jpg" : "https://ui-avatars.com/api/?name=John+Doe"}
+                    src={isAuthenticated && member ? `https://ui-avatars.com/api/?name=${member.name}&background=CEF6D8` : "https://ui-avatars.com/api/?name=John+Doe"}
                     alt="user profile photo"
                     height={36}
                     width={36}

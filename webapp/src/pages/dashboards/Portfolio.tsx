@@ -15,6 +15,7 @@ import React, {CSSProperties, useCallback, useEffect, useMemo, useState} from "r
 import {Pie} from "@ant-design/charts";
 import {IPortfolio} from "../../interface/interface";
 import {deletePortfolio, getPortfolioDetail, getPortfolioList} from "../../constants/api";
+import {useAuth} from "../../context/AuthContext";
 
 const {Text, Title} = Typography;
 
@@ -90,6 +91,7 @@ const cardStyles: CSSProperties = {
 
 export const PortfolioDashboardPage = () => {
     const stylesContext = useStylesContext();
+    const {member} = useAuth();
 
     // 차트 유형을 ApexChart에서 허용하는 타입으로 제한
     const [selectedPieChartType, setSelectedPieChartType] = useState<"stock" | "type">('stock');

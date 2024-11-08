@@ -88,11 +88,10 @@ export const SignInPage = () => {
                     >
                         <Logo color="white"/>
                         <Title level={2} className="text-white">
-                            Welcome back to Antd Admin
+                            안녕하세요 DoubleUp입니다.
                         </Title>
                         <Text className="text-white" style={{fontSize: 18}}>
-                            A dynamic and versatile multipurpose dashboard utilizing Ant Design,
-                            React, TypeScript, and Vite.
+                            DoubleUp의 회원이 되어 다양한 자산 관리 서비스를 경험해보세요.
                         </Text>
                     </Flex>
                 </Col>
@@ -106,8 +105,8 @@ export const SignInPage = () => {
                     >
                         <Title className="m-0">Login</Title>
                         <Flex gap={4}>
-                            <Text>Don't have an account?</Text>
-                            <Link href={PATH_AUTH.signup}>Create an account here</Link>
+                            <Text>계정이 없으신가요?</Text>
+                            <Link href={PATH_AUTH.signup}>회원가입</Link>
                         </Flex>
                         <Form
                             name="sign-up-form"
@@ -127,7 +126,7 @@ export const SignInPage = () => {
                             <Row gutter={[8, 0]}>
                                 <Col xs={24}>
                                     <Form.Item<FieldType>
-                                        label="Email"
+                                        label="이메일"
                                         name="email"
                                         rules={[
                                             {required: true, message: 'Please input your email'},
@@ -138,7 +137,7 @@ export const SignInPage = () => {
                                 </Col>
                                 <Col xs={24}>
                                     <Form.Item<FieldType>
-                                        label="Password"
+                                        label="비밀번호"
                                         name="password"
                                         rules={[
                                             {required: true, message: 'Please input your password!'},
@@ -149,7 +148,7 @@ export const SignInPage = () => {
                                 </Col>
                                 <Col xs={24}>
                                     <Form.Item<FieldType> name="remember" valuePropName="checked">
-                                        <Checkbox>Remember me</Checkbox>
+                                        <Checkbox>자동 로그인</Checkbox>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -161,9 +160,9 @@ export const SignInPage = () => {
                                         size="middle"
                                         loading={loading}
                                     >
-                                        Continue
+                                        로그인
                                     </Button>
-                                    <Link href={PATH_AUTH.passwordReset}>Forgot password?</Link>
+                                    <Link href={PATH_AUTH.passwordReset}>ID / 비밀번호 찾기</Link>
                                 </Flex>
                             </Form.Item>
                         </Form>

@@ -36,6 +36,10 @@ export const GET_STOCK_PRICE_BY_PERIOD: string = '/api/stock-prices';
 // 현재 주식 가격 조회
 export const GET_CURRENT_STOCK_PRICE: string = '/api/stock-prices/now';
 
+// ================= STOCK INFO =================
+// 주식 정보 조회
+export const GET_STOCK_INFO: string = '/api/stock/info';
+
 // ================= STOCK FAVORITE =================
 // 단일 주식 즐겨찾기 조회
 export const GET_STOCK_FAVORITE: string = '/api/favorites';
@@ -69,4 +73,7 @@ export const DELETE_GOAL: string = '/api/goal/{{goalId}}';
 
 // 로그인
 export const POST_LOGIN: string = '/login';
+
+// 회원가입
+export const POST_SIGNUP: string = '/api/member';
 
