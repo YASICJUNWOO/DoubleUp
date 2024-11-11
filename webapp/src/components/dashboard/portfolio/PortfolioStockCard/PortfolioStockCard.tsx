@@ -68,24 +68,28 @@ export const PortfolioStockCard = ({data, loading, error, ...others}: Props) => 
             title: "수량",
             dataIndex: 'quantity',
             key: 'quantity',
+            sorter: (a, b) => a.quantity - b.quantity,
             render: (_: any) => <span className="text-capitalize">{_}</span>,
         },
         {
             title: "투자액",
             dataIndex: 'investmentAmount',
             key: 'investValue',
+            sorter: (a, b) => a.investmentAmount - b.investmentAmount,
             render: (_: any) => <span className="text-capitalize">{formatNumber(Number(_))}</span>,
         },
         {
             title: "평가액",
             dataIndex: 'currentAmount',
             key: 'currentValue',
+            sorter: (a, b) => a.currentAmount - b.currentAmount,
             render: (_: any) => <span className="text-capitalize">{formatNumber(_)}</span>,
         },
         {
             title: "수익/손실",
             dataIndex: 'profitAndLoss',
             key: 'profitAndLoss',
+            sorter: (a, b) => a.profitAndLoss - b.profitAndLoss,
             render: (_: any) => (
                 <Typography.Text
                     style={{
@@ -103,6 +107,7 @@ export const PortfolioStockCard = ({data, loading, error, ...others}: Props) => 
             title: "수익률",
             dataIndex: 'profitAndLossRate',
             key: 'profitAndLossRate',
+            sorter: (a, b) => a.profitAndLossRate - b.profitAndLossRate,
             render: (_: any) => (
                 <Typography.Text
                     style={{
