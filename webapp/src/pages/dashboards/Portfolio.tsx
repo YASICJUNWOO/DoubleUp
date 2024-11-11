@@ -20,20 +20,36 @@ import {useAuth} from "../../context/AuthContext";
 const {Text, Title} = Typography;
 
 const chartTypes = [
-    {label: '종목별' , value: 'stock'},
+    {label: '종목별', value: 'stock'},
     {label: '유형별', value: 'type'},
 ]
 
 
 // 포트폴리오 데이터를 가공하는 함수
-const processPortfolioDataForPieChart = (portfolio: IPortfolio): {
+const processPortfolioDataForPieChart = (portfolio: IPortfolio, chartType: string): {
     type: string;
     value: number
 }[] => {
-    return portfolio.portfolioStocks.map((ps) => ({
-        type: ps.stock.name, // 주식의 이름을 type으로 사용
-        value: parseFloat((ps.currentAmount / portfolio.totalInvestmentAmount * 100).toFixed(2)), // 주식의 비중을 value로 사용
-    }));
+    if (chartType === 'stock') {
+        return portfolio.portfolioStocks.map((ps) => ({
+            type: ps.stock.name, // 주식의 이름을 type으로 사용
+            value: parseFloat((ps.currentAmount / portfolio.totalInvestmentAmount * 100).toFixed(2)), // 주식의 비중을 value로 사용
+        }));
+    } else if (chartType === 'type') {
+        const typeMap = new Map<string, number>();
+        portfolio.portfolioStocks.forEach((ps) => {
+            const type = ps.stock.stockType;
+            const currentAmount = ps.currentAmount;
+            typeMap.set(type, (typeMap.get(type) || 0) + currentAmount);
+        });
+
+        return Array.from(typeMap.entries()).map(([type, totalAmount]) => ({
+            type,
+            value: parseFloat((totalAmount / portfolio.totalInvestmentAmount * 100).toFixed(2)),
+        }));
+    }
+
+    return [];
 };
 
 interface CategoriesChartProps {
@@ -190,9 +206,9 @@ export const PortfolioDashboardPage = () => {
     // 데이터를 가공하여 Pie 차트에 맞는 형식으로 변환
     const pieChartData = useMemo(() => {
         return portfolio?.portfolioStocks
-            ? processPortfolioDataForPieChart(portfolio)
+            ? processPortfolioDataForPieChart(portfolio, selectedPieChartType)
             : [];
-    }, [portfolio?.portfolioStocks]);
+    }, [portfolio?.portfolioStocks, selectedPieChartType]);
 
     // =============================================================================================
 
@@ -225,8 +241,7 @@ export const PortfolioDashboardPage = () => {
             </Helmet>
             <PageHeader
                 title="포트폴리오"
-                breadcrumbs={[
-                ]}
+                breadcrumbs={[]}
             />
             <Row {...stylesContext?.rowProps}>
                 {/* 포트폴리오 목록을 접고 펼치는 토글 버튼 */}

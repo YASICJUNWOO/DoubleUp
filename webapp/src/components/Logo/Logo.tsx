@@ -1,4 +1,4 @@
-import {Flex, FlexProps, theme, Typography} from 'antd'; // Ant Design의 Flex, Typography 및 테마 관련 모듈 임포트
+import {Flex, FlexProps, theme} from 'antd'; // Ant Design의 Flex, Typography 및 테마 관련 모듈 임포트
 import {Link} from 'react-router-dom'; // 리액트 라우터의 Link 컴포넌트 사용
 import {CSSProperties} from 'react'; // 스타일을 위한 CSSProperties 타입
 import './styles.css'; // 컴포넌트의 스타일 파일 임포트
@@ -35,46 +35,46 @@ export const Logo = ({
         <Link to={href || '#'} className="logo-link">
             <Flex gap={others.gap || 'small'} align="center" {...others}>  {/* Flex 컴포넌트로 로고와 텍스트 정렬 */}
                 <img
-                    src="/logo-no-background.png"  // 로고 이미지 경로
+                    src="/images/Group3.png"  // 로고 이미지 경로
                     alt="design sparx logo"  // 이미지 대체 텍스트
                     height={imgSize?.h || 48}  // 이미지 높이를 전달된 값이나 기본값 48로 설정
                 />
-                <Typography.Title
-                    level={5}  // 제목 레벨 설정
-                    type="secondary"  // 텍스트 색상 타입 (secondary)
-                    style={{
-                        color,  // 텍스트 색상
-                        margin: 0,  // 기본 여백 제거
-                        padding: `4px 8px`,  // 텍스트 주변 여백
-                        backgroundColor: bgColor,  // 텍스트 배경 색상
-                        borderRadius,  // 테두리 둥글기 적용
-                    }}
-                >
-                    DoubleUp  {/* 텍스트 내용 */}
-                </Typography.Title>
+                {/*<Typography.Title*/}
+                {/*    level={5}  // 제목 레벨 설정*/}
+                {/*    type="secondary"  // 텍스트 색상 타입 (secondary)*/}
+                {/*    style={{*/}
+                {/*        color,  // 텍스트 색상*/}
+                {/*        margin: 0,  // 기본 여백 제거*/}
+                {/*        padding: `4px 8px`,  // 텍스트 주변 여백*/}
+                {/*        backgroundColor: bgColor,  // 텍스트 배경 색상*/}
+                {/*        borderRadius,  // 테두리 둥글기 적용*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    DoubleUp  /!* 텍스트 내용 *!/*/}
+                {/*</Typography.Title>*/}
             </Flex>
         </Link>
     ) : (
         // 링크로 사용하지 않을 때
         <Flex gap={others.gap || 'small'} align="center" {...others}>  {/* Flex 컴포넌트로 로고와 텍스트 정렬 */}
             <img
-                src="/logo-no-background.png"  // 로고 이미지 경로
+                src="/images/Group.png"  // 로고 이미지 경로
                 alt="design sparx logo"  // 이미지 대체 텍스트
                 height={imgSize?.h || 48}  // 이미지 높이를 전달된 값이나 기본값 48로 설정
             />
-            <Typography.Title
-                level={4}  // 제목 레벨 설정
-                type="secondary"  // 텍스트 색상 타입 (secondary)
-                style={{
-                    color,  // 텍스트 색상
-                    margin: 0,  // 기본 여백 제거
-                    padding: `4px 8px`,  // 텍스트 주변 여백
-                    backgroundColor: bgColor,  // 텍스트 배경 색상
-                    borderRadius,  // 테두리 둥글기 적용
-                }}
-            >
-                Antd Admin  {/* 텍스트 내용 */}
-            </Typography.Title>
+            {/*<Typography.Title*/}
+            {/*    level={4}  // 제목 레벨 설정*/}
+            {/*    type="secondary"  // 텍스트 색상 타입 (secondary)*/}
+            {/*    style={{*/}
+            {/*        color,  // 텍스트 색상*/}
+            {/*        margin: 0,  // 기본 여백 제거*/}
+            {/*        padding: `4px 8px`,  // 텍스트 주변 여백*/}
+            {/*        backgroundColor: bgColor,  // 텍스트 배경 색상*/}
+            {/*        borderRadius,  // 테두리 둥글기 적용*/}
+            {/*    }}*/}
+            {/*>*/}
+            {/*    DoubleUp*/}
+            {/*</Typography.Title>*/}
         </Flex>
     );
 };

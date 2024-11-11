@@ -64,6 +64,7 @@ public class TodayStockPriceRepository {
         while(true){
             log.info("TODAY STOCK PRICE 데이터를 업데이트합니다.");
             List<Stock> all = stockRepository.findAll();
+            log.info("Stock의 개수 : " + all.size());
 
             //50개씩
             for (int i = 0; i < all.size(); i += 50) {

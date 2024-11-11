@@ -134,7 +134,7 @@ export const PortfolioValueChart: React.FC<Props> = memo(({portfolioId}) => {
         >
             {isLoading ? (
                 <Loading/>
-            ) : member ? (
+            ) : chartData.length === 0 ? (
                     <Space direction="vertical" style={{display:"flex", alignItems:"center"}}>
                         <Typography.Title level={4} style={{ textAlign: 'center', color: '#1890ff' }}>
                             😊 {member?.name}님! 아직 포트폴리오를 설정하지 않으셨네요!

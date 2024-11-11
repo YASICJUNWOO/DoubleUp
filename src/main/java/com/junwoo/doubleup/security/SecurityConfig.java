@@ -36,7 +36,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/stock/info/**").permitAll() // GET 허용
                         .requestMatchers(HttpMethod.POST, "/api/member").permitAll()  // POST 허용
                         .requestMatchers("/api/stocks/**").permitAll()
-                        .requestMatchers("/login", "/resources/**", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/","/login", "/resources/**", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/", "/index.html", "/static/**", "/css/**", "/js/**", "/images/**","/mocks/**").permitAll()
                         //h2
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()

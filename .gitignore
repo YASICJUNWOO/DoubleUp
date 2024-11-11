@@ -43,3 +43,5 @@ out/
 /market_cap_kr.csv
 /data/*
 /node_modules/*
+!/webapp/build/
+/src/main/resources/static/

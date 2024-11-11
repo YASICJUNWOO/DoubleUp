@@ -39,6 +39,7 @@ export const PortfolioStockCard = ({data, loading, error, ...others}: Props) => 
             title: '종목명',
             dataIndex: 'stock',  // stock 전체 객체에 접근
             key: 'name',
+            sorter: (a, b) => a.stock.name.localeCompare(b.stock.name),
             render: (_: any, record: PortfolioStockDetail) => {
                 return (
                     <Typography.Paragraph
@@ -60,6 +61,7 @@ export const PortfolioStockCard = ({data, loading, error, ...others}: Props) => 
             title: "평균 매수가",
             dataIndex: 'averagePrice',
             key: 'averagePrice',
+            sorter: (a, b) => a.averagePrice - b.averagePrice,
             render: (_: any) => <span className="text-capitalize">{formatNumber(Number(_))}</span>,
         },
         {
@@ -136,6 +138,7 @@ export const PortfolioStockCard = ({data, loading, error, ...others}: Props) => 
                 />
             ) : (
                 <Table
+                    showSorterTooltip={false}
                     dataSource={dataSource}
                     columns={columns}
                     loading={loading}
@@ -153,4 +156,4 @@ export const PortfolioStockCard = ({data, loading, error, ...others}: Props) => 
             )}
         </Card>
     );
-};
+}

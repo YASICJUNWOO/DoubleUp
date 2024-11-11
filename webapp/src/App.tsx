@@ -71,6 +71,9 @@ function App() {
                                         colorBgContainer: 'none',
                                         headerBg: 'none',
                                         rowHoverBg: COLOR['50'],
+                                        headerSortHoverBg: 'none',
+                                        headerSortActiveBg: 'none',
+                                        bodySortBg: 'none',
                                     },
                                     Tabs: {
                                         colorBorderSecondary: COLOR['100'],

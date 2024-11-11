@@ -323,7 +323,9 @@ export const DefaultDashboardPage = () => {
                                     autoplay
                                     autoplaySpeed={3000}
                                 >
-                                    {goal.map((goal: IGoal) => (
+                                    {goal.filter(
+                                        (goal: IGoal) => goal.goalDetails.length === 0
+                                    ).map((goal: IGoal) => (
                                         <DemoLiquid goal={goal}/>
                                     ))}
                                 </Carousel>

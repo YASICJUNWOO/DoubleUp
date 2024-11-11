@@ -1,5 +1,5 @@
 export {PortfolioStatCard} from './StatsCard/PortfolioStatCard';
-export {PortfolioStockCard} from './CoursesCard/PortfolioStockCard';
+export {PortfolioStockCard} from './PortfolioStockCard/PortfolioStockCard';
 export {PortfolioCreateModal} from './PortfolioCreateModal/PortfolioCreateModal';
 export {PortfolioHeaderCard} from './PortfolioHeaderCard/PortfolioHeaderCard';
 export {PortfolioValueChart} from './PortfolioValueChart/PortfolioValueChart';
