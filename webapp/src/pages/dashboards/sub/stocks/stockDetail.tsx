@@ -7,7 +7,6 @@ import {
     Card,
     CustomerReviewsCard,
     PageHeader,
-    StockCandleChart,
     StockDetailHeader,
     StockDetailSubHeader,
     StockNews
@@ -23,7 +22,8 @@ import {
 } from "../../../../constants/api";
 import {INews, IStockWithPresentPrice} from "../../../../interface/interface";
 import {CommunityCard} from "../../../../components/dashboard/sub/stocks/stockDetail/CommunityCard";
-
+import {formatNumber} from "../../../../util/money";
+import {StockChart} from "../../../../components/dashboard/sub/stocks/stockDetail/chart/StockChart";
 // StockContext 생성
 const StockContext = createContext<IStockWithPresentPrice | undefined>(undefined);
 
@@ -48,7 +48,6 @@ export const useStock = () => {
     }
     return context;
 };
-
 
 export const StockDetailPage = () => {
     const {stockId} = useParams();
@@ -138,7 +137,7 @@ export const StockDetailPage = () => {
         <StockProvider stockWithPrice={stockWithPrice}>
             <div>
                 <Helmet>
-                    <title>Marketing | Antd Dashboard</title>
+                    <title>{`${stockWithPrice.stock.name} | 현재가 : ${formatNumber(stockWithPrice.currentPrice)}`}</title>
                 </Helmet>
                 <PageHeader
                     title="marketing dashboard"
@@ -179,7 +178,7 @@ export const StockDetailPage = () => {
                             </Col>
 
                             <Col span={24}>
-                                <StockCandleChart title="차트"/>
+                                <StockChart/>
                             </Col>
 
                             <Col span={24}>
@@ -187,7 +186,7 @@ export const StockDetailPage = () => {
                                     title={
                                         <Tabs defaultActiveKey="1" activeKey={activeTabKey} onChange={handleTabChange}>
                                             {items.map((item) => (
-                                                <Tabs.TabPane tab={item.label} key={item.key} />
+                                                <Tabs.TabPane tab={item.label} key={item.key}/>
                                             ))}
                                         </Tabs>
                                     }
