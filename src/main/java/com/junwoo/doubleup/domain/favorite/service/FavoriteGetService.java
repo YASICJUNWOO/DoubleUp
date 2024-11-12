@@ -21,6 +21,6 @@ public class FavoriteGetService {
 
     @Transactional(readOnly = true)
     public List<Favorite> getFavoriteListByUserId(Long memberId) {
-        return favoriteRepository.findByMember_Id(memberId);
+        return favoriteRepository.findAllByMember_Id(memberId);
     }
 }

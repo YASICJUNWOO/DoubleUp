@@ -50,6 +50,9 @@ export const POST_STOCK_FAVORITE: string = '/api/favorites';
 // 즐겨찾기 삭제
 export const DELETE_STOCK_FAVORITE: string = '/api/favorites';
 
+// 단일 주식 즐겨찾기 조회
+export const GET_FAVORITE_STOCK_LIST: string = '/api/favorites/stocks';
+
 // ================= NEWS =================
 
 // 종목 뉴스 리스트 조회

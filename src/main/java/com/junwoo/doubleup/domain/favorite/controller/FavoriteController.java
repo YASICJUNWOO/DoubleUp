@@ -2,6 +2,7 @@ package com.junwoo.doubleup.domain.favorite.controller;
 
 import com.junwoo.doubleup.domain.favorite.dto.FavoriteMapper;
 import com.junwoo.doubleup.domain.favorite.dto.FavoriteRequest;
+import com.junwoo.doubleup.domain.favorite.entity.Favorite;
 import com.junwoo.doubleup.domain.favorite.service.FavoriteGetService;
 import com.junwoo.doubleup.domain.favorite.service.FavoriteService;
 import com.junwoo.doubleup.domain.member.entity.Member;
@@ -10,6 +11,8 @@ import com.junwoo.doubleup.domain.stock.entity.Stock;
 import com.junwoo.doubleup.domain.stock.service.StockGetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/favorites")
@@ -26,6 +29,14 @@ public class FavoriteController {
     @GetMapping
     public boolean isFavorite(@RequestParam Long memberId, @RequestParam Long stockId) {
         return favoriteGetService.isFavorite(memberId, stockId);
+    }
+
+    @GetMapping("/stocks")
+    public List<Stock> getFavoriteStocks(@RequestParam(name = "memberId") Long memberId) {
+        List<Favorite> favoriteListByUserId = favoriteGetService.getFavoriteListByUserId(memberId);
+        return favoriteListByUserId.stream()
+                .map(Favorite::getStock)
+                .toList();
     }
 
     @PostMapping

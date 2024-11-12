@@ -1,7 +1,6 @@
 import {Alert, Avatar, CardProps, Table, Typography} from 'antd';
-import {CheckCircleOutlined, PlusCircleOutlined, StockOutlined} from '@ant-design/icons';
+import {CheckCircleOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import {ColumnsType} from 'antd/es/table';
-import {Card} from '../../../index';
 import React, {ReactNode} from 'react';
 import {IStock} from "../../../../interface/interface";
 import {useImageErrorHandling} from "../../../../util/image-loader";
@@ -93,27 +92,25 @@ export const StockSelectCard = ({
     const {getImageSrc, handleImgError} = useImageErrorHandling();
 
     return (
-        <Card title={
-            <Typography.Title level={5} style={{margin: 0}}>
-                <StockOutlined/> 시가총액 상위
-            </Typography.Title>
-        } {...others}>
-            {error ? (
-                <Alert
-                    message="Error"
-                    description={error.toString()}
-                    type="error"
-                    showIcon
-                />
-            ) : (
-                <Table
-                    dataSource={data}
-                    columns={getCoursesColumns(getImageSrc, handleImgError, selectStock, selectedStock)}
-                    loading={loading}
-                    className="overflow-scroll"
-                    style={{maxHeight: 500, overflowY: 'auto'}}
-                />
-            )}
-        </Card>
+        <>
+            {
+                error ? (
+                    <Alert
+                        message="Error"
+                        description={error.toString()}
+                        type="error"
+                        showIcon
+                    />
+                ) : (
+                    <Table
+                        dataSource={data}
+                        columns={getCoursesColumns(getImageSrc, handleImgError, selectStock, selectedStock)}
+                        loading={loading}
+                        className="overflow-scroll"
+                        style={{maxHeight: 500, overflowY: 'auto'}}
+                    />
+                )
+            }
+        </>
     );
 };

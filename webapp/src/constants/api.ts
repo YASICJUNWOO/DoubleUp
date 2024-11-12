@@ -3,6 +3,7 @@ import {
     DELETE_GOAL,
     DELETE_STOCK_FAVORITE,
     GET_CURRENT_STOCK_PRICE,
+    GET_FAVORITE_STOCK_LIST,
     GET_GOAL,
     GET_NEWS_LIST_BY_STOCK,
     GET_PORTFOLIO_DETAIL,
@@ -99,6 +100,14 @@ export const deleteStockFavorite = async (body: any) => {
 // 목표 삭제
 export const deleteGoal = async (pathParams: { [key: string]: string }) => {
     return axios.delete(createUrlWithParams(DELETE_GOAL, pathParams, {}));
+}
+
+//========================= FAVORITE ========================
+
+// GET
+// 즐겨찾기 주식 리스트 조회
+export const getFavoriteStockList = async ({queryParams}: { queryParams: { [key: string]: string } }) => {
+    return axios.get(createUrlWithParams(GET_FAVORITE_STOCK_LIST, {}, queryParams));
 }
 
 // ======================== STOCK ========================
