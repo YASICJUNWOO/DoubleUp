@@ -22,4 +22,5 @@ public class PortfolioStockController {
     public List<PortfolioPriceResponse> test(@RequestBody PortfolioPriceRequest request) {
         return portfolioPriceService.calculatePortfolioPrice(request.getPortfolioId(), request.getStartDate(), request.getEndDate());
     }
+
 }

@@ -21,11 +21,23 @@ public class StockPriceDataInitializer implements DataInitializer {
     private final StockPriceRepository stockPriceRepository;
 
     private final StockRepository stockRepository;
+    private final AsyncStockPriceService asyncStockPriceService;
 
     @Override
     public void init() {
         if (stockPriceRepository.count() > 0) {
             log.info("StockPrice 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
+
+//            CompletableFuture.runAsync(() -> {
+//                try {
+//                    asyncStockPriceService.savePastPriceData();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            });
+
             return;
         }
 
@@ -49,7 +61,6 @@ public class StockPriceDataInitializer implements DataInitializer {
             }
 
         }
-
 
     }
 

@@ -40,6 +40,9 @@ export const GET_CURRENT_STOCK_PRICE: string = '/api/stock-prices/now';
 // 주식 정보 조회
 export const GET_STOCK_INFO: string = '/api/stock/info';
 
+// 유사 주식 조회
+export const GET_SIMILAR_STOCK: string = '/api/stock/info/similar';
+
 // ================= STOCK FAVORITE =================
 // 단일 주식 즐겨찾기 조회
 export const GET_STOCK_FAVORITE: string = '/api/favorites';
@@ -52,6 +55,16 @@ export const DELETE_STOCK_FAVORITE: string = '/api/favorites';
 
 // 단일 주식 즐겨찾기 조회
 export const GET_FAVORITE_STOCK_LIST: string = '/api/favorites/stocks';
+
+// ================= LEDGER =================
+// 가계부 조회
+export const GET_LEDGERS: string = '/api/ledgers';
+
+// 가계부 저장
+export const POST_LEDGERS: string = '/api/ledgers';
+
+// 가계부 수정
+export const PATCH_LEDGERS: string = '/api/ledgers/{{ledgerId}}';
 
 // ================= NEWS =================
 

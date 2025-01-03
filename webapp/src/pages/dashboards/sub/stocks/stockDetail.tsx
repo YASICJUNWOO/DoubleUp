@@ -1,16 +1,7 @@
 import {useStylesContext} from "../../../../context";
-import {HomeOutlined, PieChartOutlined} from "@ant-design/icons";
-import {DASHBOARD_ITEMS} from "../../../../constants";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {Col, message, Row, Spin, Tabs} from "antd";
-import {
-    Card,
-    CustomerReviewsCard,
-    PageHeader,
-    StockDetailHeader,
-    StockDetailSubHeader,
-    StockNews
-} from "../../../../components";
+import {Card, CustomerReviewsCard, StockDetailHeader, StockDetailSubHeader, StockNews} from "../../../../components";
 import {Helmet} from "react-helmet-async";
 import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {
@@ -18,22 +9,33 @@ import {
     getCurrentStockPrice,
     getNewsListByStock,
     getStockFavorite,
+    getStockInfo,
     postStockFavorite
 } from "../../../../constants/api";
-import {INews, IStockWithPresentPrice} from "../../../../interface/interface";
+import {INews, IStockInfo, IStockWithPresentPrice} from "../../../../interface/interface";
 import {CommunityCard} from "../../../../components/dashboard/sub/stocks/stockDetail/CommunityCard";
 import {formatNumber} from "../../../../util/money";
 import {StockChart} from "../../../../components/dashboard/sub/stocks/stockDetail/chart/StockChart";
+import {SimilarStockCard} from "../../../../components/dashboard/sub/stocks/stockDetail/SimilarStockCard";
+
 // StockContext 생성
-const StockContext = createContext<IStockWithPresentPrice | undefined>(undefined);
+const StockContext = createContext<StockContextType | undefined>(undefined);
+
+
+// StockContext에서 사용할 타입 정의
+interface StockContextType {
+    stockWithPrice: IStockWithPresentPrice;
+    stockInfo: IStockInfo;
+}
 
 // StockProvider 정의
-export const StockProvider = ({stockWithPrice, children}: {
+export const StockProvider = ({stockWithPrice, stockInfo, children}: {
     stockWithPrice: IStockWithPresentPrice;
+    stockInfo: IStockInfo;
     children: ReactNode
 }) => {
     return (
-        <StockContext.Provider value={stockWithPrice}>
+        <StockContext.Provider value={{stockWithPrice, stockInfo}}>
             {children}
         </StockContext.Provider>
     );
@@ -54,11 +56,11 @@ export const StockDetailPage = () => {
     const stylesContext = useStylesContext();
 
     const [stockWithPrice, setStockWithPrice] = useState<IStockWithPresentPrice | undefined>(undefined);
+    const [stockInfo, setStockInfo] = useState<IStockInfo>();
     const [newsList, setNewsList] = useState<INews[]>([]);
 
     const [loading, setLoading] = useState(true); // 로딩 상태 추가
     const [favorite, setFavorite] = useState<boolean>(false);
-
 
     const [activeTabKey, setActiveTabKey] = useState('1'); // 선택된 탭 키 관리
 
@@ -113,6 +115,16 @@ export const StockDetailPage = () => {
                 }
             );
 
+        if (stockId) {
+            getStockInfo({stockId: stockId!.toString()})
+                .then((res) => {
+                    setStockInfo(res.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
     }, [stockId]);
 
     if (loading) {
@@ -134,42 +146,11 @@ export const StockDetailPage = () => {
     ];
 
     return (
-        <StockProvider stockWithPrice={stockWithPrice}>
+        <StockProvider stockWithPrice={stockWithPrice} stockInfo={stockInfo!}>
             <div>
                 <Helmet>
                     <title>{`${stockWithPrice.stock.name} | 현재가 : ${formatNumber(stockWithPrice.currentPrice)}`}</title>
                 </Helmet>
-                <PageHeader
-                    title="marketing dashboard"
-                    breadcrumbs={[
-                        {
-                            title: (
-                                <>
-                                    <HomeOutlined/>
-                                    <span>home</span>
-                                </>
-                            ),
-                            path: '/',
-                        },
-                        {
-                            title: (
-                                <>
-                                    <PieChartOutlined/>
-                                    <span>dashboards</span>
-                                </>
-                            ),
-                            menu: {
-                                items: DASHBOARD_ITEMS.map((d) => ({
-                                    key: d.title,
-                                    title: <Link to={d.path}>{d.title}</Link>,
-                                })),
-                            },
-                        },
-                        {
-                            title: 'marketing',
-                        },
-                    ]}
-                />
                 <Row {...stylesContext?.rowProps}>
                     <Col xs={24} xl={16}>
                         <Row {...stylesContext?.rowProps}>
@@ -202,6 +183,10 @@ export const StockDetailPage = () => {
                         <Row {...stylesContext?.rowProps}>
                             <Col span={24}>
                                 <StockDetailSubHeader/>
+                            </Col>
+
+                            <Col span={24}>
+                                <SimilarStockCard/>
                             </Col>
 
                             <Col span={24}>

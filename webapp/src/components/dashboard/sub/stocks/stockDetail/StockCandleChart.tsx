@@ -8,7 +8,7 @@ import {Card} from "../../../../Card/Card"; // 커스텀 Card 컴포넌트 임�
 
 
 interface chartData {
-    x: Date;
+    x: Date|number; // x는 Date 또는 number 타입을 포함할 수 있음
     y: Array<number | null>; // y는 number | null을 포함할 수 있음
 }
 
@@ -23,7 +23,7 @@ const convertStockPricesToChartData = (stockPrices: StockPrice[]): { categories:
         // 날짜를 카테고리로 추가
         categories.push(stockPrice.date ? new Date(stockPrice.date).toLocaleDateString() : '');
         return {
-            x: stockPrice.date ? new Date(stockPrice.date) : new Date(), // null이 아닐 때만 Date로 변환
+            x: stockPrice.date ? new Date(stockPrice.date).getTime() : new Date(), // null이 아닐 때만 Date로 변환
             y: [
                 stockPrice.openPrice !== null ? stockPrice.openPrice : null,
                 stockPrice.highPrice !== null ? stockPrice.highPrice : null,
@@ -51,11 +51,13 @@ export const StockCandleChart: React.FC<Props> = ({data, ...others}) => {
 
 
     useEffect(() => {
+
         if (!data) return;
 
         setLoading(true);
 
         const {categories, chartData} = convertStockPricesToChartData(data);  // 차트 데이터 변환
+       console.log(chartData);
         setCategories(categories);  // 카테고리 설정
         setChartDataList(chartData);  // 차트 데이터 설정
 
@@ -73,15 +75,15 @@ export const StockCandleChart: React.FC<Props> = ({data, ...others}) => {
                     autoSelected: 'pan',
                     show: true,
                 },
-                events: {
-                    mounted: (chartContext: any, config: any) => {
-                        window.dispatchEvent(new Event('resize'));
-                    },
-                },
+                // events: {
+                //     mounted: (chartContext: any, config: any) => {
+                //         window.dispatchEvent(new Event('resize'));
+                //     },
+                // },
             },
             xaxis: {
-                type: 'category',  // 카테고리형으로 설정
-                tickAmount: 6,  // 라벨이 몇 개 간격으로 표시될지 설정 (6개 라벨을 표시)
+                type: 'datetime',  // 카테고리형으로 설정
+                //tickAmount: 6,  // 라벨이 몇 개 간격으로 표시될지 설정 (6개 라벨을 표시)
                 labels: {
                     formatter: function (value: string, timestamp: number) {
                         // 'MM dd' 형식으로 날짜를 표시

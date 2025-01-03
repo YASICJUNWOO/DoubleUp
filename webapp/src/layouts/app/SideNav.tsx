@@ -5,6 +5,7 @@ import {Link, useLocation} from 'react-router-dom';
 import {PATH_AUTH, PATH_DASHBOARD, PATH_ERROR, PATH_LANDING, PATH_SITEMAP,} from '../../constants';
 import {COLOR} from '../../App';
 import {Logo} from "../../components/Logo/Logo";
+import {useMediaQuery} from "react-responsive";
 
 const {Sider} = Layout;
 
@@ -47,6 +48,11 @@ const items: MenuProps['items'] = [
         getItem(
             <Link to={PATH_DASHBOARD.stocks}>주식</Link>,
             'stocks',
+            null
+        ),
+        getItem(
+            <Link to={PATH_DASHBOARD.financeLedger}>가계부</Link>,
+            'financeLedger',
             null
         ),
         getItem(
@@ -205,9 +211,13 @@ const items: MenuProps['items'] = [
 
 const rootSubmenuKeys = ['dashboards', 'corporate', 'user-profile'];
 
-type SideNavProps = SiderProps;
+type SideNavProps = {
+    mobileSiderOpen: boolean;
+} & SiderProps
 
-const SideNav = ({...others}: SideNavProps) => {
+const SideNav = ({mobileSiderOpen, ...others}: SideNavProps) => {
+    const isMobile = useMediaQuery({ maxWidth: 769 });
+
     const nodeRef = useRef(null);
     const {pathname} = useLocation();
     const [openKeys, setOpenKeys] = useState(['']);
@@ -231,6 +241,20 @@ const SideNav = ({...others}: SideNavProps) => {
         setOpenKeys(paths);
         setCurrent(paths[paths.length - 1]);
     }, [pathname]);
+
+    useEffect(() => {
+        if (isMobile) {
+            if (mobileSiderOpen) {
+                const paths = pathname.split('/');
+                setOpenKeys(paths);
+                setCurrent(paths[paths.length - 1]);
+            }
+            else{
+                setOpenKeys(['']);
+                setCurrent('');
+            }
+        }
+    }, [mobileSiderOpen,pathname]);
 
     return (
         <Sider ref={nodeRef} breakpoint="lg" collapsedWidth="0" {...others}>

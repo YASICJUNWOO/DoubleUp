@@ -1,6 +1,8 @@
 package com.junwoo.doubleup.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,13 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-
+@Slf4j
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(HttpMethod.GET, "/api/stock/info/**").permitAll() // GET 허용
                         .requestMatchers(HttpMethod.POST, "/api/member").permitAll()  // POST 허용
-                        .requestMatchers("/api/stocks/**").permitAll()
+                        .requestMatchers("/api/**").permitAll() // API 전체 허용
                         .requestMatchers("/","/login", "/resources/**", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/", "/index.html", "/static/**", "/css/**", "/js/**", "/images/**","/mocks/**").permitAll()
                         //h2
@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .logout(LogoutConfigurer::permitAll)
                 // 예외 처리 설정 추가
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(restAuthenticationEntryPoint())
+                        .authenticationEntryPoint(authenticationEntryPoint())
                 );
 
         return http.build();
@@ -65,8 +65,12 @@ public class SecurityConfig {
 
     // AuthenticationEntryPoint를 401 Unauthorized를 반환하도록 설정
     @Bean
-    public AuthenticationEntryPoint restAuthenticationEntryPoint() {
-        return new HttpStatusEntryPoint(UNAUTHORIZED);
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, authException) -> {
+            log.error("Authentication failed: ", authException); // 인증 실패 로그
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Authentication failed: Unauthorized");
+        };
     }
 
     @Bean

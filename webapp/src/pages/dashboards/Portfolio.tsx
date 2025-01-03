@@ -196,11 +196,6 @@ export const PortfolioDashboardPage = () => {
         }
     }, [selectedPortfolioId]);
 
-    // 포트폴리오 목록 접고 펼치기 토글 핸들러
-    const togglePortfolioList = () => {
-        setIsPortfolioListExpanded(!isPortfolioListExpanded);
-    };
-
     // ======================================= CHART ===============================================
 
     // 데이터를 가공하여 Pie 차트에 맞는 형식으로 변환

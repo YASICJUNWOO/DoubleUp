@@ -9,6 +9,8 @@ import * as Yup from 'yup';
 import {useAuth} from "../../../../context/AuthContext";
 import {StarOutlined, StockOutlined} from "@ant-design/icons";
 import {Card} from "../../../Card/Card";
+import {useMediaQuery} from "react-responsive";
+import {MOBILE_WIDTH} from "../../../../constants";
 
 const {Option} = Select;
 
@@ -38,6 +40,8 @@ export const PortfolioCreateModal = ({
                                          fetchPortfolioList,
                                          ...others
                                      }: Props) => {
+
+        const isMobile = useMediaQuery({maxWidth: MOBILE_WIDTH});
 
         const [stockList, setStockList] = useState<IStock[]>([]);
         const [favoriteStockList, setFavoriteStockList] = useState<IStock[]>([]);
@@ -152,7 +156,7 @@ export const PortfolioCreateModal = ({
                 key: 'favorite',
                 label: (
                     <Typography.Title level={5} style={{margin: 0}}>
-                        <StarOutlined /> 즐겨찾기
+                        <StarOutlined/> 즐겨찾기
                     </Typography.Title>
                 ),
             },
@@ -190,9 +194,10 @@ export const PortfolioCreateModal = ({
                                 <div style={{color: 'red'}}>{formik.errors.portfolioName}</div>
                             ) : null}
                         </Col>
-                        <Col span={12}>
+                        <Col span={isMobile ? 24 : 12}>
                             <Card title={
                                 <Tabs
+                                    size={isMobile ? 'small' : 'large'}
                                     items={items}
                                     defaultActiveKey="marketCap"
                                     onChange={onTabChange}
@@ -205,7 +210,7 @@ export const PortfolioCreateModal = ({
                                 />
                             </Card>
                         </Col>
-                        <Col span={12}>
+                        <Col span={isMobile ? 24 : 12}>
                             {/* 주식을 선택한 경우에만 평균 단가와 수량 입력 필드를 보여줌 */}
                             <StockSelectedCard
                                 data={formik.values.selectedStock}

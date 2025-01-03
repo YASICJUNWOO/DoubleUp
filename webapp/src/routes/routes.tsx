@@ -6,11 +6,13 @@ import {DashboardLayout} from "../layouts/dashboards";
 import {StocksDashboardPage} from "../pages/dashboards/Stocks";
 import {
     EcommerceDashboardPage,
+    FinancialLedger,
     GoalList,
     LearningDashboardPage,
     MarketingDashboardPage,
     PortfolioDashboardPage,
-    ProjectsDashboardPage
+    ProjectsDashboardPage,
+    Test
 } from "../pages";
 import {StockDetailPage} from "../pages/dashboards/sub";
 import {GoalSetup} from "../pages/dashboards/Goal";
@@ -78,6 +80,10 @@ const router = createBrowserRouter([
       },
       // 다른 대시보드 경로들.
       {
+        path: 'finance-ledger',
+        element: <FinancialLedger />
+      },
+      {
         path: 'ecommerce',
         element: <EcommerceDashboardPage />,
       },
@@ -116,6 +122,10 @@ const router = createBrowserRouter([
       {
         path: 'learning',
         element: <LearningDashboardPage />,
+      },
+      {
+        path: 'test',
+        element: <Test />
       }
   //     {
   //       path: 'logistics',

@@ -18,6 +18,7 @@ export const formatMarketCap = (marketCap: number): string => {
 
 //세자리 쉼표
 export const formatNumber = (num: number): string => {
+    if (num === undefined || num === null) return '';
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 

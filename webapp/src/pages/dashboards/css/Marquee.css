@@ -1,0 +1,32 @@
+/* Marquee 전체를 감싸는 컨테이너 */
+.marquee {
+    width: 100%; /* Marquee의 전체 너비 */
+    overflow: hidden; /* 넘치는 내용을 숨겨서 범위 내에서만 표시 */
+    white-space: nowrap; /* 콘텐츠가 한 줄로 유지되도록 설정 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함하여 크기를 계산 */
+}
+
+/* 움직이는 콘텐츠 */
+.marquee-content {
+    display: flex; /* 콘텐츠를 수평으로 배치 */
+    gap: 16px; /* 각 콘텐츠 간 간격 */
+    animation: marquee 30s linear infinite; /* 일관된 속도로 이동 */
+}
+
+/* 콘텐츠 이동 애니메이션 */
+@keyframes marquee {
+    0% {
+        transform: translateX(100%); /* 콘텐츠가 화면 오른쪽에서 시작 */
+        opacity: 1; /* 완전히 보임 */
+    }
+    75% {
+        opacity: 1; /* 대부분의 시간 동안 완전히 보임 */
+    }
+    90% {
+        opacity: 0.5; /* 점차 투명해짐 */
+    }
+    100% {
+        transform: translateX(-100%); /* 콘텐츠가 화면 왼쪽 밖으로 완전히 사라짐 */
+        opacity: 0; /* 완전히 투명하게 사라짐 */
+    }
+}

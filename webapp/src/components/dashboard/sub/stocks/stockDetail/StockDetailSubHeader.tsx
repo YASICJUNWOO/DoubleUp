@@ -1,43 +1,18 @@
 import {CardProps, Flex, Tag, Typography} from "antd";
 import {Card} from "../../../../Card/Card";
-import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {getStockInfo} from "../../../../../constants/api";
-import {IStockInfo} from "../../../../../interface/interface";
 import {SectorType} from "../../../../../interface/SectorType";
 import {Loader} from "../../../../Loader/Loader";
+import {useStock} from "../../../../../pages/dashboards/sub/stocks/stockDetail";
 
 type Props = {} & CardProps;
 
 export const StockDetailSubHeader = ({...others}: Props) => {
 
-    const {stockId} = useParams();
-
-    const [stockInfo, setStockInfo] = useState<IStockInfo>();
-    const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-
-        if (stockId) {
-            setIsLoading(true);
-            getStockInfo({stockId: stockId!.toString()})
-                .then((res) => {
-                    setStockInfo(res.data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                });
-        }
-    }, [stockId]);
-
-    if (isLoading || !stockInfo) {
-        return <Loader/>;
-    }
+    const {stockInfo} = useStock();
+    console.log(stockInfo);
 
     return (
+        !stockInfo ? <Loader/> :
         <Card {...others}>
             <Flex vertical gap={12}>
                 <Flex justify="space-between">

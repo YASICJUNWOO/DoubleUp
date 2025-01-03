@@ -5,16 +5,20 @@ import {
     GET_CURRENT_STOCK_PRICE,
     GET_FAVORITE_STOCK_LIST,
     GET_GOAL,
+    GET_LEDGERS,
     GET_NEWS_LIST_BY_STOCK,
     GET_PORTFOLIO_DETAIL,
     GET_PORTFOLIO_LIST,
+    GET_SIMILAR_STOCK,
     GET_STOCK_DETAIL,
     GET_STOCK_FAVORITE,
     GET_STOCK_INFO,
     GET_STOCK_LIST,
     GET_STOCK_PRICE_BY_PERIOD,
+    PATCH_LEDGERS,
     POST_GOAL,
     POST_GOAL_SUB,
+    POST_LEDGERS,
     POST_LOGIN,
     POST_PORTFOLIO,
     POST_PORTFOLIO_PRICE_BY_DATE,
@@ -124,6 +128,28 @@ export const getStockListByMarketCap = async (queryParams: { [key: string]: stri
 // 개별 주식 정보 조회
 export const getStockInfo = async (queryParams: { [key: string]: string }) => {
     return axios.get(createUrlWithParams(GET_STOCK_INFO, {}, queryParams));
+}
+
+// 유사 주식 리스트 조회
+export const getSimilarStockList = async (queryParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_SIMILAR_STOCK, {}, queryParams));
+}
+
+// ======================== LEDGERS ========================
+
+// GET
+export const getLedgers = async (queryParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_LEDGERS, {}, queryParams));
+}
+
+// POST
+export const postLedgers = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_LEDGERS, {}, {}), body);
+}
+
+// PATCH
+export const updateLedgers = async (pathParams: { [key: string]: string }, body: any) => {
+    return axios.patch(createUrlWithParams(PATCH_LEDGERS, pathParams, {}), body);
 }
 
 // ======================== MEMBER ========================

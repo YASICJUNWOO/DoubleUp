@@ -9,12 +9,14 @@ import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
 import com.junwoo.doubleup.domain.stockprice.repository.StockPriceRepository;
 import com.junwoo.doubleup.domain.stockprice.repository.TodayStockPriceRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class StockPriceGetService {
@@ -49,7 +51,17 @@ public class StockPriceGetService {
 
 	public StockPriceResponse getTodayStockPriceByStock(Long stockId) {
 		Stock stock = stockGetService.findById(stockId);
-		StockPrice todayStockPrice = todayStockPriceRepository.getTodayStockPrice(stock.getSymbol()).get();
+		StockPrice todayStockPrice = todayStockPriceRepository.getTodayStockPrice(stock.getSymbol())
+				.orElseGet(() -> {
+					try {
+						return getStockPriceByRecentDate(stock.getStockId());
+					}
+					catch (IllegalArgumentException e) {
+						log.error("Failed to get today stock price by stock", e);
+						return null;
+					}
+				});
+
 		return stockPriceMapper.toStockPriceResponse(stock, todayStockPrice);
 	}
 

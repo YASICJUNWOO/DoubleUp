@@ -13,7 +13,7 @@ type Props = {
 export const StockDetailHeader = ({favorite, handleFavorite, ...others}: Props) => {
 
     const {getImageSrc, handleImgError} = useImageErrorHandling();
-    const stockWithPrice = useStock();
+    const {stockWithPrice} = useStock();
 
     return (
         <Card {...others}>

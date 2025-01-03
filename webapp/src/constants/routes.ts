@@ -48,6 +48,7 @@ export const PATH_DASHBOARD = {
     portfolio: path(ROOTS_DASHBOARD, '/portfolio'),
     goal: path(ROOTS_DASHBOARD, '/goal'),
     goalList: path(ROOTS_DASHBOARD, '/goals'),
+    financeLedger: path(ROOTS_DASHBOARD, '/finance-ledger'),
 };
 
 export const PATH_SITEMAP = {

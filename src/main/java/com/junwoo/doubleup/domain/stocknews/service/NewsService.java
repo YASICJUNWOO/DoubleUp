@@ -57,7 +57,7 @@ public class NewsService {
                 Stock stockBySymbol = stockGetService.findAllBySymbol(symbol);
                 List<News> newsBySymbol = tossApi.getNewsBySymbol(symbol);
 
-                log.info("Fetched {} news items for stock id: {}", newsBySymbol.size(), stockBySymbol.getStockId());
+                //log.info("Fetched {} news items for stock id: {}", newsBySymbol.size(), stockBySymbol.getStockId());
 
                 // 존재 유무에 따라 news를 저장하고 newsStock을 추가한다.
                 newsBySymbol.forEach(news -> {
@@ -70,7 +70,7 @@ public class NewsService {
                 Stock stockBySymbol = stockGetService.findAllBySymbol(symbol);
                 List<News> newsBySymbol = tossApi.getNewsBySymbol(symbol);
 
-                log.info("Fetched {} news items for stock id: {}", newsBySymbol.size(), stockBySymbol.getStockId());
+                //log.info("Fetched {} news items for stock id: {}", newsBySymbol.size(), stockBySymbol.getStockId());
 
                 // 존재 유무에 따라 news를 저장하고 newsStock을 추가한다.
                 newsBySymbol.forEach(news -> {

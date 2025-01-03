@@ -5,6 +5,7 @@ import com.junwoo.doubleup.domain.stock.repository.StockDetailInfoRepository;
 import com.junwoo.doubleup.domain.stock.repository.StockRepository;
 import com.junwoo.doubleup.outapi.csv.StockDetailInfoCsv;
 import com.junwoo.doubleup.outapi.csv.dto.StockDetailInfoDto;
+import com.junwoo.doubleup.outapi.lsapi.LsApiService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,8 @@ public class StockDetailInfoInitializer implements DataInitializer{
 
     private final StockRepository stockRepository;
     private final StockDetailInfoRepository stockDetailInfoRepository;
+
+    private final LsApiService lsApiService;
 
     @Override
     @Transactional

@@ -4,6 +4,8 @@ import {ColumnsType} from 'antd/es/table';
 import React, {ReactNode} from 'react';
 import {IStock} from "../../../../interface/interface";
 import {useImageErrorHandling} from "../../../../util/image-loader";
+import {MOBILE_WIDTH} from "../../../../constants";
+import {useMediaQuery} from "react-responsive";
 
 const getCoursesColumns = (
     getImageSrc: any,
@@ -89,6 +91,8 @@ export const StockSelectCard = ({
                                     ...others
                                 }: Props) => {
 
+    const isMobile = useMediaQuery({maxWidth: MOBILE_WIDTH});
+
     const {getImageSrc, handleImgError} = useImageErrorHandling();
 
     return (
@@ -103,6 +107,7 @@ export const StockSelectCard = ({
                     />
                 ) : (
                     <Table
+                        size={isMobile ? 'small' : 'middle'}
                         dataSource={data}
                         columns={getCoursesColumns(getImageSrc, handleImgError, selectStock, selectedStock)}
                         loading={loading}

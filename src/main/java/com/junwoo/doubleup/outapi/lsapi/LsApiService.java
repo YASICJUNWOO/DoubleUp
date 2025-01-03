@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,7 +27,9 @@ public class LsApiService {
     @Value("${ls.appsecret}")
     private String APP_SECRET_KEY;
 
-    private static String ACCESS_TOKEN;
+    public static String ACCESS_TOKEN;
+
+    private final LsRealTimeApiService lsRealTimeApiService;
 
     private final LsMapper lsMapper = LsMapper.INSTANCE;
 
@@ -50,6 +54,8 @@ public class LsApiService {
                 .block();
 
         ACCESS_TOKEN = result.getAccess_token();
+
+        //lsRealTimeApiService.sendRequest("S3_", "005930");
     }
 
     // 국내 주식 정보 받아오기
@@ -88,7 +94,7 @@ public class LsApiService {
                 .toList();
     }
 
-    // 국내 주식 정보 받아오기
+    // 국내 주식 오늘 가격 받아오기
     public Map<String, StockPrice> getTodayStockPrice(String stockCodeList, int size) {
         WebClient webClient = WebClient.builder()
                 .baseUrl("https://openapi.ls-sec.co.kr:8080")
@@ -136,5 +142,40 @@ public class LsApiService {
         return collect;
     }
 
+    public LsStockPriceByDateResponse getStockPriceDataByDate(LocalDate date, String symbol) {
+        WebClient webClient = WebClient.builder()
+                .baseUrl("https://openapi.ls-sec.co.kr:8080")
+                .codecs(configurer -> configurer
+                        .defaultCodecs()
+                        .maxInMemorySize(10 * 1024 * 1024))  // 최대 10MB로 증가
+                .build();
+
+        String body = """
+                {
+                     "t1305InBlock" : {
+                       "shcode" : "%s",
+                       "dwmcode" : 1,
+                       "date" : "%s",
+                       "idx" : 0,
+                       "cnt" : 5
+                     }
+                }
+                """.formatted(symbol, date.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
+        LsStockPriceByDateResponse block = webClient.post()
+                .uri("/stock/market-data")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + ACCESS_TOKEN)
+                .header("tr_cd", "t1305")
+                .header("tr_cont", "Y")
+                .header("tr_cont_key")
+                .header("mac_address")
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(LsStockPriceByDateResponse.class)
+                .block();
+
+        return block;
+    }
 
 }

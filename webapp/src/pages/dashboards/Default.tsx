@@ -1,7 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Card, GetStartedCard, Loader, ProjectsCard,} from '../../components';
+import {Card, Loader, ProjectsCard,} from '../../components';
 import {
     Alert,
+    Badge,
     Button,
     CardProps,
     Carousel,
@@ -20,7 +21,7 @@ import {useStylesContext} from '../../context';
 import {useFetchData} from '../../hooks';
 import {Projects} from '../../types';
 import CountUp from 'react-countup';
-import {Liquid} from '@ant-design/plots';
+import {Line, Liquid} from '@ant-design/plots';
 import {IGoal} from "../../interface/interface";
 import {getGoal} from "../../constants/api";
 import {formatCurrency} from "../../util/money";
@@ -30,7 +31,7 @@ import {calculatePercent} from "../../util/goal";
 import {View} from '@antv/g2';
 import {gapDate} from "../../util/date";
 import {useNavigate} from "react-router-dom"; // G2의 타입을 가져옵니다.
-
+import './css/Marquee.css';
 
 const calculateProgress = (current: number, target: number) => {
     return Math.min((current / target) * 100, 100);
@@ -89,13 +90,6 @@ const CARD_PROPS: CardProps = {
         alignItems: 'center',
         gap: 8,
     },
-};
-
-
-const goalList = ['주택 구입', '자동차 구입', '미국 여행'];
-const generateRandomString = () => {
-    //goalList 배열에서 무작위로 하나의 문자열을 선택
-    return goalList[Math.floor(Math.random() * goalList.length)];
 };
 
 // Ant Design의 밝은 색상 코드 배열
@@ -182,17 +176,121 @@ export const DefaultDashboardPage = () => {
 
     const goalWithDetails = goal?.find(g => g.goalDetails.length > 0);
 
+    const indexPriceList = [
+        {
+            index: 'KOSPI',
+            price: 2_500,
+            priceChange: 700,
+            priceRangeRate: 0.5
+        },
+        {
+            index: 'KOSDAQ',
+            price: 1_500,
+            priceChange: 500,
+            priceRangeRate: 0.4
+        },
+        {
+            index: 'S&P500',
+            price: 3_000,
+            priceChange: -1_300,
+            priceRangeRate: -1.8
+        },
+        {
+            index: 'NASDAQ',
+            price: 2_000,
+            priceChange: 500,
+            priceRangeRate: 0.5
+        },
+    ];
+
+    const indexPriceData = [
+        {
+            time: '8:00',
+            price: 2_500
+        },
+        {
+            time: '9:00',
+            price: 1_500
+        },
+        {
+            time: '10:00',
+            price: 3_000
+        },
+        {
+            time: '11:00',
+            price: 2_000
+        },
+        {
+            time: '12:00',
+            price: 2_500
+        }
+    ]
+
     return (
         <div>
             <Helmet>
                 <title>메인 | DoubleUp</title>
             </Helmet>
             <Row {...stylesContext?.rowProps}>
+                {indexPriceList.map((d, i) => (
+                    <Col xs={24} lg={6}>
+                        <Card bordered={false}>
+                            <Flex justify="space-between" align="center">
+                                <Flex vertical style={{width: "100%"}}>
+                                    <Space>
+                                        {d.index === 'S&P500' ? (
+                                            <Badge status="error"/>
+                                        ) : (
+                                            <Badge status="processing" color={green[6]}/>
+                                        )
+                                        }
+                                        <Typography.Text type="secondary">
+                                            {d.index}
+                                        </Typography.Text>
+                                    </Space>
+                                    <Typography.Title level={4} style={{margin: "0px"}}>
+                                        {d.price}
+                                    </Typography.Title>
+                                    <Space>
+                                        <Typography.Text style={{color: d.priceRangeRate > 0 ? "green" : "red"}}>
+                                            {d.priceRangeRate > 0 ? `+${d.priceRangeRate}%` : `${d.priceRangeRate}%`}
+                                        </Typography.Text>
+                                        <Typography.Text style={{color: d.priceChange > 0 ? "green" : "red"}}>
+                                            {d.priceChange > 0 ? `+${d.priceChange}` : d.priceChange}
+                                        </Typography.Text>
+                                    </Space>
+                                </Flex>
+                                <div style={{width: "70%", height: "80px"}}> {/* 고정 크기 지정 */}
+                                    <Line
+                                        data={indexPriceData}
+                                        padding="auto"
+                                        xField="time"
+                                        yField="price"
+                                        smooth
+                                        autoFit={true} /* 부모 크기에 맞게 자동 조정 */
+                                        appendPadding={[10, 0, 0, 0]} /* 그래프 여백 설정 */
+                                        tooltip={false}
+                                        xAxis={{
+                                            line: null, // X축 라인 제거
+                                            label: null, // X축 레이블 제거
+                                            tickLine: null, // X축 눈금선 제거
+                                        }}
+                                        yAxis={{
+                                            min: 100, // Y축 최소값 설정
+                                            max: 5000, // Y축 최대값 설정 (필요시)
+                                            line: null, // Y축 라인 제거
+                                            label: null, // Y축 레이블 제거
+                                            tickLine: null, // Y축 눈금선 제거
+                                            grid: null, // Y축 격자선 제거
+                                        }}
+                                    />
+                                </div>
+                            </Flex>
+                        </Card>
+                    </Col>
+                ))}
                 <Col xs={24} lg={16}>
                     <Row {...stylesContext?.rowProps}>
-                        <Col span={24}>
-                            <GetStartedCard/>
-                        </Col>
                         <Col xs={24} lg={16}>
                             <Card
                                 title="목표 달성률"
@@ -204,18 +302,19 @@ export const DefaultDashboardPage = () => {
                                 ) : goal.every(g => g.goalDetails.length === 0) ? (
                                     // 목표 생성 유도 카드
                                     <>
-                                        <Typography.Title level={4} style={{ textAlign: 'center', color: '#1890ff' }}>
+                                        <Typography.Title level={4} style={{textAlign: 'center', color: '#1890ff'}}>
                                             😊 {member?.name}님! 목표를 생성하러 가볼까요?
                                         </Typography.Title>
-                                        <Typography.Paragraph style={{ textAlign: 'center', fontSize: '16px', color: '#595959' }}>
+                                        <Typography.Paragraph
+                                            style={{textAlign: 'center', fontSize: '16px', color: '#595959'}}>
                                             지금 목표를 설정하고 성공을 향해 첫 발을 내딛어보세요!
                                         </Typography.Paragraph>
-                                        <Space style={{ width: '100%', justifyContent: 'center', marginTop: '20px' }}>
+                                        <Space style={{width: '100%', justifyContent: 'center', marginTop: '20px'}}>
                                             <Button
                                                 type="primary"
                                                 size="large"
                                                 onClick={() => navigate('/dashboards/goals')} // 목표 생성 페이지로 이동
-                                                icon={<SmileOutlined />}
+                                                icon={<SmileOutlined/>}
                                             >
                                                 목표 생성하러 가기
                                             </Button>

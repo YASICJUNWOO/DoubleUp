@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {CardProps, Segmented} from "antd";
-import {StockCandleChart} from "../StockCandleChart";
 import StockLineChart from "../StockLineChart";
 import {Card} from "../../../../../Card/Card";
 import {getStockPricesByPeriod} from "../../../../../../constants/api";
 import {useParams} from "react-router-dom";
 import {StockPrice} from "../../../../../../interface/interface";
 import {Loader} from "../../../../../Loader/Loader";
+import StockCandleChart2 from "./StockCandleChart2";
 
 type Props = {} & CardProps;
 
@@ -62,7 +62,9 @@ export const StockChart: React.FC<Props> = ({...others}) => {
               {...others}>
             {isLoading || error ? <Loader/> :
                 selectedChartType === 'candlestick' ? (
-                    <StockCandleChart title="차트" data={stockPriceList}/>
+                    <div style={{width:"100%"}}>
+                        <StockCandleChart2 data={stockPriceList} />
+                    </div>
                 ) : (
                     <StockLineChart data={stockPriceList}/>
                 )

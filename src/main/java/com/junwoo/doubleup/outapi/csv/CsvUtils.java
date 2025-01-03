@@ -5,13 +5,12 @@ import com.junwoo.doubleup.domain.stockprice.entity.StockPrice;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 public class CsvUtils {
 
@@ -114,31 +114,35 @@ public class CsvUtils {
                 reader.readNext();
 
                 while ((nextLine = reader.readNext()) != null) {
-                    KrStockPriceCsv stockDto = KrStockPriceCsv.builder()
-                            .date(LocalDate.parse(dateString, formatter))
-                            .shortCode(nextLine[0])
-                            .closePrice(nextLine[4])
-                            .priceChange(nextLine[5])
-                            .priceChangeRate(nextLine[6])
-                            .openPrice(nextLine[7])
-                            .highPrice(nextLine[8])
-                            .lowPrice(nextLine[9])
-                            .priceChange(nextLine[5])
-                            .priceChangeRate(nextLine[6])
-                            .volume(nextLine[10])
-                            .tradingValue(nextLine[11])
-                            .marketCap(nextLine[12])
-                            .build();
 
-                    StockPrice stockPrice = csvMapper.toStockPrice(stockDto);
-                    String stockIdStringValue = stockDto.getShortCode();
+                    try{
+                        KrStockPriceCsv stockDto = KrStockPriceCsv.builder()
+                                .date(LocalDate.parse(dateString, formatter))
+                                .shortCode(nextLine[0])
+                                .closePrice(nextLine[4])
+                                .priceChange(nextLine[5])
+                                .priceChangeRate(nextLine[6])
+                                .openPrice(nextLine[7])
+                                .highPrice(nextLine[8])
+                                .lowPrice(nextLine[9])
+                                .volume(nextLine[10])
+                                .tradingValue(nextLine[11])
+                                .marketCap(nextLine[12])
+                                .build();
 
-                    if (stockPriceMap.containsKey(stockIdStringValue)) {
-                        stockPriceMap.get(stockIdStringValue).add(stockPrice);
-                    } else {
-                        List<StockPrice> stockList = new ArrayList<>();
-                        stockList.add(stockPrice);
-                        stockPriceMap.put(stockIdStringValue, stockList);
+                        StockPrice stockPrice = csvMapper.toStockPrice(stockDto);
+                        String stockIdStringValue = stockDto.getShortCode();
+
+                        if (stockPriceMap.containsKey(stockIdStringValue)) {
+                            stockPriceMap.get(stockIdStringValue).add(stockPrice);
+                        } else {
+                            List<StockPrice> stockList = new ArrayList<>();
+                            stockList.add(stockPrice);
+                            stockPriceMap.put(stockIdStringValue, stockList);
+                        }
+                    }
+                    catch(Exception e){
+                        throw new RuntimeException(path.toString());
                     }
                 }
             }
@@ -150,4 +154,45 @@ public class CsvUtils {
         return stockPriceMap;
     }
 
+    public static boolean existFile(String fileName){
+        return Files.exists(Paths.get(DIRECTORY_PATH + "/" + fileName));
+    }
+
+    public static void makeCsvFile(String fileName){
+        try {
+            Files.createFile(Paths.get(DIRECTORY_PATH + "/" + fileName + ".csv"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeCsvFile(String fileName, List<String> data){
+        try {
+            Files.write(
+                    Paths.get(DIRECTORY_PATH + "/" + fileName + ".csv"),
+                    data,
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getPastDate() throws IOException {
+        DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(DIRECTORY_PATH), "*.csv");
+
+        LocalDate date = LocalDate.now();
+
+        for (Path path : stream) {
+            String dateString = path.getFileName().toString().replace(".csv", "");
+            LocalDate fileDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            if (fileDate.isBefore(date)) {
+                date = fileDate;
+            }
+        }
+
+        return date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    }
 }
