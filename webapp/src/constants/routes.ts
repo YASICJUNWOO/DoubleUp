@@ -44,6 +44,7 @@ export const PATH_DASHBOARD = {
     logistics: path(ROOTS_DASHBOARD, '/logistics'),
 
     // custom
+    income: path(ROOTS_DASHBOARD, '/income'),
     stocks: path(ROOTS_DASHBOARD, '/stocks'),
     portfolio: path(ROOTS_DASHBOARD, '/portfolio'),
     goal: path(ROOTS_DASHBOARD, '/goal'),

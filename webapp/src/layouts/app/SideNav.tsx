@@ -46,6 +46,11 @@ const items: MenuProps['items'] = [
         //     null
         // ),
         getItem(
+            <Link to={PATH_DASHBOARD.income}>수입</Link>,
+            'income',
+            null
+        ),
+        getItem(
             <Link to={PATH_DASHBOARD.stocks}>주식</Link>,
             'stocks',
             null

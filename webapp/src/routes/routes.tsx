@@ -5,28 +5,29 @@ import {ErrorPage} from "../pages/errors/Error";
 import {DashboardLayout} from "../layouts/dashboards";
 import {StocksDashboardPage} from "../pages/dashboards/Stocks";
 import {
-    EcommerceDashboardPage,
-    FinancialLedger,
-    GoalList,
-    LearningDashboardPage,
-    MarketingDashboardPage,
-    PortfolioDashboardPage,
-    ProjectsDashboardPage,
-    Test
+  EcommerceDashboardPage,
+  FinancialLedger,
+  GoalList,
+  LearningDashboardPage,
+  MarketingDashboardPage,
+  PortfolioDashboardPage,
+  ProjectsDashboardPage,
+  Test
 } from "../pages";
 import {StockDetailPage} from "../pages/dashboards/sub";
 import {GoalSetup} from "../pages/dashboards/Goal";
 import {DefaultDashboardPage} from "../pages/dashboards/Default";
 import {
-    AccountDeactivePage,
-    PasswordResetPage,
-    SignInPage,
-    SignUpPage,
-    VerifyEmailPage,
-    WelcomePage
+  AccountDeactivePage,
+  PasswordResetPage,
+  SignInPage,
+  SignUpPage,
+  VerifyEmailPage,
+  WelcomePage
 } from "../pages/authentication";
 import {UserAccountLayout} from "../layouts";
 import {UserProfileDetailsPage} from "../pages/userAccount";
+import {Income} from "../pages/dashboards/Income";
 
 export const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();  // 현재 경로 정보를 가져옴.
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
         index: true,
         path: 'default',  // '/dashboards/default' 경로일 때.
         element: <DefaultDashboardPage />
+      },
+      {
+        path: 'income',  // '/dashboards/income' 경로일 때.
+        element: <Income />
       },
       {
         path: 'projects',  // '/dashboards/projects' 경로일 때.
