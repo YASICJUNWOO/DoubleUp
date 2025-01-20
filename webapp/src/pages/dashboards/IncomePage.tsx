@@ -1,114 +1,72 @@
 import {Card} from "../../components";
 import {Button, Col, Flex, Row, Space, Typography} from "antd";
 import {StylesContext} from "../../context";
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {IncomeTable} from "../../components/income/IncomeTable";
 import {EditFilled, PlusOutlined} from "@ant-design/icons";
+import {addIncome, getIncomeByYear} from "../../constants/api";
+import {Income, IncomeAddRequest} from "../../components/income/interface";
+import {IncomeBarChart} from "../../components/income/IncomeBarChart";
 
 const {Title} = Typography;
 
-const sample = [
-    {
-        key: "1",
-        month: "1",
-        income: 7000,
-        expense: 1500,
-        totalIncome: 5500
-    },
-    {
-        key: "2",
-        month: "2",
-        income: 7000,
-        expense: 2000,
-        totalIncome: 5000
-    },
-    {
-        key: "3",
-        month: "3",
-        income: 7000,
-        expense: 3500,
-        totalIncome: 3500
-    },
-    {
-        key: "4",
-        month: "4",
-        income: 7000,
-        expense: 2000,
-        totalIncome: 5000
-    },
-    {
-        key: "5",
-        month: "5",
-        income: 7000,
-        expense: 2500,
-        totalIncome: 4500
-    },
-    {
-        key: "6",
-        month: "6",
-        income: 6000,
-        expense: 3000,
-        totalIncome: 3000
-    },
-    {
-        key: "7",
-        month: "7",
-        income: 7000,
-        expense: 3500,
-        totalIncome: 3500
-    },
-    {
-        key: "8",
-        month: "8",
-        income: 8000,
-        expense: 4000,
-        totalIncome: 4000
-    },
-    {
-        key: "9",
-        month: "9",
-        income: 9000,
-        expense: 4500,
-        totalIncome: 4500
-    },
-    {
-        key: "10",
-        month: "10",
-        income: 10000,
-        expense: 5000,
-        totalIncome: 5000
-    },
-    {
-        key: "11",
-        month: "11",
-        income: 11000,
-        expense: 5500,
-        totalIncome: 5500
-    },
-    {
-        key: "12",
-        month: "12",
-        income: 12000,
-        expense: 6000,
-        totalIncome: 6000
-    }
-]
+// 1월 부터 12월까지의 데이터
+const initialData = (year: number) =>
+    Array.from({length: 12}, (_, i) => {
+        return {
+            id: (i + 1).toString(),
+            year: year,
+            month: (i + 1),
+            income: 0,
+            expense: 0,
+            totalIncome: 0
+        }
+    })
 
-export const Income: React.FC = () => {
+export const IncomePage: React.FC = () => {
 
     const stylesContext = useContext(StylesContext);
 
     const [year, setYear] = useState<number>(2025);
 
-    const [originData, setOriginData] = useState<any[]>(sample);
-    const [data, setData] = useState<any[]>(sample);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [originData, setOriginData] = useState<Income[]>([]);
+    const [data, setData] = useState<Income[]>([]);
     const [isEdit, setIsEdit] = useState<boolean>(false);
+
+    useEffect(() => {
+        setLoading(true);
+        fetchIncome(year);
+        setLoading(false);
+    }, [year]);
+
+    const fetchIncome = (year: number) => {
+
+        const params = {"year": year.toString()}
+
+        getIncomeByYear(params)
+            .then((response) => {
+                setData(response.data);
+                setOriginData(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+    }
 
 
     const handleComplete = () => {
-        setIsEdit(false);
-        // todo : 추후 백에 요청
-        setOriginData(data);
+
+        const body: IncomeAddRequest[] = data.map((item) => ({...item, year: year}));
+
+        addIncome(body)
+            .then((response) => {
+                fetchIncome(year);
+                setIsEdit(false);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
     }
 
     const handleCancel = () => {
@@ -168,11 +126,29 @@ export const Income: React.FC = () => {
                         </>
                     }
                 >
-                    <IncomeTable
-                        data={sample}
-                        isEdit={isEdit}
-                        setData={setData}
-                    />
+                    {data.length === 0 ?
+                        <Flex vertical justify="center" align="center">
+                            <Title level={5} style={{margin: 0}}>데이터가 없습니다.</Title>
+                            <Button
+                                onClick={() => {
+                                    setData(initialData(year))
+                                    setOriginData(initialData(year))
+                                }}
+                            >
+                                데이터 생성
+                            </Button>
+                        </Flex>
+                        :
+                        <>
+                            <IncomeBarChart data={data}/>
+                            <IncomeTable
+                                loading={loading}
+                                data={data}
+                                setData={setData}
+                                isEdit={isEdit}
+                            />
+                        </>
+                    }
                 </Card>
             </Col>
         </Row>

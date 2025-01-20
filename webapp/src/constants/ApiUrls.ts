@@ -93,3 +93,9 @@ export const POST_LOGIN: string = '/login';
 // 회원가입
 export const POST_SIGNUP: string = '/api/member';
 
+// ================= INCOME =================
+// 수입/지출 조회
+export const GET_INCOME_BY_YEAR = '/api/income';
+
+// 수입/지출 저장
+export const POST_INCOME = '/api/income';

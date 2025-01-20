@@ -27,7 +27,7 @@ import {
 } from "../pages/authentication";
 import {UserAccountLayout} from "../layouts";
 import {UserProfileDetailsPage} from "../pages/userAccount";
-import {Income} from "../pages/dashboards/Income";
+import {IncomePage} from "../pages/dashboards/IncomePage";
 
 export const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();  // 현재 경로 정보를 가져옴.
@@ -77,7 +77,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'income',  // '/dashboards/income' 경로일 때.
-        element: <Income />
+        element: <IncomePage />
       },
       {
         path: 'projects',  // '/dashboards/projects' 경로일 때.

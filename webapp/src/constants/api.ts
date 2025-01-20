@@ -5,6 +5,7 @@ import {
     GET_CURRENT_STOCK_PRICE,
     GET_FAVORITE_STOCK_LIST,
     GET_GOAL,
+    GET_INCOME_BY_YEAR,
     GET_LEDGERS,
     GET_NEWS_LIST_BY_STOCK,
     GET_PORTFOLIO_DETAIL,
@@ -18,6 +19,7 @@ import {
     PATCH_LEDGERS,
     POST_GOAL,
     POST_GOAL_SUB,
+    POST_INCOME,
     POST_LEDGERS,
     POST_LOGIN,
     POST_PORTFOLIO,
@@ -157,6 +159,17 @@ export const updateLedgers = async (pathParams: { [key: string]: string }, body:
 // POST
 export const signUp = async (body: any) => {
     return axios.post(createUrlWithParams(POST_SIGNUP, {}, {}), body);
+}
+
+// ======================== Income ========================
+// GET
+export const getIncomeByYear = async (queryParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_INCOME_BY_YEAR, {}, queryParams));
+}
+
+// POST
+export const addIncome = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_INCOME, {}, {}), body);
 }
 
 
