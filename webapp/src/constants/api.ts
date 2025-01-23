@@ -6,6 +6,7 @@ import {
     GET_FAVORITE_STOCK_LIST,
     GET_GOAL,
     GET_INCOME_BY_YEAR,
+    GET_INCOME_GOAL,
     GET_LEDGERS,
     GET_NEWS_LIST_BY_STOCK,
     GET_PORTFOLIO_DETAIL,
@@ -16,10 +17,12 @@ import {
     GET_STOCK_INFO,
     GET_STOCK_LIST,
     GET_STOCK_PRICE_BY_PERIOD,
+    PATCH_INCOME_GOAL,
     PATCH_LEDGERS,
     POST_GOAL,
     POST_GOAL_SUB,
     POST_INCOME,
+    POST_INCOME_GOAL,
     POST_LEDGERS,
     POST_LOGIN,
     POST_PORTFOLIO,
@@ -172,6 +175,21 @@ export const addIncome = async (body: any) => {
     return axios.post(createUrlWithParams(POST_INCOME, {}, {}), body);
 }
 
+// ======================== INCOME GOAL ========================
+// POST
+export const addIncomeGoal = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_INCOME_GOAL, {}, {}), body);
+}
+
+// GET
+export const getIncomeGoal = async (queryParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_INCOME_GOAL, {}, queryParams));
+}
+
+// PATCH
+export const updateIncomeGoal = async (pathParams: { [key: string]: string }, body: any) => {
+    return axios.patch(createUrlWithParams(PATCH_INCOME_GOAL, pathParams, {}), body);
+}
 
 // URL 템플릿을 이용해 동적으로 생성하는 함수
 const createUrlWithParams = (url: string, pathParams: { [key: string]: string }, queryParams: { [key: string]: string }) => {

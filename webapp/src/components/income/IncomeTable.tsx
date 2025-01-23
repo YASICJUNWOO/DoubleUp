@@ -69,7 +69,6 @@ export const IncomeTable: React.FC<Props> = ({loading, data, isEdit, setData}) =
     };
 
     return (
-
         <Table
             loading={loading}
             size="small"

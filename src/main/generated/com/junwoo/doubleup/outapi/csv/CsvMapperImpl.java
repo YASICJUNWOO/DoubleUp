@@ -7,7 +7,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-17T18:57:13+0900",
+    date = "2025-01-23T18:15:24+0900",
     comments = "version: 1.6.0, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
 )
 public class CsvMapperImpl implements CsvMapper {

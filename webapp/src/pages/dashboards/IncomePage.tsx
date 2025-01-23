@@ -7,6 +7,7 @@ import {EditFilled, PlusOutlined} from "@ant-design/icons";
 import {addIncome, getIncomeByYear} from "../../constants/api";
 import {Income, IncomeAddRequest} from "../../components/income/interface";
 import {IncomeBarChart} from "../../components/income/IncomeBarChart";
+import {IncomeGoal} from "../../components/income/IncomeGoal";
 
 const {Title} = Typography;
 
@@ -140,7 +141,11 @@ export const IncomePage: React.FC = () => {
                         </Flex>
                         :
                         <>
-                            <IncomeBarChart data={data}/>
+                            <IncomeGoal
+                                year={year}
+                                incomeList={data}
+                            />
+                            <IncomeBarChart data={data} />
                             <IncomeTable
                                 loading={loading}
                                 data={data}

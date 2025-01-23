@@ -99,3 +99,15 @@ export const GET_INCOME_BY_YEAR = '/api/income';
 
 // 수입/지출 저장
 export const POST_INCOME = '/api/income';
+
+//================= INCOME GOAL =================
+// 목표 저장
+export const POST_INCOME_GOAL: string = '/api/income-goal';
+
+// 목표 조회
+export const GET_INCOME_GOAL: string = '/api/income-goal';
+
+// 목표 수정
+export const PATCH_INCOME_GOAL: string = '/api/income-goal/{{id}}';
+
+

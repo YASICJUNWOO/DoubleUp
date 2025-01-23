@@ -1,15 +1,12 @@
-package com.junwoo.doubleup.domain.income;
+package com.junwoo.doubleup.domain.income.dto;
 
-import com.junwoo.doubleup.domain.income.dto.IncomeMapper;
-import com.junwoo.doubleup.domain.income.dto.IncomeRequestDto;
-import com.junwoo.doubleup.domain.income.dto.IncomeResponseDto;
 import com.junwoo.doubleup.domain.income.entity.Income;
 import com.junwoo.doubleup.domain.member.entity.Member;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-20T13:51:16+0900",
+    date = "2025-01-23T18:15:24+0900",
     comments = "version: 1.6.0, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
 )
 public class IncomeMapperImpl implements IncomeMapper {
