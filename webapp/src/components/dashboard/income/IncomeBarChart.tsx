@@ -11,14 +11,14 @@ export const IncomeBarChart: React.FC<Props> = ({data}) => {
     // 주 Bar
     const transformDataList = (data: Income[]): any[] => {
         return data.flatMap((item) => [
-            {time: item.month.toString(), value: item.income, type: "수입"},
-            {time: item.month.toString(), value: item.expense, type: "지출"},
+            {time: item.monthValue.toString(), value: item.income, type: "수입"},
+            {time: item.monthValue.toString(), value: item.expense, type: "지출"},
         ]);
     };
 
     // 보조 Line
     const transformData = data.map((item) => ({
-        time: item.month.toString(),
+        time: item.monthValue.toString(),
         count: item.totalIncome,
     }));
 

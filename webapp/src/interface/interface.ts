@@ -1,5 +1,7 @@
 import {GoalType, InstallFrequencyType} from "./GoalTypes";
 import {SectorTypeKey} from "./SectorType";
+import {ExpenseCategoryType, IncomeCategoryType} from "../components/dashboard/ledger/LedgerAddModal";
+import {Dayjs} from "dayjs";
 
 export interface IStock {
     stockId: number;
@@ -131,4 +133,14 @@ export interface IMember {
     id: number;
     name: string;
     email: string;
+}
+
+// ================================== INCOME ==============================================
+export interface IncomeDetail {
+    id: string;
+    type: 'INCOME' | 'EXPENSE';
+    category: IncomeCategoryType | ExpenseCategoryType;
+    content: string;
+    amount: number;
+    date: Dayjs;
 }

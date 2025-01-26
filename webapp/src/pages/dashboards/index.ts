@@ -5,7 +5,7 @@ export { MarketingDashboardPage } from './Marketing';
 export { PortfolioDashboardPage } from './Portfolio';
 export { LearningDashboardPage } from './Learning';
 export { GoalList } from './GoalList';
-export { FinancialLedger } from './FinancialLedger';
+export { FinancialLedgerPage } from './FinancialLedgerPage';
 export * from './Test';
 // export { SocialDashboardPage } from './Social.tsx';
 // export { BiddingDashboardPage } from './Bidding.tsx';

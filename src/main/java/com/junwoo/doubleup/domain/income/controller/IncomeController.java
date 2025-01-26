@@ -34,6 +34,11 @@ public class IncomeController {
                 .map(incomeMapper::toResponse).toList();
     }
 
+    @GetMapping("/{incomeId}")
+    public Income getIncomeById(@PathVariable Long incomeId) {
+        return incomeGetService.getIncomeById(incomeId);
+    }
+
     @PostMapping
     public void createIncome(
 //            @AuthenticationPrincipal String username,

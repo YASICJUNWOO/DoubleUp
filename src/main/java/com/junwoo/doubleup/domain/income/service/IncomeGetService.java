@@ -20,4 +20,10 @@ public class IncomeGetService {
         return incomeRepository.findAllByMemberAndYearValue(member, year);
     }
 
+    @Transactional(readOnly = true)
+    public Income getIncomeById(Long incomeId) {
+        return incomeRepository.findById(incomeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 수입이 없습니다."));
+    }
+
 }

@@ -1,15 +1,19 @@
+import {IncomeDetail} from "../../../interface/interface";
+
 export interface Income {
     id: string;
-    year: number;
-    month: number;
+    yearValue: number;
+    monthValue: number;
     income: number;
     expense: number;
     totalIncome: number;
+
+    incomeDetails: IncomeDetail[] | undefined;
 }
 
 export interface IncomeAddRequest {
-    year: number;
-    month: number;
+    yearValue: number;
+    monthValue: number;
     income: number;
     expense: number;
     totalIncome: number;

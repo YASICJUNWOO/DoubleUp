@@ -12,13 +12,9 @@ public interface IncomeMapper {
     IncomeMapper INSTANCE = Mappers.getMapper(IncomeMapper.class);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "yearValue", source = "incomeRequestDto.year")
-    @Mapping(target = "monthValue", source = "incomeRequestDto.month")
     @Mapping(target = "income", source = "incomeRequestDto.income")
     Income toEntity(Member member, IncomeRequestDto incomeRequestDto);
 
-    @Mapping(target = "year", source = "yearValue")
-    @Mapping(target = "month", source = "monthValue")
     @Mapping(target = "income", source = "income")
     IncomeResponseDto toResponse(Income income);
 }

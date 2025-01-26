@@ -6,6 +6,7 @@ import {
     GET_FAVORITE_STOCK_LIST,
     GET_GOAL,
     GET_INCOME_BY_YEAR,
+    GET_INCOME_BY_YEAR_BY_ID,
     GET_INCOME_GOAL,
     GET_LEDGERS,
     GET_NEWS_LIST_BY_STOCK,
@@ -22,6 +23,7 @@ import {
     POST_GOAL,
     POST_GOAL_SUB,
     POST_INCOME,
+    POST_INCOME_DETAIL,
     POST_INCOME_GOAL,
     POST_LEDGERS,
     POST_LOGIN,
@@ -170,6 +172,10 @@ export const getIncomeByYear = async (queryParams: { [key: string]: string }) =>
     return axios.get(createUrlWithParams(GET_INCOME_BY_YEAR, {}, queryParams));
 }
 
+export const getIncomeById = async (pathParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_INCOME_BY_YEAR_BY_ID, pathParams, {}));
+}
+
 // POST
 export const addIncome = async (body: any) => {
     return axios.post(createUrlWithParams(POST_INCOME, {}, {}), body);
@@ -189,6 +195,12 @@ export const getIncomeGoal = async (queryParams: { [key: string]: string }) => {
 // PATCH
 export const updateIncomeGoal = async (pathParams: { [key: string]: string }, body: any) => {
     return axios.patch(createUrlWithParams(PATCH_INCOME_GOAL, pathParams, {}), body);
+}
+
+// ======================== INCOME DETAIL ========================
+// POST
+export const addIncomeDetail = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_INCOME_DETAIL, {}, {}), body);
 }
 
 // URL 템플릿을 이용해 동적으로 생성하는 함수

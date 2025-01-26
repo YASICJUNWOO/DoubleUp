@@ -4,7 +4,7 @@ import {Bar} from "@ant-design/charts";
 import {EditOutlined} from "@ant-design/icons";
 import {gray} from "@ant-design/colors";
 import {IIncomeGoal, Income, IncomeGoalRequest} from "./interface";
-import {addIncomeGoal, getIncomeGoal, updateIncomeGoal} from "../../constants/api";
+import {addIncomeGoal, getIncomeGoal, updateIncomeGoal} from "../../../constants/api";
 
 const {Title, Text} = Typography;
 

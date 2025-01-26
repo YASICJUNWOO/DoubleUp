@@ -94,8 +94,12 @@ export const POST_LOGIN: string = '/login';
 export const POST_SIGNUP: string = '/api/member';
 
 // ================= INCOME =================
-// 수입/지출 조회
+// 년/ 월간 수입/지출 조회
 export const GET_INCOME_BY_YEAR = '/api/income';
+
+// 수입/지출 조회
+export const GET_INCOME_BY_YEAR_BY_ID = '/api/income/{{incomeId}}';
+
 
 // 수입/지출 저장
 export const POST_INCOME = '/api/income';
@@ -110,4 +114,7 @@ export const GET_INCOME_GOAL: string = '/api/income-goal';
 // 목표 수정
 export const PATCH_INCOME_GOAL: string = '/api/income-goal/{{id}}';
 
+//================= INCOME DETAIL =================
+// 수입/지출 상세 저장
+export const POST_INCOME_DETAIL: string = '/api/income-detail';
 

@@ -14,8 +14,8 @@ import java.math.BigDecimal;
 public class IncomeResponseDto {
 
     private Long id;
-    private int year;
-    private int month;
+    private int yearValue;
+    private int monthValue;
     private BigDecimal income;
     private BigDecimal expense;
     private BigDecimal totalIncome;

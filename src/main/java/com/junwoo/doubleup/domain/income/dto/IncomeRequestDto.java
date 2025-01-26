@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 @Data
 public class IncomeRequestDto {
 
-    private int year;
-    private int month;
+    private int yearValue;
+    private int monthValue;
     private BigDecimal income;
     private BigDecimal expense;
     private BigDecimal totalIncome;
