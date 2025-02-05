@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class IncomeDetailService {
     private final IncomeDetailRepository incomeDetailRepository;
+    private final IncomeDetailGetService incomeDetailGetService;
 
     @Transactional
     public void addIncomeDetail(IncomeDetail incomeDetail) {
@@ -25,4 +26,14 @@ public class IncomeDetailService {
         }
 
     }
+
+    @Transactional
+    public void deleteIncomeDetail(Long id) {
+        IncomeDetail incomeDetailById = incomeDetailGetService.getIncomeDetailById(id);
+        Income income = incomeDetailById.getIncome();
+        income.removeIncomeDetail(incomeDetailById);
+
+        incomeDetailRepository.deleteById(id);
+    }
+
 }

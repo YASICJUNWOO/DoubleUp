@@ -42,7 +42,7 @@ public class Income {
     @Comment("순수입")
     private BigDecimal totalIncome;
 
-    @OneToMany(mappedBy = "income", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "income", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<IncomeDetail> incomeDetails = new ArrayList<>();
 
     public void updateIncome(Income income) {
@@ -63,4 +63,13 @@ public class Income {
         this.totalIncome = this.income.subtract(this.expense);
     }
 
+    public void removeIncomeDetail(IncomeDetail incomeDetailById) {
+        this.incomeDetails.remove(incomeDetailById);
+        if (incomeDetailById.getType() == IncomeType.INCOME) {
+            this.income = this.income.subtract(incomeDetailById.getAmount());
+        } else {
+            this.expense = this.expense.subtract(incomeDetailById.getAmount());
+        }
+        this.totalIncome = this.income.subtract(this.expense);
+    }
 }

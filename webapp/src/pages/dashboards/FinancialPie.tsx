@@ -1,29 +1,60 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ResponsivePie} from "@nivo/pie";
 import {green, red} from "@ant-design/colors";
+import {Income} from "../../components/dashboard/income/interface";
+import {IncomeDetail} from "../../interface/interface";
 
-export const FinancialPie: React.FC = () => {
+type Props = {
+    incomeData: Income;
+}
 
-    const initData = [
-        {
-            "id": "income",
-            "label": "수입",
-            "value": 144,
-            "color": green[4]
-        },
-        {
-            "id": "expense",
-            "label": "지출",
-            "value": 467,
-            "color": red[4]
-        }
-    ]
+interface ChartData {
+    id: string;
+    label: string;
+    value: number;
+    color: string;
+}
 
-    const [data, setData] = useState(initData);
+export const FinancialPie: React.FC<Props> = ({incomeData}) => {
 
-    return (
+    const [chartData, setChartData] = useState<ChartData[]>([]);
+
+    useEffect(() => {
+        if (!incomeData || !incomeData.incomeDetails) return
+
+        const incomeDetails:IncomeDetail[] = incomeData.incomeDetails;
+
+        const transformedChartData = transformData(incomeDetails);
+        setChartData(transformedChartData);
+
+    }, [incomeData]);
+
+    const transformData = (incomeDetails: IncomeDetail[]): ChartData[] => {
+        const income = incomeDetails.filter((incomeDetail) => incomeDetail.type === 'INCOME');
+        const expense = incomeDetails.filter((incomeDetail) => incomeDetail.type === 'EXPENSE');
+
+        const incomeSum = income.reduce((acc, cur) => acc + cur.amount, 0);
+        const expenseSum = expense.reduce((acc, cur) => acc + cur.amount, 0);
+
+        return [
+            {
+                "id": "income",
+                "label": "수입",
+                "value": incomeSum,
+                "color": green[4]
+            },
+            {
+                "id": "expense",
+                "label": "지출",
+                "value": expenseSum,
+                "color": red[4]
+            }
+        ]
+    }
+
+    return incomeData.incomeDetails && incomeData.incomeDetails.length > 0 ?
         <ResponsivePie
-            data={data}
+            data={chartData}
             margin={{top: 10, right: 20, bottom: 40, left: 20}}
             innerRadius={0.5}
             padAngle={1}
@@ -72,5 +103,6 @@ export const FinancialPie: React.FC = () => {
                 }
             ]}
         />
-    );
+        :
+        <></>
 }

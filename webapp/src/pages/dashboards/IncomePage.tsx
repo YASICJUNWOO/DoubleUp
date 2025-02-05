@@ -3,7 +3,7 @@ import {Button, Col, Flex, Row, Typography} from "antd";
 import {StylesContext} from "../../context";
 import React, {useContext, useEffect, useState} from "react";
 import {IncomeTable} from "../../components/dashboard/income/IncomeTable";
-import {addIncome, getIncomeByYear} from "../../constants/api";
+import {addIncome, deleteIncomeByYear, getIncomeByYear} from "../../constants/api";
 import {Income, IncomeAddRequest} from "../../components/dashboard/income/interface";
 import {IncomeBarChart} from "../../components/dashboard/income/IncomeBarChart";
 import {IncomeGoal} from "../../components/dashboard/income/IncomeGoal";
@@ -73,6 +73,18 @@ export const IncomePage: React.FC = () => {
         fetchIncome(year);
     }
 
+    const deleteIncome = (year: number) => {
+        const params = {"year": year.toString()}
+
+        deleteIncomeByYear(params)
+            .then((response) => {
+                fetchIncome(year);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+    }
+
     return (
         <Row {...stylesContext?.rowProps}>
             <Col span={24}>
@@ -99,6 +111,7 @@ export const IncomePage: React.FC = () => {
                                     </Button>
                                 </Flex>
                             }
+                            extra={<Button onClick={() => deleteIncome(year)}>삭제</Button>}
                         >
                             {data.length === 0 ?
 

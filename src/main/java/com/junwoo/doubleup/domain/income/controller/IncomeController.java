@@ -52,5 +52,13 @@ public class IncomeController {
         incomeService.createWholeIncome(findedMember, incomeList);
     }
 
+    @DeleteMapping
+    public void deleteIncomeByYear(
+//            @AuthenticationPrincipal String username,
+            @RequestParam(name = "year") int year) {
+        Member findedMember = memberGetService.findById(1L);
+        incomeService.deleteIncome(findedMember, year);
+    }
+
 
 }

@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
     DELETE_GOAL,
+    DELETE_INCOME_DETAIL,
     DELETE_STOCK_FAVORITE,
     GET_CURRENT_STOCK_PRICE,
     GET_FAVORITE_STOCK_LIST,
@@ -181,6 +182,11 @@ export const addIncome = async (body: any) => {
     return axios.post(createUrlWithParams(POST_INCOME, {}, {}), body);
 }
 
+// DELETE
+export const deleteIncomeByYear = async (queryParams: { [key: string]: string }) => {
+    return axios.delete(createUrlWithParams(GET_INCOME_BY_YEAR, {}, queryParams));
+}
+
 // ======================== INCOME GOAL ========================
 // POST
 export const addIncomeGoal = async (body: any) => {
@@ -201,6 +207,11 @@ export const updateIncomeGoal = async (pathParams: { [key: string]: string }, bo
 // POST
 export const addIncomeDetail = async (body: any) => {
     return axios.post(createUrlWithParams(POST_INCOME_DETAIL, {}, {}), body);
+}
+
+// DELETE
+export const deleteIncomeDetail = async (pathParams: { [key: string]: string }) => {
+    return axios.delete(createUrlWithParams(DELETE_INCOME_DETAIL, pathParams, {}));
 }
 
 // URL 템플릿을 이용해 동적으로 생성하는 함수

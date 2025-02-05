@@ -6,7 +6,7 @@ import {FinancialLedgerTable} from "./FinancialLedgerTable";
 import {Card} from "../../components";
 import {FinancialSankey} from "./FinancialSankey";
 import {FinancialPie} from "./FinancialPie";
-import {addIncomeDetail, getIncomeById} from "../../constants/api";
+import {addIncomeDetail, deleteIncomeDetail, getIncomeById} from "../../constants/api";
 import {
     ExpenseCategoryType,
     IncomeCategoryType,
@@ -69,6 +69,19 @@ export const FinancialLedgerPage: React.FC<Props> = ({
             });
     }
 
+    const handleDeleteIncomeDetail = (id: string) => {
+
+        const params = { id: id }
+
+        deleteIncomeDetail(params)
+            .then(() => {
+                fetchIncome(incomeId);
+            })
+            .catch((error) => {
+                console.error("Delete Failed", error);
+            });
+    }
+
     const styleContext = useStylesContext();
     return incomeData ?
         <>
@@ -83,21 +96,24 @@ export const FinancialLedgerPage: React.FC<Props> = ({
                 </Space>
                 <Col span={24}>
                     <FinancialLedgerTable
-                        returnToIncomePage={returnToIncomePage}
+                        handleDeleteIncomeDetail={handleDeleteIncomeDetail}
                         data={incomeData.incomeDetails || []}
                         year={incomeData.yearValue}
-                        handleYearChange={() => {
-                        }}
+                        month={incomeData.monthValue}
                         setIncomeDetailAddModalOpen={setIncomeDetailAddModalOpen}
                     />
                 </Col>
+            </Row>
+            <Row {...styleContext?.rowProps}>
                 <Col span={16}>
                     <Card
                         title="흐름"
                         bordered={false}
                     >
                         <div style={{width: "100%", height: "300px"}}>
-                            <FinancialSankey/>
+                            <FinancialSankey
+                                incomeData={incomeData}
+                            />
                         </div>
                     </Card>
                 </Col>
@@ -107,7 +123,9 @@ export const FinancialLedgerPage: React.FC<Props> = ({
                         bordered={false}
                     >
                         <div style={{width: "100%", height: "300px"}}>
-                            <FinancialPie/>
+                            <FinancialPie
+                                incomeData={incomeData}
+                            />
                         </div>
                     </Card>
                 </Col>

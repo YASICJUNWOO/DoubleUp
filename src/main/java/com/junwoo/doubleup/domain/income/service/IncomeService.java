@@ -41,4 +41,8 @@ public class IncomeService {
 
     }
 
+    @Transactional
+    public void deleteIncome(Member member, int year) {
+         incomeRepository.deleteAllByMemberAndYearValue(member, year);
+    }
 }

@@ -8,7 +8,6 @@ import {
     Input,
     InputRef,
     MenuProps,
-    Popconfirm,
     Space,
     Table,
     TableProps,
@@ -142,17 +141,17 @@ type ColumnTypes = Exclude<TableProps<IncomeDetail>['columns'], undefined>;
 type Props = {
     data: IncomeDetail[]
     year: number,
-    handleYearChange: (year: number) => void
+    month: number,
+    handleDeleteIncomeDetail: (id: string) => void
     setIncomeDetailAddModalOpen: (open: boolean) => void
-    returnToIncomePage: () => void
 }
 
 export const FinancialLedgerTable: React.FC<Props> = ({
                                                           data,
                                                           year,
-                                                          handleYearChange,
-                                                          setIncomeDetailAddModalOpen,
-                                                          returnToIncomePage
+                                                          month,
+                                                          handleDeleteIncomeDetail,
+                                                          setIncomeDetailAddModalOpen
                                                       }) => {
 
     const defaultColumns: (ColumnTypes[number] & { editable?: boolean; dataIndex: string })[] = [
@@ -208,26 +207,21 @@ export const FinancialLedgerTable: React.FC<Props> = ({
             dataIndex: 'operation',
             align: 'center',
             width: '8%',
-            render: (_, record) =>
-                data.length >= 1 ? (
-                    <Popconfirm
-                        title="정말 삭제하시겠습니까?"
-                        placement="topLeft"
-                        showCancel={false}
-                        okText="삭제"
-                    >
-                        <MinusCircleFilled
-                            // onClick={() => handleDelete(record.key)}
-                            style={{color: red[5], fontSize: "large"}}
-                        />
-                    </Popconfirm>
-                ) : null,
+            render: (_, record:IncomeDetail ) =>
+                data.length >= 1 ?
+                    <MinusCircleFilled
+                        onClick={() => handleDeleteIncomeDetail(record.id)}
+                        style={{color: red[5], fontSize: "large"}}
+                    />
+                : null,
         },
     ];
 
     const handleAdd = () => {
         setIncomeDetailAddModalOpen(true);
     };
+
+    // ============================================================
 
     const components = {
         body: {
@@ -253,11 +247,11 @@ export const FinancialLedgerTable: React.FC<Props> = ({
         };
     });
 
-// 연도 범위 설정
+    // 연도 범위 설정
     const startYear = 2020;
     const endYear = 2024;
 
-// 연도 리스트 생성
+    // 연도 리스트 생성
     const years = Array.from({length: endYear - startYear + 1}, (_, index) => startYear + index);
 
     // 메뉴 항목 생성
@@ -268,7 +262,7 @@ export const FinancialLedgerTable: React.FC<Props> = ({
 
     const handleMenuClick: MenuProps['onClick'] = (e) => {
         const selectedYear = parseInt(e.key, 10);
-        handleYearChange(selectedYear);
+        // handleYearChange(selectedYear);
     };
 
     return (
@@ -279,7 +273,7 @@ export const FinancialLedgerTable: React.FC<Props> = ({
                         <Button
                             icon={
                                 <ArrowLeftOutlined
-                                    onClick={() => handleYearChange(year - 1)}
+                                    // onClick={() => handleYearChange(year - 1)}
                                 />}
                         />
                         <Space>
@@ -291,12 +285,13 @@ export const FinancialLedgerTable: React.FC<Props> = ({
                                 </Button>
                             </Dropdown>
 
-                            <Typography.Title level={5} style={{margin: "0px"}}>년 예산</Typography.Title>
+                            <Typography.Title level={5} style={{margin: "0px"}}>년 </Typography.Title>
+                            <Typography.Title level={5} style={{margin: "0px"}}>{month} 월 </Typography.Title>
                         </Space>
                         <Button
                             icon={
                                 <ArrowRightOutlined
-                                    onClick={() => handleYearChange(year + 1)}
+                                    // onClick={() => handleYearChange(year + 1)}
                                 />}
                         />
                     </Flex>

@@ -118,3 +118,6 @@ export const PATCH_INCOME_GOAL: string = '/api/income-goal/{{id}}';
 // 수입/지출 상세 저장
 export const POST_INCOME_DETAIL: string = '/api/income-detail';
 
+// 수입 상세 삭제
+export const DELETE_INCOME_DETAIL: string = '/api/income-detail/{{id}}';
+

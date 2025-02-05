@@ -1,7 +1,7 @@
 import {Button, Flex, InputNumber, Modal, Typography} from "antd";
 import React, {useCallback, useEffect, useState} from "react";
 import {Bar} from "@ant-design/charts";
-import {EditOutlined} from "@ant-design/icons";
+import {EditOutlined, SwapOutlined} from "@ant-design/icons";
 import {gray} from "@ant-design/colors";
 import {IIncomeGoal, Income, IncomeGoalRequest} from "./interface";
 import {addIncomeGoal, getIncomeGoal, updateIncomeGoal} from "../../../constants/api";
@@ -13,6 +13,7 @@ type Props = {
     incomeList: Income[];
 };
 
+export type GOAL_MODE = "YEARLY" | "MONTHLY";
 
 export const IncomeGoal: React.FC<Props> = ({
                                                 year,
@@ -20,6 +21,7 @@ export const IncomeGoal: React.FC<Props> = ({
                                             }) => {
 
     const [visible, setVisible] = useState(false);
+    const [goalMode, setGoalMode] = useState<GOAL_MODE>("MONTHLY");
     const [originGoal, setOriginGoal] = useState<IIncomeGoal>();
     const [goal, setGoal] = useState<number>();
 
@@ -129,7 +131,15 @@ export const IncomeGoal: React.FC<Props> = ({
                 style={{paddingBottom: 20}}
             >
                 <Flex align="end" gap={8}>
-                    <Title level={4} style={{margin: 0}}>목표 수입/지출</Title>
+                    <Button
+                        shape="circle"
+                        size="small"
+                        icon={<SwapOutlined/>}
+                        onClick={() => setGoalMode(goalMode === "YEARLY" ? "MONTHLY" : "YEARLY")}
+                    />
+                    <Title level={4} style={{margin: 0}}>
+                        {goalMode === "YEARLY" ? "연간" : "월간"}  목표 수입/지출
+                    </Title>
                     {originGoal &&
                         <Button
                             onClick={() => setVisible(true)}
