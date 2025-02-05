@@ -6,6 +6,7 @@ import com.junwoo.doubleup.domain.income.entity.Income;
 import com.junwoo.doubleup.domain.income.entity.IncomeDetail;
 import com.junwoo.doubleup.domain.income.service.IncomeDetailService;
 import com.junwoo.doubleup.domain.income.service.IncomeGetService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class IncomeDetailController {
 
     private final IncomeDetailMapper incomeDetailMapper = IncomeDetailMapper.INSTANCE;
 
+    @Operation(summary = "수입 상세 추가")
     @PostMapping
     public void addIncomeDetail(@RequestBody IncomeDetailRequest incomeDetailRequest) {
         Income findedIncome = incomeGetService.getIncomeById(incomeDetailRequest.getIncomeId());
@@ -29,17 +31,10 @@ public class IncomeDetailController {
         incomeDetailService.addIncomeDetail(incomeDetail);
     }
 
+    @Operation(summary = "수입 상세 삭제")
     @DeleteMapping("/{id}")
     public void deleteIncomeDetail(@PathVariable Long id) {
         incomeDetailService.deleteIncomeDetail(id);
-    }
-
-
-    @PostMapping("/category")
-    public void addIncomeDetailCategory(@RequestBody IncomeDetailRequest incomeDetailRequest) {
-        Income findedIncome = incomeGetService.getIncomeById(incomeDetailRequest.getIncomeId());
-        IncomeDetail incomeDetail = incomeDetailMapper.toIncomeDetail(findedIncome, incomeDetailRequest);
-        incomeDetailService.addIncomeDetail(incomeDetail);
     }
 
 }

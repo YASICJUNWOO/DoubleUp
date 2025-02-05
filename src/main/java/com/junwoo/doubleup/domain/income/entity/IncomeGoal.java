@@ -27,6 +27,10 @@ public class IncomeGoal {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Comment("목표 타입")
+    @Enumerated(EnumType.STRING)
+    private IncomeGoalType type;
+
     @Comment("목표 범위 타입")
     @Enumerated(EnumType.STRING)
     private IncomeGoalRangeType rangeType;

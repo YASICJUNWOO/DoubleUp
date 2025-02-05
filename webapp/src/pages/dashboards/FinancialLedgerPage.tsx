@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import './css/FinacialLedger.css';
-import {Col, Row, Space, Typography} from "antd";
+import {Col, Row, Select, Space, Typography} from "antd";
 import {useStylesContext} from "../../context";
 import {FinancialLedgerTable} from "./FinancialLedgerTable";
 import {Card} from "../../components";
 import {FinancialSankey} from "./FinancialSankey";
-import {FinancialPie} from "./FinancialPie";
+import {FinancialPie, INCOME_PIE_CHART_TYPE} from "./FinancialPie";
 import {addIncomeDetail, deleteIncomeDetail, getIncomeById} from "../../constants/api";
 import {
     ExpenseCategoryType,
@@ -37,6 +37,8 @@ export const FinancialLedgerPage: React.FC<Props> = ({
     const [incomeData, setIncomeData] = useState<Income>();
 
     const [incomeDetailAddModalOpen, setIncomeDetailAddModalOpen] = useState(false);
+
+    const [selectedPieChartType, setSelectedPieChartType] = useState<string>(INCOME_PIE_CHART_TYPE[0].value);
 
     useEffect(() => {
         fetchIncome(incomeId);
@@ -110,7 +112,7 @@ export const FinancialLedgerPage: React.FC<Props> = ({
                         title="흐름"
                         bordered={false}
                     >
-                        <div style={{width: "100%", height: "300px"}}>
+                        <div style={{width: "100%", height: "300px", overflow: 'hidden'}}>
                             <FinancialSankey
                                 incomeData={incomeData}
                             />
@@ -121,9 +123,18 @@ export const FinancialLedgerPage: React.FC<Props> = ({
                     <Card
                         title="비율"
                         bordered={false}
+                        extra={
+                            <Select
+                                defaultValue="lucy"
+                                style={{ width: 120 }}
+                                onChange={(value) => setSelectedPieChartType(value)}
+                                options={INCOME_PIE_CHART_TYPE}
+                            />
+                        }
                     >
                         <div style={{width: "100%", height: "300px"}}>
                             <FinancialPie
+                                type={selectedPieChartType}
                                 incomeData={incomeData}
                             />
                         </div>

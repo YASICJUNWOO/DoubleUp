@@ -32,7 +32,8 @@ export const IncomeGoal: React.FC<Props> = ({
     const fetchIncomeGoal = () => {
 
         const param = {
-            type: "YEARLY",
+            type: "INCOME",
+            rangeType: "YEARLY",
             year: year.toString(),
         }
 
@@ -51,6 +52,7 @@ export const IncomeGoal: React.FC<Props> = ({
 
         console.log('handleGoalSave', originGoal);
         const body: IncomeGoalRequest = {
+            type: "INCOME",
             rangeType: "YEARLY",
             yearValue: year,
             monthValue: null, // 년간 목표만 설정
@@ -71,6 +73,7 @@ export const IncomeGoal: React.FC<Props> = ({
 
         console.log('editIncomeGoal', originGoal);
         const body: IncomeGoalRequest = {
+            type: "INCOME",
             rangeType: "YEARLY",
             yearValue: year,
             monthValue: null, // 년간 목표만 설정

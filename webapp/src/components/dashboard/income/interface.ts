@@ -30,6 +30,7 @@ export interface IIncomeGoal {
 }
 
 export interface IncomeGoalRequest {
+    type: 'INCOME' | 'EXPENSE';
     rangeType: INCOME_RANGE_TYPE;
     yearValue: number;
     monthValue: number | null;

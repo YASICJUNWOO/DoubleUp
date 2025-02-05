@@ -3,6 +3,7 @@ package com.junwoo.doubleup.domain.income.controller;
 import com.junwoo.doubleup.domain.income.dto.IncomeGoalMapper;
 import com.junwoo.doubleup.domain.income.entity.IncomeGoal;
 import com.junwoo.doubleup.domain.income.entity.IncomeGoalRangeType;
+import com.junwoo.doubleup.domain.income.entity.IncomeGoalType;
 import com.junwoo.doubleup.domain.income.service.IncomeGoalGetService;
 import com.junwoo.doubleup.domain.income.service.IncomeGoalService;
 import com.junwoo.doubleup.domain.member.entity.Member;
@@ -40,10 +41,11 @@ public class IncomeGoalController {
     @GetMapping
     public IncomeGoal getIncomeGoal(
 //            @AuthenticationPrincipal String username,
-            @RequestParam(name = "type") IncomeGoalRangeType type,
+            @RequestParam(name = "type") IncomeGoalType type,
+            @RequestParam(name = "rangeType") IncomeGoalRangeType rangeType,
             @RequestParam(name = "year") int year,
             @RequestParam(name = "month", required = false) Integer month) {
         Member findedMember = memberGetService.findById(1L);
-        return incomeGoalGetService.getIncomeGoalOrNull(findedMember, type, year, month);
+        return incomeGoalGetService.getIncomeGoalOrNull(findedMember, type, rangeType, year, month);
     }
 }

@@ -5,6 +5,7 @@ import {Income} from "../../components/dashboard/income/interface";
 import {IncomeDetail} from "../../interface/interface";
 
 type Props = {
+    type: string;
     incomeData: Income;
 }
 
@@ -15,7 +16,22 @@ interface ChartData {
     color: string;
 }
 
-export const FinancialPie: React.FC<Props> = ({incomeData}) => {
+export const INCOME_PIE_CHART_TYPE = [
+    {
+        value: 'INCOME',
+        label: '수입 - 지출'
+    },
+    {
+        value: 'INCOME-CATEGORY',
+        label: '수입 카테고리'
+    },
+    {
+        value: 'EXPENSE-CATEGORY',
+        label: '지출 카테고리'
+    }
+]
+
+export const FinancialPie: React.FC<Props> = ({type, incomeData}) => {
 
     const [chartData, setChartData] = useState<ChartData[]>([]);
 
@@ -24,32 +40,60 @@ export const FinancialPie: React.FC<Props> = ({incomeData}) => {
 
         const incomeDetails:IncomeDetail[] = incomeData.incomeDetails;
 
-        const transformedChartData = transformData(incomeDetails);
+        const transformedChartData = transformData(type, incomeDetails);
         setChartData(transformedChartData);
 
-    }, [incomeData]);
+    }, [type, incomeData]);
 
-    const transformData = (incomeDetails: IncomeDetail[]): ChartData[] => {
-        const income = incomeDetails.filter((incomeDetail) => incomeDetail.type === 'INCOME');
-        const expense = incomeDetails.filter((incomeDetail) => incomeDetail.type === 'EXPENSE');
+    const transformData = (type: string, incomeDetails: IncomeDetail[]): ChartData[] => {
 
-        const incomeSum = income.reduce((acc, cur) => acc + cur.amount, 0);
-        const expenseSum = expense.reduce((acc, cur) => acc + cur.amount, 0);
+        if (type === 'INCOME'){
+            const income = incomeDetails.filter((incomeDetail) => incomeDetail.type === 'INCOME');
+            const expense = incomeDetails.filter((incomeDetail) => incomeDetail.type === 'EXPENSE');
 
-        return [
-            {
-                "id": "income",
-                "label": "수입",
-                "value": incomeSum,
-                "color": green[4]
-            },
-            {
-                "id": "expense",
-                "label": "지출",
-                "value": expenseSum,
-                "color": red[4]
-            }
-        ]
+            const incomeSum = income.reduce((acc, cur) => acc + cur.amount, 0);
+            const expenseSum = expense.reduce((acc, cur) => acc + cur.amount, 0);
+
+            return [
+                {
+                    "id": "income",
+                    "label": "수입",
+                    "value": incomeSum,
+                    "color": green[4]
+                },
+                {
+                    "id": "expense",
+                    "label": "지출",
+                    "value": expenseSum,
+                    "color": red[4]
+                }
+            ]
+        }
+        else if (type.includes('CATEGORY')){
+            const incomes = incomeDetails.filter((incomeDetail) => {
+                if (type === 'INCOME-CATEGORY'){
+                    return incomeDetail.type === 'INCOME';
+                }
+                return incomeDetail.type === 'EXPENSE';
+            });
+
+            const incomeCategoryMap = new Map<string, number>();
+            incomes.forEach((incomeDetail) => {
+                const amount = incomeCategoryMap.get(incomeDetail.category) || 0;
+                incomeCategoryMap.set(incomeDetail.category, amount + incomeDetail.amount);
+            })
+
+            return Array.from(incomeCategoryMap.keys()).map((category) => {
+                return {
+                    id: category,
+                    label: category,
+                    value: incomeCategoryMap.get(category) || 0,
+                    color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`
+                };
+            })
+        }
+        return [];
+
     }
 
     return incomeData.incomeDetails && incomeData.incomeDetails.length > 0 ?
