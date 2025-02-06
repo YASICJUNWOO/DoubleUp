@@ -74,7 +74,7 @@ export const ExpenseCategory = {
     },
 } as const;
 
-
+export const ALL_CATEGORY = { ...IncomeCategory, ...ExpenseCategory };
 export type IncomeCategoryType = keyof typeof IncomeCategory; // 타입 정의
 export type ExpenseCategoryType = keyof typeof ExpenseCategory; // 타입 정의
 

@@ -1,7 +1,9 @@
-import {Button, Table} from "antd";
+import {Button, Table, Typography} from "antd";
 import React from "react";
 import {Income} from "./interface";
 import {EditFilled} from "@ant-design/icons";
+
+const {Text} = Typography
 
 type Props = {
     loading: boolean;
@@ -15,43 +17,27 @@ export const IncomeTable: React.FC<Props> = ({loading, data, setData, setSelecte
     const columns = [
         {
             title: "월",
-            dataIndex: "month",
+            dataIndex: "monthValue",
             key: "month",
         },
         {
             title: "수입",
             dataIndex: "income",
             key: "income",
-            render: (text: any, record: Income) =>
-                // isEdit
-                //     ?
-                //     <InputNumber
-                //         size="small"
-                //         min={1}
-                //         defaultValue={Number(text)}
-                //         onChange={(value) => handleChange(value!, record.id, "income")}/>
-                //     :
-                text
         },
         {
             title: "지출",
             dataIndex: "expense",
             key: "expense",
-            render: (text: any, record: Income) =>
-                // isEdit ? (
-                //     <InputNumber
-                //         size="small"
-                //         min={1}
-                //         defaultValue={Number(text)}
-                //         onChange={(value) => handleChange(value!, record.id, "expense")}
-                //     />
-                // ) :
-                    text
         },
         {
             title: "순이익",
             dataIndex: "totalIncome",
             key: "totalIncome",
+            render: (text: any, record: Income) =>
+                <Text type={text < 0 ? "danger" : text > 0 ? "success" : undefined}>
+                    {text}
+                </Text>
         },
         {
             key: "detail",

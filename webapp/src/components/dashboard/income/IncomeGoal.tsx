@@ -1,27 +1,43 @@
 import {Button, Flex, InputNumber, Modal, Typography} from "antd";
 import React, {useCallback, useEffect, useState} from "react";
-import {Bar} from "@ant-design/charts";
-import {EditOutlined, SwapOutlined} from "@ant-design/icons";
+import {EditOutlined} from "@ant-design/icons";
 import {gray} from "@ant-design/colors";
-import {IIncomeGoal, Income, IncomeGoalRequest} from "./interface";
+import {IIncomeGoal, IncomeGoalRequest} from "./interface";
 import {addIncomeGoal, getIncomeGoal, updateIncomeGoal} from "../../../constants/api";
+import {IncomeGoalBar} from "./IncomeGoalBar";
 
 const {Title, Text} = Typography;
 
 type Props = {
+    type: GOAL_TYPE_KEY;
+    rangeType: GOAL_RANGE_TYPE_KEY;
     year: number;
-    incomeList: Income[];
+    month?: number;
+    data: number;
 };
 
-export type GOAL_MODE = "YEARLY" | "MONTHLY";
+export const GOAL_TYPE = {
+    INCOME: "수입",
+    EXPENSE: "지출",
+};
+
+export const GOAL_RANGE_TYPE = {
+    YEARLY: "연간",
+    MONTHLY: "월간",
+};
+
+export type GOAL_TYPE_KEY = keyof typeof GOAL_TYPE;
+export type GOAL_RANGE_TYPE_KEY = keyof typeof GOAL_RANGE_TYPE;
 
 export const IncomeGoal: React.FC<Props> = ({
+                                                type,
+                                                rangeType,
                                                 year,
-                                                incomeList
+                                                month,
+                                                data
                                             }) => {
 
     const [visible, setVisible] = useState(false);
-    const [goalMode, setGoalMode] = useState<GOAL_MODE>("MONTHLY");
     const [originGoal, setOriginGoal] = useState<IIncomeGoal>();
     const [goal, setGoal] = useState<number>();
 
@@ -31,10 +47,19 @@ export const IncomeGoal: React.FC<Props> = ({
 
     const fetchIncomeGoal = () => {
 
-        const param = {
-            type: "INCOME",
-            rangeType: "YEARLY",
+        let param: {
+            type: GOAL_TYPE_KEY;
+            rangeType: GOAL_RANGE_TYPE_KEY;
+            year: string;
+            month?: string; // month를 선택적으로 포함
+        } = {
+            type: type,
+            rangeType: rangeType,
             year: year.toString(),
+        };
+
+        if (rangeType === "MONTHLY" && month !== undefined) {
+            param.month = month.toString();
         }
 
         getIncomeGoal(param)
@@ -48,16 +73,17 @@ export const IncomeGoal: React.FC<Props> = ({
 
     }
 
+
     const handleGoalSave = () => {
 
-        console.log('handleGoalSave', originGoal);
         const body: IncomeGoalRequest = {
-            type: "INCOME",
-            rangeType: "YEARLY",
+            type: type,
+            rangeType: rangeType,
             yearValue: year,
-            monthValue: null, // 년간 목표만 설정
+            monthValue: (rangeType === "MONTHLY" && month) ? month : null,
             goalAmount: goal!,
         }
+
 
         addIncomeGoal(body)
             .then(() => {
@@ -73,10 +99,10 @@ export const IncomeGoal: React.FC<Props> = ({
 
         console.log('editIncomeGoal', originGoal);
         const body: IncomeGoalRequest = {
-            type: "INCOME",
-            rangeType: "YEARLY",
+            type: type,
+            rangeType: rangeType,
             yearValue: year,
-            monthValue: null, // 년간 목표만 설정
+            monthValue: (rangeType === "MONTHLY" && month) ? month : null,
             goalAmount: goal!,
         }
 
@@ -106,24 +132,11 @@ export const IncomeGoal: React.FC<Props> = ({
                 value: goal,
             },
             {
-                type: '수입',
-                value: incomeList.reduce((acc, cur) => acc + cur.income, 0),
+                type: type === "INCOME" ? '수입' : '지출',
+                value: data
             }
         ];
-    }, [goal, incomeList]);
-
-    const config = {
-        data: barData(),
-        xField: 'value',
-        yField: 'type',
-        seriesField: 'type',
-        height: 10, // 차트 높이를 데이터 개수에 맞게 줄임
-        maxBarWidth: 20,
-        style: {
-            height: 100, // 캔버스 높이 직접 설정
-            width: "100%", // 캔버스 너비 직접 설정
-        },
-    };
+    }, [goal, data, type]);
 
     return (
         <>
@@ -134,14 +147,9 @@ export const IncomeGoal: React.FC<Props> = ({
                 style={{paddingBottom: 20}}
             >
                 <Flex align="end" gap={8}>
-                    <Button
-                        shape="circle"
-                        size="small"
-                        icon={<SwapOutlined/>}
-                        onClick={() => setGoalMode(goalMode === "YEARLY" ? "MONTHLY" : "YEARLY")}
-                    />
+
                     <Title level={4} style={{margin: 0}}>
-                        {goalMode === "YEARLY" ? "연간" : "월간"}  목표 수입/지출
+                        {GOAL_RANGE_TYPE[rangeType]} 목표 {GOAL_TYPE[type]}
                     </Title>
                     {originGoal &&
                         <Button
@@ -154,10 +162,7 @@ export const IncomeGoal: React.FC<Props> = ({
                     }
                 </Flex>
                 {originGoal ?
-                    <Bar
-                        {...config}
-                        legend={false}
-                    />
+                    <IncomeGoalBar data={barData()}/>
                     :
                     <Button
                         onClick={() => setVisible(true)}

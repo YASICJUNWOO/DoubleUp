@@ -85,6 +85,74 @@ export const IncomePage: React.FC = () => {
             })
     }
 
+    const getCard = () => {
+        return (
+            <Card
+                title={
+                    <Flex gap={12} justify="center" style={{width: "100%"}}>
+                        <Button
+                            onClick={() => setYear(year - 1)}
+                        >
+                            {"<"}
+                        </Button>
+                        <Title level={5} style={{margin: 0}}>{year}년 수입</Title>
+                        <Button
+                            onClick={() => setYear(year + 1)}
+                        >
+                            {">"}
+                        </Button>
+                    </Flex>
+                }
+                extra={<Button onClick={() => deleteIncome(year)}>삭제</Button>}
+            >
+                <Row {...stylesContext?.rowProps}>
+                    {data.length === 0 ?
+                        <Col span={24}>
+                            <Flex vertical justify="center" align="center">
+                                <Title level={5} style={{margin: 0}}>데이터가 없습니다.</Title>
+                                <Button
+                                    onClick={() => saveIncome(initialData(year))}
+                                >
+                                    데이터 생성
+                                </Button>
+                            </Flex>
+                        </Col>
+                        :
+                        <>
+                            <Col span={12}>
+                                <IncomeGoal
+                                    type='INCOME'
+                                    rangeType='YEARLY'
+                                    year={year}
+                                    data={data.reduce((acc, cur) => acc + cur.income, 0)}
+                                />
+                            </Col>
+                            <Col span={12}>
+                                <IncomeGoal
+                                    type='EXPENSE'
+                                    rangeType='YEARLY'
+                                    year={year}
+                                    data={data.reduce((acc, cur) => acc + cur.expense, 0)}
+                                />
+                            </Col>
+                            <Col span={24}>
+                                <IncomeBarChart data={data}/>
+                            </Col>
+                            <Col span={24}>
+                                <IncomeTable
+                                    loading={loading}
+                                    data={data}
+                                    setData={setData}
+                                    setSelectedIncome={setSelectedIncome}
+                                />
+                            </Col>
+                        </>
+                    }
+                </Row>
+            </Card>
+        );
+    }
+
     return (
         <Row {...stylesContext?.rowProps}>
             <Col span={24}>
@@ -95,50 +163,7 @@ export const IncomePage: React.FC = () => {
                             incomeId={selectedIncome.id}
                         />
                         :
-                        <Card
-                            title={
-                                <Flex gap={12} justify="center" style={{width: "100%"}}>
-                                    <Button
-                                        onClick={() => setYear(year - 1)}
-                                    >
-                                        {"<"}
-                                    </Button>
-                                    <Title level={5} style={{margin: 0}}>{year}년 수입</Title>
-                                    <Button
-                                        onClick={() => setYear(year + 1)}
-                                    >
-                                        {">"}
-                                    </Button>
-                                </Flex>
-                            }
-                            extra={<Button onClick={() => deleteIncome(year)}>삭제</Button>}
-                        >
-                            {data.length === 0 ?
-
-                                <Flex vertical justify="center" align="center">
-                                    <Title level={5} style={{margin: 0}}>데이터가 없습니다.</Title>
-                                    <Button
-                                        onClick={() => saveIncome(initialData(year))}
-                                    >
-                                        데이터 생성
-                                    </Button>
-                                </Flex>
-                                :
-                                <>
-                                    <IncomeGoal
-                                        year={year}
-                                        incomeList={data}
-                                    />
-                                    <IncomeBarChart data={data}/>
-                                    <IncomeTable
-                                        loading={loading}
-                                        data={data}
-                                        setData={setData}
-                                        setSelectedIncome={setSelectedIncome}
-                                    />
-                                </>
-                            }
-                        </Card>
+                        getCard()
                 }
             </Col>
         </Row>

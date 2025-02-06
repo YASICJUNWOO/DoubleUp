@@ -3,6 +3,7 @@ import {ResponsivePie} from "@nivo/pie";
 import {green, red} from "@ant-design/colors";
 import {Income} from "../../components/dashboard/income/interface";
 import {IncomeDetail} from "../../interface/interface";
+import {ALL_CATEGORY} from "../../components/dashboard/ledger/LedgerAddModal";
 
 type Props = {
     type: string;
@@ -85,8 +86,8 @@ export const FinancialPie: React.FC<Props> = ({type, incomeData}) => {
 
             return Array.from(incomeCategoryMap.keys()).map((category) => {
                 return {
-                    id: category,
-                    label: category,
+                    id: ALL_CATEGORY[category as keyof typeof ALL_CATEGORY].label,
+                    label: ALL_CATEGORY[category as keyof typeof ALL_CATEGORY].label,
                     value: incomeCategoryMap.get(category) || 0,
                     color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`
                 };
@@ -99,19 +100,17 @@ export const FinancialPie: React.FC<Props> = ({type, incomeData}) => {
     return incomeData.incomeDetails && incomeData.incomeDetails.length > 0 ?
         <ResponsivePie
             data={chartData}
-            margin={{top: 10, right: 20, bottom: 40, left: 20}}
+            margin={{top: 30, right: 30, bottom: 40, left: 30}}
             innerRadius={0.5}
             padAngle={1}
             activeInnerRadiusOffset={5}
             activeOuterRadiusOffset={10}
             colors={({data}) => data.color}
-            enableArcLinkLabels={false}
-            // arcLinkLabel={e => e.id + " (" + e.value + ")"}
             // arcLinkLabelsSkipAngle={10}
             // arcLinkLabelsTextColor="#333333"
             // arcLinkLabelsThickness={2}
             // arcLinkLabelsColor={{from: 'color'}}
-            arcLabel={e => e.label + " (" + e.value + ")"}
+            arcLabel='value'
             arcLabelsTextColor={{
                 from: 'color',
                 modifiers: [

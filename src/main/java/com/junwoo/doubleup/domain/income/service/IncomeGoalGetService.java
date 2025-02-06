@@ -16,8 +16,8 @@ public class IncomeGoalGetService {
     private final IncomeGoalRepository incomeGoalRepository;
 
     @Transactional(readOnly = true)
-    public IncomeGoal getIncomeGoalOrNull(Member member, IncomeGoalType type, IncomeGoalRangeType goalrangeTypeangeType, int year, Integer month) {
-        return incomeGoalRepository.findByMemberAndTypeAndRangeTypeAndYearValueAndMonthValue(member, type, goalrangeTypeangeType, year, month)
+    public IncomeGoal getIncomeGoalOrNull(Member member, IncomeGoalType type, IncomeGoalRangeType IncomeGoalRangeType, int year, Integer month) {
+        return incomeGoalRepository.findByMemberAndTypeAndRangeTypeAndYearValueAndMonthValue(member, type, IncomeGoalRangeType, year, month)
                 .orElse(null);
     }
 

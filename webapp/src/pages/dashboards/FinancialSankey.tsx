@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ResponsiveSankey} from "@nivo/sankey";
 import {Income} from "../../components/dashboard/income/interface";
 import {IncomeDetail} from "../../interface/interface";
+import {ALL_CATEGORY} from "../../components/dashboard/ledger/LedgerAddModal";
 
 type Props = {
     incomeData: Income;
@@ -60,7 +61,7 @@ export const FinancialSankey: React.FC<Props> = ({incomeData}) => {
                 },
                 ...Array.from(incomeCategoryMap.keys()).map((category) => {
                     return {
-                        id: category,
+                        id: ALL_CATEGORY[category as keyof typeof ALL_CATEGORY].label,
                         nodeColor: "hsl(29, 70%, 50%)"
                     };
                 }),
@@ -68,7 +69,7 @@ export const FinancialSankey: React.FC<Props> = ({incomeData}) => {
                 // ======= 지출 ========
                 ...Array.from(expenseCategoryMap.keys()).map((category) => {
                     return {
-                        id: category,
+                        id: ALL_CATEGORY[category as keyof typeof ALL_CATEGORY].label,
                         nodeColor: "hsl(29, 70%, 50%)"
                     };
                 }),
@@ -76,7 +77,7 @@ export const FinancialSankey: React.FC<Props> = ({incomeData}) => {
             "links": [
                 ...Array.from(incomeCategoryMap.keys()).map((category) => {
                     return {
-                        source: category,
+                        source: ALL_CATEGORY[category as keyof typeof ALL_CATEGORY].label,
                         target: "수입",
                         value: incomeCategoryMap.get(category) || 0
                     };
@@ -84,7 +85,7 @@ export const FinancialSankey: React.FC<Props> = ({incomeData}) => {
                 ...Array.from(expenseCategoryMap.keys()).map((category) => {
                     return {
                         source: "수입",
-                        target: category,
+                        target: ALL_CATEGORY[category as keyof typeof ALL_CATEGORY].label,
                         value: expenseCategoryMap.get(category) || 0
                     };
                 })

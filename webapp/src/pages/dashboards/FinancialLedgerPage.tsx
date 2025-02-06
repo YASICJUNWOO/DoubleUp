@@ -73,7 +73,7 @@ export const FinancialLedgerPage: React.FC<Props> = ({
 
     const handleDeleteIncomeDetail = (id: string) => {
 
-        const params = { id: id }
+        const params = {id: id}
 
         deleteIncomeDetail(params)
             .then(() => {
@@ -126,7 +126,7 @@ export const FinancialLedgerPage: React.FC<Props> = ({
                         extra={
                             <Select
                                 defaultValue="lucy"
-                                style={{ width: 120 }}
+                                style={{width: 120}}
                                 onChange={(value) => setSelectedPieChartType(value)}
                                 options={INCOME_PIE_CHART_TYPE}
                             />

@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {
     Button,
+    Col,
+    Divider,
     Dropdown,
     Flex,
     Form,
@@ -8,6 +10,7 @@ import {
     Input,
     InputRef,
     MenuProps,
+    Row,
     Space,
     Table,
     TableProps,
@@ -22,6 +25,7 @@ import './css/FinacialLedger.css';
 import dayjs from "dayjs";
 import {IncomeDetail} from "../../interface/interface";
 import {ExpenseCategory, IncomeCategory} from "../../components/dashboard/ledger/LedgerAddModal";
+import {IncomeGoal} from "../../components/dashboard/income/IncomeGoal";
 
 type FormInstance<T> = GetRef<typeof Form<T>>;
 
@@ -297,12 +301,30 @@ export const FinancialLedgerTable: React.FC<Props> = ({
                     </Flex>
                 }
             >
+                <Row>
+                    <Col span={12}>
+                        <IncomeGoal
+                            type='INCOME'
+                            rangeType='MONTHLY'
+                            year={year}
+                            month={month}
+                            data={data.filter((item) => item.type === 'INCOME').reduce((acc, cur) => acc + cur.amount, 0)}
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <IncomeGoal
+                            type='EXPENSE'
+                            rangeType='MONTHLY'
+                            year={year}
+                            month={month}
+                            data={data.filter((item) => item.type === 'EXPENSE').reduce((acc, cur) => acc + cur.amount, 0)}
+                        />
+                    </Col>
+                </Row>
+                <Divider/>
                 <Space style={{display: "flex", justifyContent: "end"}}>
                     <Button onClick={handleAdd} type="primary">
                         내역 추가
-                    </Button>
-                    <Button>
-                        저장
                     </Button>
                 </Space>
                 <Table<IncomeDetail>
