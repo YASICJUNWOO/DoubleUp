@@ -144,3 +144,20 @@ export interface IncomeDetail {
     amount: number;
     date: Dayjs;
 }
+
+// ================================== GOAL ROAD MAP ==============================================
+
+export interface IGoalRoadMap {
+    id: number;
+    age: number;
+    startYear: number;
+    endYear: number;
+    goalAmount: number;
+    currentProgressAmount: number;
+    goalRoadMapDetails: IGoalRoadMapDetail[];
+}
+
+export interface IGoalRoadMapDetail {
+    yearValue: number;
+    goalAmount: number;
+}

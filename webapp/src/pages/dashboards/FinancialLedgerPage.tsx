@@ -125,7 +125,7 @@ export const FinancialLedgerPage: React.FC<Props> = ({
                         bordered={false}
                         extra={
                             <Select
-                                defaultValue="lucy"
+                                defaultValue={INCOME_PIE_CHART_TYPE[0].value}
                                 style={{width: 120}}
                                 onChange={(value) => setSelectedPieChartType(value)}
                                 options={INCOME_PIE_CHART_TYPE}

@@ -30,18 +30,22 @@ export const formatPercent = (percent: number): string => {
 // 금액을 단위별로 변환하는 함수
 export const formatCurrency = (value:any) => {
     if (value === undefined) return '';
-    const num = Number(value);
-    if (num >= 1_000_000_000_000) { // 1조 단위
-        return `${(num / 1_000_000_000_000).toFixed(1)}조`;
-    } else if (num >= 100_000_000) { // 1억 단위
-        return `${(num / 100_000_000).toFixed(1)}억`;
-    } else if (num >= 10_000) { // 100만 단위
-        return `${(num / 10_000).toFixed(1)}만원`;
-    } else if (num >= 1_000) { // 1천 단위
-        return `${(num / 1_000).toFixed(1)} 천원`;
+    const originNum = Number(value);
+    const absNum = Math.abs(Number(value));
+    let result = '';
+    if (absNum >= 1_000_000_000_000) { // 1조 단위
+        result = `${(absNum / 1_000_000_000_000).toFixed(1)}조`;
+    } else if (absNum >= 100_000_000) { // 1억 단위
+        result = `${(absNum / 100_000_000).toFixed(1)}억`;
+    } else if (absNum >= 10_000) { // 100만 단위
+        result = `${(absNum / 10_000).toFixed(1)}만원`;
+    } else if (absNum >= 1_000) { // 1천 단위
+        result = `${(absNum / 1_000).toFixed(1)} 천원`;
     } else {
-        return `${num}원`; // 그 이하
+        result = `${absNum}원`;
     }
+
+    return originNum < 0 ? `-${result}` : result;
 };
 
 // 입력 필드에서 단위를 제거하여 숫자로 변환하는 함수

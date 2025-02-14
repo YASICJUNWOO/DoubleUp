@@ -15,7 +15,6 @@ import {
   UserProfileDetailsPage
 } from "../pages";
 import {StockDetailPage} from "../pages/dashboards/sub";
-import {GoalSetup} from "../pages/dashboards/Goal";
 import {DefaultDashboardPage} from "../pages/dashboards/Default";
 import {
   AccountDeactivePage,
@@ -26,6 +25,7 @@ import {
   WelcomePage
 } from "../pages/authentication";
 import {IncomePage} from "../pages/dashboards/IncomePage";
+import {GoalRoadMapHomePage} from "../pages/dashboards/goal-road-map/GoalRoadMapHomePage";
 
 export const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();  // 현재 경로 정보를 가져옴.
@@ -108,7 +108,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'goal',
-        element: <GoalSetup />,
+        element: <GoalRoadMapHomePage />,
       },
       {
         path: 'goals',

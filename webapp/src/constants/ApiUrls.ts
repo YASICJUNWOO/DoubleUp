@@ -1,5 +1,3 @@
-export const GET_LOAD_SCHEDULE_LIST: string = '/group/list';
-
 //================= PORTFOLIO =================
 
 // 포트폴리오 리스트
@@ -10,12 +8,6 @@ export const GET_PORTFOLIO_DETAIL: string = '/api/portfolio/{{portfolioId}}';
 
 // 포트폴리오 등록
 export const POST_PORTFOLIO: string = '/api/portfolio';
-
-// 포트폴리오 수정
-export const PATCH_PORTFOLIO: string = '/api/portfolio/{{portfolioId}}';
-
-// 포트폴리오 삭제
-export const DELETE_PORTFOLIO: string = '/api/portfolio/{{portfolioId}}';
 
 
 //================= PORTFOLIO PRICE =================
@@ -76,8 +68,6 @@ export const GET_NEWS_LIST_BY_STOCK: string = '/api/news/stocks';
 // 목표 조회
 export const GET_GOAL: string = '/api/goal';
 
-// 목표 저장
-export const POST_GOAL: string = '/api/goal';
 
 // 서브 목표 저장
 export const POST_GOAL_SUB: string = '/api/goal/sub';
@@ -121,3 +111,12 @@ export const POST_INCOME_DETAIL: string = '/api/income-detail';
 // 수입 상세 삭제
 export const DELETE_INCOME_DETAIL: string = '/api/income-detail/{{id}}';
 
+//================= GOAL ROAD MAP =================
+// 장기 목표 조회
+export const GET_GOAL_ROAD_MAP: string = '/api/goal-road-map';
+// 장기 목표 저장
+export const POST_GOAL_ROAD_MAP: string = '/api/goal-road-map';
+// 장기 목표 수정
+export const PATCH_GOAL_ROAD_MAP: string = '/api/goal-road-map/{{id}}';
+// 장기 목표 삭제
+export const DELETE_GOAL_ROAD_MAP: string = '/api/goal-road-map/{{id}}';

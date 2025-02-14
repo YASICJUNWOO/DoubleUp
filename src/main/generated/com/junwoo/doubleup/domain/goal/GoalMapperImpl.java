@@ -1,4 +1,4 @@
-package com.junwoo.doubleup.domain.goal;
+package com.junwoo.doubleup.domain.goalRoadMap;
 
 import com.junwoo.doubleup.domain.member.entity.Member;
 import java.math.BigDecimal;

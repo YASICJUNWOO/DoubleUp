@@ -1,11 +1,13 @@
 import axios from "axios";
 import {
     DELETE_GOAL,
+    DELETE_GOAL_ROAD_MAP,
     DELETE_INCOME_DETAIL,
     DELETE_STOCK_FAVORITE,
     GET_CURRENT_STOCK_PRICE,
     GET_FAVORITE_STOCK_LIST,
     GET_GOAL,
+    GET_GOAL_ROAD_MAP,
     GET_INCOME_BY_YEAR,
     GET_INCOME_BY_YEAR_BY_ID,
     GET_INCOME_GOAL,
@@ -19,9 +21,10 @@ import {
     GET_STOCK_INFO,
     GET_STOCK_LIST,
     GET_STOCK_PRICE_BY_PERIOD,
+    PATCH_GOAL_ROAD_MAP,
     PATCH_INCOME_GOAL,
     PATCH_LEDGERS,
-    POST_GOAL,
+    POST_GOAL_ROAD_MAP,
     POST_GOAL_SUB,
     POST_INCOME,
     POST_INCOME_DETAIL,
@@ -80,9 +83,7 @@ export const postPortfolioPriceByDate = async (body: any) => {
     return axios.post(createUrlWithParams(POST_PORTFOLIO_PRICE_BY_DATE, {}, {}), body);
 }
 
-export const postGoal = async (body: any) => {
-    return axios.post(createUrlWithParams(POST_GOAL, {}, {}), body);
-}
+
 
 export const postSubGoal = async (body: any) => {
     return axios.post(createUrlWithParams(POST_GOAL_SUB, {}, {}), body);
@@ -212,6 +213,27 @@ export const addIncomeDetail = async (body: any) => {
 // DELETE
 export const deleteIncomeDetail = async (pathParams: { [key: string]: string }) => {
     return axios.delete(createUrlWithParams(DELETE_INCOME_DETAIL, pathParams, {}));
+}
+
+// ======================== GOAL ROAD MAP ========================
+//GET
+export const getGoalRoadMap = async () => {
+    return axios.get(GET_GOAL_ROAD_MAP);
+}
+
+// POST
+export const postGoalRoadMap = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_GOAL_ROAD_MAP, {}, {}), body);
+}
+
+// PATCH
+export const updateGoalRoadMap = async (pathParams: { [key: string]: string }, body: any) => {
+    return axios.patch(createUrlWithParams(PATCH_GOAL_ROAD_MAP, pathParams, {}), body);
+}
+
+// DELETE
+export const deleteGoalRoadMap = async (pathParams: { [key: string]: string }) => {
+    return axios.delete(createUrlWithParams(DELETE_GOAL_ROAD_MAP, pathParams, {}));
 }
 
 // URL 템플릿을 이용해 동적으로 생성하는 함수
