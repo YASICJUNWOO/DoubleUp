@@ -2,20 +2,19 @@
 import React, {ReactNode, useEffect} from "react";
 import {createBrowserRouter, Navigate, useLocation} from "react-router-dom";
 import {ErrorPage} from "../pages/errors/Error";
-import {DashboardLayout} from "../layouts/dashboards";
+import {DashboardLayout, UserAccountLayout} from "../layouts";
 import {StocksDashboardPage} from "../pages/dashboards/Stocks";
 import {
   EcommerceDashboardPage,
-  FinancialLedger,
   GoalList,
   LearningDashboardPage,
   MarketingDashboardPage,
   PortfolioDashboardPage,
   ProjectsDashboardPage,
-  Test
+  Test,
+  UserProfileDetailsPage
 } from "../pages";
 import {StockDetailPage} from "../pages/dashboards/sub";
-import {GoalSetup} from "../pages/dashboards/Goal";
 import {DefaultDashboardPage} from "../pages/dashboards/Default";
 import {
   AccountDeactivePage,
@@ -25,9 +24,8 @@ import {
   VerifyEmailPage,
   WelcomePage
 } from "../pages/authentication";
-import {UserAccountLayout} from "../layouts";
-import {UserProfileDetailsPage} from "../pages/userAccount";
-import {Income} from "../pages/dashboards/Income";
+import {IncomePage} from "../pages/dashboards/IncomePage";
+import {GoalRoadMapHomePage} from "../pages/dashboards/goal-road-map/GoalRoadMapHomePage";
 
 export const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();  // 현재 경로 정보를 가져옴.
@@ -77,17 +75,17 @@ const router = createBrowserRouter([
       },
       {
         path: 'income',  // '/dashboards/income' 경로일 때.
-        element: <Income />
+        element: <IncomePage />
       },
       {
         path: 'projects',  // '/dashboards/projects' 경로일 때.
         element: <ProjectsDashboardPage />,  // 프로젝트 대시보드 페이지.
       },
       // 다른 대시보드 경로들.
-      {
-        path: 'finance-ledger',
-        element: <FinancialLedger />
-      },
+      // {
+      //   path: 'finance-ledger',
+      //   element: <FinancialLedgerPage />
+      // },
       {
         path: 'ecommerce',
         element: <EcommerceDashboardPage />,
@@ -110,7 +108,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'goal',
-        element: <GoalSetup />,
+        element: <GoalRoadMapHomePage />,
       },
       {
         path: 'goals',

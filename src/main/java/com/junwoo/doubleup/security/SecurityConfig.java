@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/stock/info/**").permitAll() // GET 허용
                         .requestMatchers(HttpMethod.POST, "/api/member").permitAll()  // POST 허용
                         .requestMatchers("/api/**").permitAll() // API 전체 허용

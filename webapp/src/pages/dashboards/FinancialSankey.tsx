@@ -1,67 +1,102 @@
 import React, {useEffect, useState} from "react";
 import {ResponsiveSankey} from "@nivo/sankey";
+import {Income} from "../../components/dashboard/income/interface";
+import {IncomeDetail} from "../../interface/interface";
+import {ALL_CATEGORY} from "../../components/dashboard/ledger/LedgerAddModal";
 
-export const FinancialSankey: React.FC = () => {
+type Props = {
+    incomeData: Income;
+}
 
-    const initData = {
-        "nodes": [
-            {
-                "id": "수입",
-                "nodeColor": "hsl(29, 70%, 50%)"
-            },
-            {
-                "id": "급여",
-                "nodeColor": "hsl(273, 70%, 50%)"
-            },
-            {
-                "id":"추가 수당",
-                "nodeColor": "hsl(29, 70%, 50%)"
-            },
+interface ChartData {
+    nodes: {
+        id: string;
+        nodeColor: string;
+    }[];
+    links: {
+        source: string;
+        target: string;
+        value: number;
+    }[];
+}
 
-            // ======= 지출 ========
-            {
-                id: "공과금",
-                nodeColor: "hsl(29, 70%, 50%)"
-            },
-            {
-                "id": "현금",
-                "nodeColor": "hsl(29, 70%, 50%)"
-            }
-        ],
-        "links": [
-            {
-              source: "급여",
-              target: "수입",
-              value: 2_800_000
-            },
-            {
-                source: "추가 수당",
-                target: "수입",
-                value: 500_000
-            },
-            {
-                source: "수입",
-                target: "공과금",
-                value: 35000
-            },
-            {
-                source: "급여",
-                target: "현금",
-                value: 5000
-            }
-        ]
-    }
+export const FinancialSankey: React.FC<Props> = ({incomeData}) => {
 
-    const [data, setData] = useState(initData);
+    const [chartData, setChartData] = useState<ChartData | null>(null);
 
     useEffect(() => {
-        console.log(data);
-    }, []);
 
-    return (
+        if (!incomeData || !incomeData.incomeDetails) return
+
+        const incomeDetails = incomeData.incomeDetails;
+
+        setChartData(transformData(incomeDetails));
+
+    }, [incomeData]);
+
+    const transformData = (incomeDetails: IncomeDetail[]): ChartData => {
+        const income = incomeDetails.filter((incomeDetail) => incomeDetail.type === 'INCOME');
+        const expense = incomeDetails.filter((incomeDetail) => incomeDetail.type === 'EXPENSE');
+
+        // 카테고리 별
+        const incomeCategoryMap = new Map<string, number>();
+        income.forEach((incomeDetail) => {
+            const amount = incomeCategoryMap.get(incomeDetail.category) || 0;
+            incomeCategoryMap.set(incomeDetail.category, amount + incomeDetail.amount);
+        })
+
+        console.log('incomeCategoryMap', incomeCategoryMap);
+
+        const expenseCategoryMap = new Map<string, number>();
+        expense.forEach((expenseDetail) => {
+            const amount = expenseCategoryMap.get(expenseDetail.category) || 0;
+            expenseCategoryMap.set(expenseDetail.category, amount + expenseDetail.amount);
+        })
+
+        return {
+            "nodes": [
+                {
+                    "id": "수입",
+                    "nodeColor": "hsl(29, 70%, 50%)"
+                },
+                ...Array.from(incomeCategoryMap.keys()).map((category) => {
+                    return {
+                        id: ALL_CATEGORY[category as keyof typeof ALL_CATEGORY].label,
+                        nodeColor: "hsl(29, 70%, 50%)"
+                    };
+                }),
+
+                // ======= 지출 ========
+                ...Array.from(expenseCategoryMap.keys()).map((category) => {
+                    return {
+                        id: ALL_CATEGORY[category as keyof typeof ALL_CATEGORY].label,
+                        nodeColor: "hsl(29, 70%, 50%)"
+                    };
+                }),
+            ],
+            "links": [
+                ...Array.from(incomeCategoryMap.keys()).map((category) => {
+                    return {
+                        source: ALL_CATEGORY[category as keyof typeof ALL_CATEGORY].label,
+                        target: "수입",
+                        value: incomeCategoryMap.get(category) || 0
+                    };
+                }),
+                ...Array.from(expenseCategoryMap.keys()).map((category) => {
+                    return {
+                        source: "수입",
+                        target: ALL_CATEGORY[category as keyof typeof ALL_CATEGORY].label,
+                        value: expenseCategoryMap.get(category) || 0
+                    };
+                })
+            ]
+        }
+    }
+
+    return chartData && chartData.nodes.length > 0 && chartData.links.length > 0 ?
         <ResponsiveSankey
-            data={data}
-            margin={{ top: 20, right: 160, bottom: 40, left: 50 }} // 여백 설정
+            data={chartData}
+            margin={{top: 20, right: 160, bottom: 40, left: 50}} // 여백 설정
             colors={{scheme: 'category10'}} // 색상 스킴 설정
             nodeOpacity={1} // 노드 불투명도
             nodeHoverOthersOpacity={0.35} // 다른 노드에 마우스 오버 시 불투명도
@@ -111,5 +146,6 @@ export const FinancialSankey: React.FC = () => {
                 }
             ]}
         />
-    );
+        :
+        <></>
 }

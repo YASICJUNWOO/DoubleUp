@@ -1,10 +1,16 @@
 import axios from "axios";
 import {
     DELETE_GOAL,
+    DELETE_GOAL_ROAD_MAP,
+    DELETE_INCOME_DETAIL,
     DELETE_STOCK_FAVORITE,
     GET_CURRENT_STOCK_PRICE,
     GET_FAVORITE_STOCK_LIST,
     GET_GOAL,
+    GET_GOAL_ROAD_MAP,
+    GET_INCOME_BY_YEAR,
+    GET_INCOME_BY_YEAR_BY_ID,
+    GET_INCOME_GOAL,
     GET_LEDGERS,
     GET_NEWS_LIST_BY_STOCK,
     GET_PORTFOLIO_DETAIL,
@@ -15,9 +21,14 @@ import {
     GET_STOCK_INFO,
     GET_STOCK_LIST,
     GET_STOCK_PRICE_BY_PERIOD,
+    PATCH_GOAL_ROAD_MAP,
+    PATCH_INCOME_GOAL,
     PATCH_LEDGERS,
-    POST_GOAL,
+    POST_GOAL_ROAD_MAP,
     POST_GOAL_SUB,
+    POST_INCOME,
+    POST_INCOME_DETAIL,
+    POST_INCOME_GOAL,
     POST_LEDGERS,
     POST_LOGIN,
     POST_PORTFOLIO,
@@ -72,9 +83,7 @@ export const postPortfolioPriceByDate = async (body: any) => {
     return axios.post(createUrlWithParams(POST_PORTFOLIO_PRICE_BY_DATE, {}, {}), body);
 }
 
-export const postGoal = async (body: any) => {
-    return axios.post(createUrlWithParams(POST_GOAL, {}, {}), body);
-}
+
 
 export const postSubGoal = async (body: any) => {
     return axios.post(createUrlWithParams(POST_GOAL_SUB, {}, {}), body);
@@ -159,6 +168,73 @@ export const signUp = async (body: any) => {
     return axios.post(createUrlWithParams(POST_SIGNUP, {}, {}), body);
 }
 
+// ======================== Income ========================
+// GET
+export const getIncomeByYear = async (queryParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_INCOME_BY_YEAR, {}, queryParams));
+}
+
+export const getIncomeById = async (pathParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_INCOME_BY_YEAR_BY_ID, pathParams, {}));
+}
+
+// POST
+export const addIncome = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_INCOME, {}, {}), body);
+}
+
+// DELETE
+export const deleteIncomeByYear = async (queryParams: { [key: string]: string }) => {
+    return axios.delete(createUrlWithParams(GET_INCOME_BY_YEAR, {}, queryParams));
+}
+
+// ======================== INCOME GOAL ========================
+// POST
+export const addIncomeGoal = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_INCOME_GOAL, {}, {}), body);
+}
+
+// GET
+export const getIncomeGoal = async (queryParams: { [key: string]: string }) => {
+    return axios.get(createUrlWithParams(GET_INCOME_GOAL, {}, queryParams));
+}
+
+// PATCH
+export const updateIncomeGoal = async (pathParams: { [key: string]: string }, body: any) => {
+    return axios.patch(createUrlWithParams(PATCH_INCOME_GOAL, pathParams, {}), body);
+}
+
+// ======================== INCOME DETAIL ========================
+// POST
+export const addIncomeDetail = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_INCOME_DETAIL, {}, {}), body);
+}
+
+// DELETE
+export const deleteIncomeDetail = async (pathParams: { [key: string]: string }) => {
+    return axios.delete(createUrlWithParams(DELETE_INCOME_DETAIL, pathParams, {}));
+}
+
+// ======================== GOAL ROAD MAP ========================
+//GET
+export const getGoalRoadMap = async () => {
+    return axios.get(GET_GOAL_ROAD_MAP);
+}
+
+// POST
+export const postGoalRoadMap = async (body: any) => {
+    return axios.post(createUrlWithParams(POST_GOAL_ROAD_MAP, {}, {}), body);
+}
+
+// PATCH
+export const updateGoalRoadMap = async (pathParams: { [key: string]: string }, body: any) => {
+    return axios.patch(createUrlWithParams(PATCH_GOAL_ROAD_MAP, pathParams, {}), body);
+}
+
+// DELETE
+export const deleteGoalRoadMap = async (pathParams: { [key: string]: string }) => {
+    return axios.delete(createUrlWithParams(DELETE_GOAL_ROAD_MAP, pathParams, {}));
+}
 
 // URL 템플릿을 이용해 동적으로 생성하는 함수
 const createUrlWithParams = (url: string, pathParams: { [key: string]: string }, queryParams: { [key: string]: string }) => {

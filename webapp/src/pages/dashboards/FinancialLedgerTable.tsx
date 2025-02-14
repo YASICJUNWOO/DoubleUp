@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {
     Button,
+    Col,
+    Divider,
     Dropdown,
     Flex,
     Form,
@@ -8,7 +10,7 @@ import {
     Input,
     InputRef,
     MenuProps,
-    Popconfirm,
+    Row,
     Space,
     Table,
     TableProps,
@@ -21,6 +23,9 @@ import {red} from "@ant-design/colors";
 import {formatNumber} from "../../util/money";
 import './css/FinacialLedger.css';
 import dayjs from "dayjs";
+import {IncomeDetail} from "../../interface/interface";
+import {ExpenseCategory, IncomeCategory} from "../../components/dashboard/ledger/LedgerAddModal";
+import {IncomeGoal} from "../../components/dashboard/income/IncomeGoal";
 
 type FormInstance<T> = GetRef<typeof Form<T>>;
 
@@ -135,53 +140,23 @@ interface DataType {
     amount: number;
 }
 
-type ColumnTypes = Exclude<TableProps<DataType>['columns'], undefined>;
+type ColumnTypes = Exclude<TableProps<IncomeDetail>['columns'], undefined>;
 
 type Props = {
+    data: IncomeDetail[]
     year: number,
-    handleYearChange: (year: number) => void
-    saveLedger: (data: any) => void
+    month: number,
+    handleDeleteIncomeDetail: (id: string) => void
+    setIncomeDetailAddModalOpen: (open: boolean) => void
 }
 
 export const FinancialLedgerTable: React.FC<Props> = ({
-                                                         year,
-                                                         handleYearChange,
-                                                         saveLedger
-                                                     }) => {
-
-    const [dataSource, setDataSource] = useState<DataType[]>([
-        {
-            key: '0',
-            type: '수입',
-            date: "2023-01-01",
-            category: "급여",
-            payment: null,
-            name: '월급',
-            amount: 35_000,
-        },
-        {
-            key: '1',
-            type: '지출',
-            date: "2023-01-10",
-            category: "공과금",
-            payment: "이체",
-            name: '공과금 납부',
-            amount: 400_000,
-        },
-    ]);
-
-    useEffect(() => {
-        console.log("초기 데이터:", dataSource); // 초기 데이터를 출력
-    }, []);
-
-    const [count, setCount] = useState(2);
-
-    const handleDelete = (key: React.Key) => {
-        console.log("삭제할 데이터의 key:", key); // 삭제할 행의 key
-        const newData = dataSource.filter((item) => item.key !== key);
-        setDataSource(newData);
-        console.log("삭제 후 데이터:", newData); // 삭제 후 남은 데이터
-    };
+                                                          data,
+                                                          year,
+                                                          month,
+                                                          handleDeleteIncomeDetail,
+                                                          setIncomeDetailAddModalOpen
+                                                      }) => {
 
     const defaultColumns: (ColumnTypes[number] & { editable?: boolean; dataIndex: string })[] = [
         {
@@ -192,9 +167,9 @@ export const FinancialLedgerTable: React.FC<Props> = ({
             render: (_, record) =>
                 <Typography.Text
                     strong
-                    type={record.type === "수입" ? "success" : "danger"}
+                    type={record.type === "INCOME" ? "success" : "danger"}
                 >
-                    {record.type}
+                    {record.type === "INCOME" ? "수입" : "지출"}
                 </Typography.Text>
         },
         {
@@ -203,6 +178,8 @@ export const FinancialLedgerTable: React.FC<Props> = ({
             width: '15%',
             align: 'center',
             editable: true,
+            render: (_, record) =>
+                dayjs(record.date).format("YYYY-MM-DD HH:mm:ss")
         },
         {
             title: '카테고리',
@@ -211,18 +188,15 @@ export const FinancialLedgerTable: React.FC<Props> = ({
             editable: true,
             render: (_, record) =>
                 <Tag bordered={false} color="success">
-                    {record.category}
+                    {record.type === 'INCOME' ?
+                        IncomeCategory[record.category as keyof typeof IncomeCategory].label :
+                        ExpenseCategory[record.category as keyof typeof ExpenseCategory].label
+                    }
                 </Tag>
         },
         {
-            title: '지불 방식',
-            dataIndex: 'payment',
-            align: 'center',
-            editable: true,
-        },
-        {
             title: '내역',
-            dataIndex: 'name',
+            dataIndex: 'content',
             align: 'center',
             editable: true,
         },
@@ -234,58 +208,24 @@ export const FinancialLedgerTable: React.FC<Props> = ({
             render: (_, record) => formatNumber(record.amount),
         },
         {
-            // title: 'operation',
             dataIndex: 'operation',
             align: 'center',
             width: '8%',
-            render: (_, record) =>
-                dataSource.length >= 1 ? (
-                    <Popconfirm
-                        title="정말 삭제하시겠습니까?"
-                        placement="topLeft"
-                        showCancel={false}
-                        okText="삭제"
-                        onConfirm={() => handleDelete(record.key)}
-                    >
-                        <MinusCircleFilled
-                            // onClick={() => handleDelete(record.key)}
-                            style={{color: red[5], fontSize: "large"}}
-                        />
-                    </Popconfirm>
-                ) : null,
+            render: (_, record:IncomeDetail ) =>
+                data.length >= 1 ?
+                    <MinusCircleFilled
+                        onClick={() => handleDeleteIncomeDetail(record.id)}
+                        style={{color: red[5], fontSize: "large"}}
+                    />
+                : null,
         },
     ];
 
     const handleAdd = () => {
-        const newData: DataType = {
-            key: count,
-            type: "수입",
-            date: dayjs().format("YYYY-MM-DD"),
-            category: "급여",
-            payment: null,
-            name: `Edward King ${count}`,
-            amount: 80_000,
-        };
-        console.log("추가할 데이터:", newData); // 새로 추가할 데이터
-        setDataSource([...dataSource, newData]);
-        setCount(count + 1);
-        console.log("추가 후 데이터:", [...dataSource, newData]); // 추가 후 전체 데이터
+        setIncomeDetailAddModalOpen(true);
     };
 
-
-    const handleSave = (row: DataType) => {
-        console.log("수정된 데이터:", row); // 수정된 데이터 값
-        const newData = [...dataSource];
-        const index = newData.findIndex((item) => row.key === item.key);
-        const item = newData[index];
-        newData.splice(index, 1, {
-            ...item,
-            ...row,
-        });
-        setDataSource(newData);
-        console.log("수정 후 데이터:", newData); // 수정 후 전체 데이터
-    };
-
+    // ============================================================
 
     const components = {
         body: {
@@ -298,27 +238,24 @@ export const FinancialLedgerTable: React.FC<Props> = ({
         if (!col.editable) {
             return col; // 수정 불가능한 열은 그대로 반환
         }
-        console.log("수정 가능한 열:", col); // 수정 가능한 열의 정보
         return {
             ...col,
             onCell: (record: DataType) => {
-                console.log("현재 셀의 데이터:", record); // 셀에 적용될 데이터 출력
                 return {
                     record,
                     editable: col.editable,
                     dataIndex: col.dataIndex,
-                    title: col.title,
-                    handleSave,
+                    title: col.title
                 };
             },
         };
     });
 
-// 연도 범위 설정
+    // 연도 범위 설정
     const startYear = 2020;
     const endYear = 2024;
 
-// 연도 리스트 생성
+    // 연도 리스트 생성
     const years = Array.from({length: endYear - startYear + 1}, (_, index) => startYear + index);
 
     // 메뉴 항목 생성
@@ -329,58 +266,75 @@ export const FinancialLedgerTable: React.FC<Props> = ({
 
     const handleMenuClick: MenuProps['onClick'] = (e) => {
         const selectedYear = parseInt(e.key, 10);
-       handleYearChange(selectedYear);
+        // handleYearChange(selectedYear);
     };
 
     return (
-        <Card
-            title={
-                <Flex justify="space-around" align="center">
-                    <Button
-                        icon={
-                            <ArrowLeftOutlined
-                                onClick={() => handleYearChange(year - 1)}
-                            />}
-                    />
-                    <Space>
-                        <Dropdown menu={{items, onClick: handleMenuClick}}>
-                            <Button>
-                                <Typography.Title level={5} style={{margin: "0px"}}>
-                                    {year}
-                                </Typography.Title>
-                            </Button>
-                        </Dropdown>
+        <>
+            <Card
+                title={
+                    <Flex justify="space-around" align="center">
+                        <Button
+                            icon={
+                                <ArrowLeftOutlined
+                                    // onClick={() => handleYearChange(year - 1)}
+                                />}
+                        />
+                        <Space>
+                            <Dropdown menu={{items, onClick: handleMenuClick}}>
+                                <Button>
+                                    <Typography.Title level={5} style={{margin: "0px"}}>
+                                        {year}
+                                    </Typography.Title>
+                                </Button>
+                            </Dropdown>
 
-                        <Typography.Title level={5} style={{margin: "0px"}}>년 예산</Typography.Title>
-                    </Space>
-                    <Button
-                        icon={
-                            <ArrowRightOutlined
-                                onClick={() => handleYearChange(year + 1)}
-                            />}
-                    />
-                </Flex>
-            }
-        >
-            <Space style={{display: "flex", justifyContent: "end"}}>
-                <Button onClick={handleAdd} type="primary">
-                    내역 추가
-                </Button>
-                <Button>
-                    저장
-                </Button>
-            </Space>
-            <Table<DataType>
-                size="small"
-                components={components}
-                rowClassName={() => 'editable-row'}
-                dataSource={dataSource}
-                columns={columns as ColumnTypes}
-                expandable={{
-                    expandedRowRender: (record) => <p style={{margin: 0}}>{record.name}</p>,
-                    // rowExpandable: (record) => record
-                }}
-            />
-        </Card>
+                            <Typography.Title level={5} style={{margin: "0px"}}>년 </Typography.Title>
+                            <Typography.Title level={5} style={{margin: "0px"}}>{month} 월 </Typography.Title>
+                        </Space>
+                        <Button
+                            icon={
+                                <ArrowRightOutlined
+                                    // onClick={() => handleYearChange(year + 1)}
+                                />}
+                        />
+                    </Flex>
+                }
+            >
+                <Row>
+                    <Col span={12}>
+                        <IncomeGoal
+                            type='INCOME'
+                            rangeType='MONTHLY'
+                            year={year}
+                            month={month}
+                            data={data.filter((item) => item.type === 'INCOME').reduce((acc, cur) => acc + cur.amount, 0)}
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <IncomeGoal
+                            type='EXPENSE'
+                            rangeType='MONTHLY'
+                            year={year}
+                            month={month}
+                            data={data.filter((item) => item.type === 'EXPENSE').reduce((acc, cur) => acc + cur.amount, 0)}
+                        />
+                    </Col>
+                </Row>
+                <Divider/>
+                <Space style={{display: "flex", justifyContent: "end"}}>
+                    <Button onClick={handleAdd} type="primary">
+                        내역 추가
+                    </Button>
+                </Space>
+                <Table<IncomeDetail>
+                    size="small"
+                    components={components}
+                    rowClassName={() => 'editable-row'}
+                    dataSource={data}
+                    columns={columns as ColumnTypes}
+                />
+            </Card>
+        </>
     );
 }

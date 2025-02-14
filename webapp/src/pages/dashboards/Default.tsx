@@ -22,8 +22,8 @@ import {useFetchData} from '../../hooks';
 import {Projects} from '../../types';
 import CountUp from 'react-countup';
 import {Line, Liquid} from '@ant-design/plots';
-import {IGoal} from "../../interface/interface";
-import {getGoal} from "../../constants/api";
+import {IGoal, IGoalRoadMap} from "../../interface/interface";
+import {getGoalRoadMap} from "../../constants/api";
 import {formatCurrency} from "../../util/money";
 import {blue, cyan, green, red, yellow} from "@ant-design/colors";
 import {useAuth} from "../../context/AuthContext";
@@ -32,6 +32,7 @@ import {View} from '@antv/g2';
 import {gapDate} from "../../util/date";
 import {useNavigate} from "react-router-dom"; // G2의 타입을 가져옵니다.
 import './css/Marquee.css';
+import './css/Default.css';
 
 const calculateProgress = (current: number, target: number) => {
     return Math.min((current / target) * 100, 100);
@@ -99,7 +100,6 @@ const DemoLiquid: React.FC<{ goal: IGoal }> = ({goal}) => {
 
     const brandColor = colors[goal.id % colors.length];
 
-    console.log(calculatePercent(goal));
 
     const config = {
         percent: calculatePercent(goal) / 100,
@@ -148,18 +148,16 @@ export const DefaultDashboardPage = () => {
     const [income, setIncome] = useState<number>(2_830_000);
     const [expend, setExpend] = useState<number>(980_000);
 
-    const [goal, setGoal] = useState<IGoal[]>([]);
+    const [goalRoadMap, setGoalRoadMap] = useState<IGoalRoadMap | null>(null);
 
     useEffect(() => {
         if (member !== null) {
-            console.log(member);
-            getGoal({memberId: member.id.toString()})
+            getGoalRoadMap()
                 .then((response) => {
-                    setGoal(response.data);
-                    console.log(response.data);
+                    setGoalRoadMap(response.data);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.error(error);
                 });
         }
 
@@ -173,8 +171,6 @@ export const DefaultDashboardPage = () => {
         error: projectsError,
         loading: projectsLoading,
     } = useFetchData('../mocks/Projects.json');
-
-    const goalWithDetails = goal?.find(g => g.goalDetails.length > 0);
 
     const indexPriceList = [
         {
@@ -297,9 +293,7 @@ export const DefaultDashboardPage = () => {
                                 extra={<Button>View all</Button>}
                                 bordered={false}
                             >
-                                {goal === undefined ? (
-                                    <Loader/>
-                                ) : goal.every(g => g.goalDetails.length === 0) ? (
+                                {goalRoadMap === undefined ? (
                                     // 목표 생성 유도 카드
                                     <>
                                         <Typography.Title level={4} style={{textAlign: 'center', color: '#1890ff'}}>
@@ -321,32 +315,37 @@ export const DefaultDashboardPage = () => {
                                         </Space>
                                     </>
                                 ) : (
-                                    goalWithDetails?.goalDetails.map((goalDetail) => {
-                                        const percent = calculateProgress(goalWithDetails?.initialAmount, goalDetail.goalAmount);
-                                        const color = getProgressColor(percent);
+                                    <div  className="hide-scrollbar" style={{height: '50vh', overflowY: 'auto', paddingInline: '10px'}}>
+                                        {
+                                            goalRoadMap?.goalRoadMapDetails.map((goalRoadMapDetail) => {
+                                                const percent = calculateProgress(goalRoadMap?.currentProgressAmount, goalRoadMapDetail.goalAmount);
+                                                const color = getProgressColor(percent);
 
-                                        return percent !== undefined && (
-                                            <div key={goalDetail.goalYear} style={{marginBottom: '20px'}}>
-                                                <Space align="end">
-                                                    <Typography.Title level={4} style={{margin: "0px"}}>
-                                                        {goalDetail.goalYear}년
-                                                    </Typography.Title>
-                                                    <Typography.Text>
-                                                        {formatCurrency(goalDetail.goalAmount).replace(/\.\d+/, '')}
-                                                    </Typography.Text>
-                                                </Space>
-                                                <Tooltip
-                                                    title={`목표 금액: ${goalDetail.goalAmount.toLocaleString()}원, 현재 금액: ${goalWithDetails?.initialAmount.toLocaleString()}원`}
-                                                >
-                                                    <Progress
-                                                        percent={Number(percent.toFixed(2))}
-                                                        strokeColor={color}
-                                                        status={percent === 100 ? 'success' : 'active'}
-                                                    />
-                                                </Tooltip>
-                                            </div>
-                                        );
-                                    })
+                                                return percent !== undefined && (
+                                                    <div key={goalRoadMapDetail.yearValue}
+                                                         style={{marginBottom: '20px'}}>
+                                                        <Space align="end">
+                                                            <Typography.Title level={4} style={{margin: "0px"}}>
+                                                                {goalRoadMapDetail.yearValue}년
+                                                            </Typography.Title>
+                                                            <Typography.Text>
+                                                                {formatCurrency(goalRoadMapDetail.goalAmount).replace(/\.\d+/, '')}
+                                                            </Typography.Text>
+                                                        </Space>
+                                                        <Tooltip
+                                                            title={`목표 금액: ${goalRoadMapDetail.goalAmount.toLocaleString()}원, 현재 금액: ${goalRoadMap?.currentProgressAmount.toLocaleString()}원`}
+                                                        >
+                                                            <Progress
+                                                                percent={Number(percent.toFixed(2))}
+                                                                strokeColor={color}
+                                                                status={percent === 100 ? 'success' : 'active'}
+                                                            />
+                                                        </Tooltip>
+                                                    </div>
+                                                );
+                                            })
+                                        }
+                                    </div>
                                 )}
                             </Card>
                         </Col>
@@ -413,22 +412,22 @@ export const DefaultDashboardPage = () => {
                 <Col md={24} lg={8}>
                     <Row {...stylesContext?.rowProps}>
                         <Col span={24}>
-                            <Card
-                                title="목표 달성률"
-                                extra={<Button>View all</Button>}
-                                bordered={false}
-                            >
-                                <Carousel
-                                    autoplay
-                                    autoplaySpeed={3000}
-                                >
-                                    {goal.filter(
-                                        (goal: IGoal) => goal.goalDetails.length === 0
-                                    ).map((goal: IGoal) => (
-                                        <DemoLiquid goal={goal}/>
-                                    ))}
-                                </Carousel>
-                            </Card>
+                            {/*<Card*/}
+                            {/*    title="목표 달성률"*/}
+                            {/*    extra={<Button>View all</Button>}*/}
+                            {/*    bordered={false}*/}
+                            {/*>*/}
+                            {/*    <Carousel*/}
+                            {/*        autoplay*/}
+                            {/*        autoplaySpeed={3000}*/}
+                            {/*    >*/}
+                            {/*        {goal.filter(*/}
+                            {/*            (goal: IGoal) => goal.goalDetails.length === 0*/}
+                            {/*        ).map((goal: IGoal) => (*/}
+                            {/*            <DemoLiquid goal={goal}/>*/}
+                            {/*        ))}*/}
+                            {/*    </Carousel>*/}
+                            {/*</Card>*/}
                         </Col>
                         <Col span={24}>
                             <Card
